@@ -166,22 +166,29 @@ def init():
         def reciever():
             data = sock.recv(512).decode()
             if len(data) != 0:
-                if len(data) == 2:
+                if 'red' in data:
+                    unitred1.move(int(data[0]), int(data[1]))
+                elif len(data) == 2:
                     unitblue1.move(int(data[0]), int(data[1]))
-                elif data[0] == '5':
-                    i = 0
-                    while data[i] != '/':
-                        i += 1
-                    j = i+1
-                    while data[j] != '/':
-                        j += 1
-                    bullets.append(Bullet(int(data[1:i:]), int(data[i+1:j:]), data[j+1::], (255, 255, 0)))
-                elif data[0] in '0123':
+                elif data[1::] == 'fire':
+                    a = int(win_height / len(map) * unitred1.x)
+                    b = int(win_height / len(map[0]) * unitred1.y)
+                    if unitred1.orient == 'up':
+                        bullets.append(Bullet(int(a + unitred1.width//2) + 5, b, unitred1.orient, (255, 255, 0)))
+                    elif unitred1.orient == 'down':
+                        bullets.append(Bullet(int(a + unitred1.width//2) + 5, int(b + unitred1.height + 10), unitred1.orient, (255, 255, 0)))
+                    elif unitred1.orient == 'left':
+                        bullets.append(Bullet(a, int(b + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
+                    elif unitred1.orient == 'right':
+                        bullets.append(Bullet(int(a + unitred1.width) + 10, int(b + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
+                elif len(data) > 10:
                     q = 0
                     for i in range(len(map)):
                         for j in range(len(map[0])):
                             map[i][j] = int(data[q])
                             q += 1
+                elif data[0] == 'q':
+                    unitred1.orient = data[1::]
 
         reciever()
         for event in pygame.event.get():
@@ -190,26 +197,34 @@ def init():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
                     unitblue1.orient = 'up'
+                    sock.send('qup'.encode())
                 if event.key == pygame.K_s:
                     unitblue1.orient = 'down'
+                    sock.send('qdown'.encode())
                 if event.key == pygame.K_a:
                     unitblue1.orient = 'left'
+                    sock.send('qleft'.encode())
                 if event.key == pygame.K_d:
                     unitblue1.orient = 'right'
+                    sock.send('qright'.encode())
                 if event.key == pygame.K_SPACE:
                     sock.send('2fire'.encode())
+                    if unitblue1.orient == 'up':
+                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width//2) + 5, int(win_height / len(map[0]) * unitblue1.y), unitblue1.orient, (255, 255, 0)))
+                    if unitblue1.orient == 'down':
+                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width//2) + 5, int(win_height / len(map[0]) * unitblue1.y + unitblue1.height + 10), unitblue1.orient, (255, 255, 0)))
+                    if unitblue1.orient == 'left':
+                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x), int(win_height / len(map[0]) * unitblue1.y + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
+                    if unitblue1.orient == 'right':
+                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width) + 10, int(win_height / len(map[0]) * unitblue1.y + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
                 if event.key == pygame.K_LEFT:
                     sock.send('2left'.encode())
-                    #unitblue1.move(unitblue1.x-1,unitblue1.y)
                 if event.key == pygame.K_RIGHT:
                     sock.send('2right'.encode())
-                    #unitblue1.move(unitblue1.x+1, unitblue1.y)
                 if event.key == pygame.K_UP:
                     sock.send('2up'.encode())
-                    #unitblue1.move(unitblue1.x, unitblue1.y-1)
                 if event.key == pygame.K_DOWN:
                     sock.send('2down'.encode())
-                    #unitblue1.move(unitblue1.x, unitblue1.y+1)
 
     #print(rec1)
     sock.close()
