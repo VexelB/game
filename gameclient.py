@@ -110,6 +110,9 @@ def init():
                 y -= 1
             if map[x][y] != 0:
                 bullets.pop(bullets.index(bullet))
+                for unit in units:
+                    if unit.x == x and unit.y == y:
+                        unit.destroy()
             elif bullet.x < win_height and bullet.x > 0 and bullet.y < win_width and bullet.y > 0:
                 bullet.move()
             else:
@@ -142,32 +145,45 @@ def init():
                 if map[i][j] == 3:
                     pygame.draw.rect(win, (250, 250, 250), (x+5, y+5, UnitRed.width, UnitRed.height))
 
-    unitred1 = UnitRed()
-    unitred1.init()
+    units=[]
     unitblue1 = UnitBlue()
     unitblue1.init()
+    units.append(unitblue1)
+    unitred1 = UnitRed()
+    unitred1.init()
+    units.append(unitred1)
     interface = Interface()
     bullets = []
     run = True
     sock.connect(('localhost', 9090))
     while run:
-        map1=''
+        sock.send('1'.encode())
         win.fill((0,0,0))
         maindraw()
         interface.draw()
         pygame.display.update()
-        #pygame.time.delay(10)
-        data = sock.recv(512).decode()
-        #sock.send('connect'.encode())
-        if data != 0:
-            if int(data[0]) < 4:
-                q = 0
-                for i in range(len(map)):
-                    for j in range(len(map[0])):
-                        map[i][j] = int(data[q])
-                        q += 1
-            if int(data[0]) == 5:
-                map[int(data[1])][int(data[2])] = 0
+
+        def reciever():
+            data = sock.recv(512).decode()
+            if len(data) != 0:
+                if len(data) == 2:
+                    unitblue1.move(int(data[0]), int(data[1]))
+                elif data[0] == '5':
+                    i = 0
+                    while data[i] != '/':
+                        i += 1
+                    j = i+1
+                    while data[j] != '/':
+                        j += 1
+                    bullets.append(Bullet(int(data[1:i:]), int(data[i+1:j:]), data[j+1::], (255, 255, 0)))
+                elif data[0] in '0123':
+                    q = 0
+                    for i in range(len(map)):
+                        for j in range(len(map[0])):
+                            map[i][j] = int(data[q])
+                            q += 1
+
+        reciever()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -181,27 +197,20 @@ def init():
                 if event.key == pygame.K_d:
                     unitblue1.orient = 'right'
                 if event.key == pygame.K_SPACE:
-                    if unitblue1.orient == 'up':
-                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width//2) + 5, int(win_height / len(map[0]) * unitblue1.y), unitblue1.orient, (255, 255, 0)))
-                    if unitblue1.orient == 'down':
-                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width//2) + 5, int(win_height / len(map[0]) * unitblue1.y + unitblue1.height + 10), unitblue1.orient, (255, 255, 0)))
-                    if unitblue1.orient == 'left':
-                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x), int(win_height / len(map[0]) * unitblue1.y + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
-                    if unitblue1.orient == 'right':
-                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width) + 10, int(win_height / len(map[0]) * unitblue1.y + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
-                if event.key == pygame.K_LEFT and unitblue1.x>0:
-                    unitblue1.move(unitblue1.x-1,unitblue1.y)
-                if event.key == pygame.K_RIGHT and unitblue1.x<8:
-                    unitblue1.move(unitblue1.x+1, unitblue1.y)
-                if event.key == pygame.K_UP and unitblue1.y>0:
-                    unitblue1.move(unitblue1.x, unitblue1.y-1)
-                if event.key == pygame.K_DOWN and unitblue1.y<8:
-                    unitblue1.move(unitblue1.x, unitblue1.y+1)
+                    sock.send('2fire'.encode())
+                if event.key == pygame.K_LEFT:
+                    sock.send('2left'.encode())
+                    #unitblue1.move(unitblue1.x-1,unitblue1.y)
+                if event.key == pygame.K_RIGHT:
+                    sock.send('2right'.encode())
+                    #unitblue1.move(unitblue1.x+1, unitblue1.y)
+                if event.key == pygame.K_UP:
+                    sock.send('2up'.encode())
+                    #unitblue1.move(unitblue1.x, unitblue1.y-1)
+                if event.key == pygame.K_DOWN:
+                    sock.send('2down'.encode())
+                    #unitblue1.move(unitblue1.x, unitblue1.y+1)
 
-        for i in map:
-            for j in i:
-                map1 += str(j)
-        sock.send(map1.encode())
     #print(rec1)
     sock.close()
     pygame.quit()

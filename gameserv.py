@@ -162,12 +162,38 @@ def init():
 
     def parser():
         data = conn.recv(512).decode()
-        if int(data[0]) < 4:
-            q = 0
-            for i in range(len(map)):
-                for j in range(len(map[0])):
-                    map[i][j] = int(data[q])
-                    q += 1
+        if len(data) != 0:
+            if data[0] == '2':
+                if data[1::] == 'left' and unitblue1.x>0:
+                    unitblue1.move(unitblue1.x-1,unitblue1.y)
+                    conn.send((str(unitblue1.x)+str(unitblue1.y)).encode())
+                if data[1::] == 'right' and unitblue1.x<8:
+                    unitblue1.move(unitblue1.x+1, unitblue1.y)
+                    conn.send((str(unitblue1.x)+str(unitblue1.y)).encode())
+                if data[1::] == 'up' and unitblue1.y>0:
+                    unitblue1.move(unitblue1.x, unitblue1.y-1)
+                    conn.send((str(unitblue1.x)+str(unitblue1.y)).encode())
+                if data[1::] == 'down' and unitblue1.y<8:
+                    unitblue1.move(unitblue1.x,unitblue1.y+1)
+                    conn.send((str(unitblue1.x)+str(unitblue1.y)).encode())
+                if data[1::] == 'fire':
+                    a = int(win_height / len(map) * unitblue1.x)
+                    b = int(win_height / len(map[0]) * unitblue1.y)
+                    if unitblue1.orient == 'up':
+                        bullets.append(Bullet(int(a + unitblue1.width//2) + 5, b, unitblue1.orient, (255, 255, 0)))
+                        a += unitblue1.width//2 + 5
+                    if unitblue1.orient == 'down':
+                        bullets.append(Bullet(int(a + unitblue1.width//2) + 5, int(b + unitblue1.height + 10), unitblue1.orient, (255, 255, 0)))
+                        a += unitblue1.width//2 + 5
+                        b += unitblue1.height + 10
+                    if unitblue1.orient == 'left':
+                        bullets.append(Bullet(a, int(b + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
+                        b += unitblue1.width//2 + 5
+                    if unitblue1.orient == 'right':
+                        bullets.append(Bullet(int(a + unitblue1.width) + 10, int(b + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
+                        a += unitblue1.width + 10
+                        b += unitblue1.width//2 + 5
+                    conn.send(('5'+str(int(a))+'/'+str(int(b))+'/'+unitblue1.orient).encode())
 
     def mapsender():
         map1 = ''
@@ -192,13 +218,13 @@ def init():
     sock.listen(1)
     conn, addr = sock.accept()
     while run:
+        parser()
         win.fill((0,0,0))
         maindraw()
         interface.draw()
         pygame.display.update()
-        pygame.time.delay(10)
+        #pygame.time.delay(10)
         mapsender()
-        parser()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -228,8 +254,7 @@ def init():
                     unitred1.move(unitred1.x, unitred1.y-1)
                 if event.key == pygame.K_DOWN and unitred1.y<8:
                     unitred1.move(unitred1.x, unitred1.y+1)
-        #conn.send(b'hi')
-    #print(rec1)
+
     conn.close()
     pygame.quit()
 if __name__ == '__main__':
