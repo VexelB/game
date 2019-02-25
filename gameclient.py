@@ -181,7 +181,7 @@ def init():
                         bullets.append(Bullet(a, int(b + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
                     elif unitred1.orient == 'right':
                         bullets.append(Bullet(int(a + unitred1.width) + 10, int(b + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
-                elif len(data) > 10:
+                elif len(data) > 20:
                     q = 0
                     for i in range(len(map)):
                         for j in range(len(map[0])):
