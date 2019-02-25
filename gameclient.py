@@ -166,7 +166,13 @@ def init():
         def reciever():
             data = sock.recv(512).decode()
             if len(data) != 0:
-                if 'red' in data:
+                if data[0:3:] == 'map':
+                    q = 3
+                    for i in range(len(map)):
+                        for j in range(len(map[0])):
+                            map[i][j] = int(data[q])
+                            q += 1
+                elif 'red' in data:
                     unitred1.move(int(data[0]), int(data[1]))
                 elif len(data) == 2:
                     unitblue1.move(int(data[0]), int(data[1]))
@@ -183,12 +189,6 @@ def init():
                         bullets.append(Bullet(int(a + unitred1.width) + 10, int(b + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
                 elif data[0] == 'q':
                     unitred1.orient = data[1::]
-                elif len(data) > 20:
-                    q = 0
-                    for i in range(len(map)):
-                        for j in range(len(map[0])):
-                            map[i][j] = int(data[q])
-                            q += 1
 
         reciever()
         for event in pygame.event.get():

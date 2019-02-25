@@ -201,7 +201,7 @@ def init():
         for i in map:
             for j in i:
                 map1 += str(j)
-        conn.send(map1.encode())
+        conn.send(('map'+map1).encode())
 
     units=[]
     unitblue1 = UnitBlue()
