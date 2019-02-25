@@ -155,7 +155,7 @@ def init():
     interface = Interface()
     bullets = []
     run = True
-    sock.connect(('localhost', 9090))
+    sock.connect(('192.168.0.121', 9090))
     while run:
         sock.send('1'.encode())
         win.fill((0,0,0))
