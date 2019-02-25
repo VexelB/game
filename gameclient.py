@@ -181,14 +181,14 @@ def init():
                         bullets.append(Bullet(a, int(b + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
                     elif unitred1.orient == 'right':
                         bullets.append(Bullet(int(a + unitred1.width) + 10, int(b + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
+                elif data[0] == 'q':
+                    unitred1.orient = data[1::]
                 elif len(data) > 20:
                     q = 0
                     for i in range(len(map)):
                         for j in range(len(map[0])):
                             map[i][j] = int(data[q])
                             q += 1
-                elif data[0] == 'q':
-                    unitred1.orient = data[1::]
 
         reciever()
         for event in pygame.event.get():
