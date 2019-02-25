@@ -230,16 +230,16 @@ def init():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w:
+                if event.key == pygame.K_w or event.key == 172:
                     unitred1.orient = 'up'
                     conn.send('qup'.encode())
-                if event.key == pygame.K_s:
+                if event.key == pygame.K_s or event.key == 161:
                     unitred1.orient = 'down'
                     conn.send('qdown'.encode())
-                if event.key == pygame.K_a:
+                if event.key == pygame.K_a or event.key == 160:
                     unitred1.orient = 'left'
                     conn.send('qleft'.encode())
-                if event.key == pygame.K_d:
+                if event.key == pygame.K_d or event.key == 162:
                     unitred1.orient = 'right'
                     conn.send('qright'.encode())
                 if event.key == pygame.K_SPACE:
