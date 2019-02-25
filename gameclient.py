@@ -155,7 +155,7 @@ def init():
     interface = Interface()
     bullets = []
     run = True
-    sock.connect(('192.168.0.121', 9090))
+    sock.connect(('localhost', 9090))
     while run:
         sock.send('1'.encode())
         win.fill((0,0,0))
@@ -166,8 +166,9 @@ def init():
         def reciever():
             data = sock.recv(512).decode()
             if len(data) != 0:
-                if data[0:3:] == 'map':
+                if data[0:2:] == 'map':
                     q = 3
+                    print(data)
                     for i in range(len(map)):
                         for j in range(len(map[0])):
                             map[i][j] = int(data[q])
