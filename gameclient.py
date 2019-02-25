@@ -166,9 +166,8 @@ def init():
         def reciever():
             data = sock.recv(512).decode()
             if len(data) != 0:
-                if data[0:2:] == 'map':
+                if data[0:3:] == 'map':
                     q = 3
-                    print(data)
                     for i in range(len(map)):
                         for j in range(len(map[0])):
                             map[i][j] = int(data[q])
