@@ -223,6 +223,7 @@ def init():
     while run:
         sendata = ''
         parser()
+        conn.send('1/'.encode())
         win.fill((0,0,0))
         maindraw()
         interface.draw()
