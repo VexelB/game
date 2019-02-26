@@ -117,6 +117,7 @@ def init():
                 del self
 
     def maindraw():
+        win.fill((0,0,0))
         for bullet in bullets:
             x, y = int(bullet.x*len(map)/win_height), int(bullet.y*len(map[0])/win_width)
             if x > 8:
@@ -197,6 +198,7 @@ def init():
                             a += unitblue1.width + 10
                             b += unitblue1.width//2 + 5
                         #conn.send(('5'+str(int(a))+'/'+str(int(b))+'/'+unitblue1.orient).encode())
+        conn.send('1/'.encode())
 
     def mapsender():
         map1 = ''
@@ -223,8 +225,6 @@ def init():
     while run:
         sendata = ''
         parser()
-        conn.send('1/'.encode())
-        win.fill((0,0,0))
         maindraw()
         interface.draw()
         pygame.display.update()
