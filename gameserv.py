@@ -163,7 +163,6 @@ def init():
     def parser():
         data1 = conn.recv(512).decode()
         dataset = data1.split('/')
-        if dataset != ['1', ''] and dataset != ['1', '1', '']:
         for data in dataset:
             if len(data) != 0:
                 if data[0] == 'q':
