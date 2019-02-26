@@ -155,7 +155,7 @@ def init():
     interface = Interface()
     bullets = []
     run = True
-    sock.connect(('172.20.10.13', 9090))
+    sock.connect(('localhost', 9090))
     while run:
         def reciever():
             data1 = sock.recv(512).decode()
@@ -198,19 +198,19 @@ def init():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w:
+                if event.key == pygame.K_w or event.key == 172:
                     unitblue1.orient = 'up'
                     #sock.send('qup'.encode())
                     sendata += 'qup/'
-                if event.key == pygame.K_s:
+                if event.key == pygame.K_s or event.key == 161:
                     unitblue1.orient = 'down'
                     #sock.send('qdown'.encode())
                     sendata += 'qdown/'
-                if event.key == pygame.K_a:
+                if event.key == pygame.K_a or event.key == 160:
                     unitblue1.orient = 'left'
                     #sock.send('qleft'.encode())
                     sendata += 'qleft/'
-                if event.key == pygame.K_d:
+                if event.key == pygame.K_d or event.key == 162:
                     unitblue1.orient = 'right'
                     #sock.send('qright'.encode())
                     sendata += 'qright/'
@@ -227,19 +227,19 @@ def init():
                     sendata += '2fire/'
                 if event.key == pygame.K_LEFT:
                     #sock.send('2left'.encode())
-                    #reciever()
+                    reciever()
                     sendata += '2left/'
                 if event.key == pygame.K_RIGHT:
                     #sock.send('2right'.encode())
-                    #reciever()
+                    reciever()
                     sendata += '2right/'
                 if event.key == pygame.K_UP:
                     #sock.send('2up'.encode())
-                    #reciever()
+                    reciever()
                     sendata += '2up/'
                 if event.key == pygame.K_DOWN:
                     #sock.send('2down'.encode())
-                    #reciever()
+                    reciever()
                     sendata += '2down/'
         sock.send(sendata.encode())
 
