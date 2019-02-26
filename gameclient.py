@@ -229,7 +229,7 @@ def init():
                 if event.key == pygame.K_DOWN:
                     sock.send('2down'.encode())
                     reciever()
-        reciever()
+        #reciever()
 
     #print(rec1)
     sock.close()
