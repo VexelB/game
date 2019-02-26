@@ -173,10 +173,13 @@ def init():
                             map[i][j] = int(data[q])
                             q += 1
                 elif 'red' in data:
+                    print(data)
                     unitred1.move(int(data[0]), int(data[1]))
                 elif len(data) == 2:
+                    print(data)
                     unitblue1.move(int(data[0]), int(data[1]))
                 elif data[1::] == 'fire':
+                    print(data)
                     a = int(win_height / len(map) * unitred1.x)
                     b = int(win_height / len(map[0]) * unitred1.y)
                     if unitred1.orient == 'up':
@@ -188,8 +191,8 @@ def init():
                     elif unitred1.orient == 'right':
                         bullets.append(Bullet(int(a + unitred1.width) + 10, int(b + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
                 elif data[0] == 'q':
-                    unitred1.orient = data[1::]
                     print(data)
+                    unitred1.orient = data[1::]
 
         reciever()
         for event in pygame.event.get():
