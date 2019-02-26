@@ -155,7 +155,7 @@ def init():
     interface = Interface()
     bullets = []
     run = True
-    sock.connect(('192.168.1.28', 9090))
+    sock.connect(('localhost', 9090))
     while run:
         sock.send('1'.encode())
         win.fill((0,0,0))
@@ -208,7 +208,6 @@ def init():
                     unitblue1.orient = 'right'
                     sock.send('qright'.encode())
                 if event.key == pygame.K_SPACE:
-                    sock.send('2fire'.encode())
                     if unitblue1.orient == 'up':
                         bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width//2) + 5, int(win_height / len(map[0]) * unitblue1.y), unitblue1.orient, (255, 255, 0)))
                     if unitblue1.orient == 'down':
@@ -217,14 +216,20 @@ def init():
                         bullets.append(Bullet(int(win_height / len(map) * unitblue1.x), int(win_height / len(map[0]) * unitblue1.y + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
                     if unitblue1.orient == 'right':
                         bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width) + 10, int(win_height / len(map[0]) * unitblue1.y + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
+                    sock.send('2fire'.encode())
                 if event.key == pygame.K_LEFT:
                     sock.send('2left'.encode())
+                    reciever()
                 if event.key == pygame.K_RIGHT:
                     sock.send('2right'.encode())
+                    reciever()
                 if event.key == pygame.K_UP:
                     sock.send('2up'.encode())
+                    reciever()
                 if event.key == pygame.K_DOWN:
                     sock.send('2down'.encode())
+                    reciever()
+        reciever()
 
     #print(rec1)
     sock.close()
