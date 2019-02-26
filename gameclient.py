@@ -40,7 +40,7 @@ def init():
 
     class Bullet:
         radius = win_width//100
-        speed = win_height//50;
+        speed = win_height//25;
         def __init__(self, x, y, orient, color):
             self.x = x
             self.y = y
@@ -198,49 +198,50 @@ def init():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w or event.key == 172:
-                    unitblue1.orient = 'up'
-                    #sock.send('qup'.encode())
-                    sendata += 'qup/'
-                if event.key == pygame.K_s or event.key == 161:
-                    unitblue1.orient = 'down'
-                    #sock.send('qdown'.encode())
-                    sendata += 'qdown/'
-                if event.key == pygame.K_a or event.key == 160:
-                    unitblue1.orient = 'left'
-                    #sock.send('qleft'.encode())
-                    sendata += 'qleft/'
-                if event.key == pygame.K_d or event.key == 162:
-                    unitblue1.orient = 'right'
-                    #sock.send('qright'.encode())
-                    sendata += 'qright/'
-                if event.key == pygame.K_SPACE:
-                    if unitblue1.orient == 'up':
-                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width//2) + 5, int(win_height / len(map[0]) * unitblue1.y), unitblue1.orient, (255, 255, 0)))
-                    if unitblue1.orient == 'down':
-                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width//2) + 5, int(win_height / len(map[0]) * unitblue1.y + unitblue1.height + 10), unitblue1.orient, (255, 255, 0)))
-                    if unitblue1.orient == 'left':
-                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x), int(win_height / len(map[0]) * unitblue1.y + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
-                    if unitblue1.orient == 'right':
-                        bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width) + 10, int(win_height / len(map[0]) * unitblue1.y + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
-                    #sock.send('2fire/'.encode())
-                    sendata += '2fire/'
-                if event.key == pygame.K_LEFT:
-                    #sock.send('2left'.encode())
-                    reciever()
-                    sendata += '2left/'
-                if event.key == pygame.K_RIGHT:
-                    #sock.send('2right'.encode())
-                    reciever()
-                    sendata += '2right/'
-                if event.key == pygame.K_UP:
-                    #sock.send('2up'.encode())
-                    reciever()
-                    sendata += '2up/'
-                if event.key == pygame.K_DOWN:
-                    #sock.send('2down'.encode())
-                    reciever()
-                    sendata += '2down/'
+                if unitblue1.helth > 0:
+                    if event.key == pygame.K_w or event.key == 172:
+                        unitblue1.orient = 'up'
+                        #sock.send('qup'.encode())
+                        sendata += 'qup/'
+                    if event.key == pygame.K_s or event.key == 161:
+                        unitblue1.orient = 'down'
+                        #sock.send('qdown'.encode())
+                        sendata += 'qdown/'
+                    if event.key == pygame.K_a or event.key == 160:
+                        unitblue1.orient = 'left'
+                        #sock.send('qleft'.encode())
+                        sendata += 'qleft/'
+                    if event.key == pygame.K_d or event.key == 162:
+                        unitblue1.orient = 'right'
+                        #sock.send('qright'.encode())
+                        sendata += 'qright/'
+                    if event.key == pygame.K_SPACE:
+                        if unitblue1.orient == 'up':
+                            bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width//2) + 5, int(win_height / len(map[0]) * unitblue1.y), unitblue1.orient, (255, 255, 0)))
+                        if unitblue1.orient == 'down':
+                            bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width//2) + 5, int(win_height / len(map[0]) * unitblue1.y + unitblue1.height + 10), unitblue1.orient, (255, 255, 0)))
+                        if unitblue1.orient == 'left':
+                            bullets.append(Bullet(int(win_height / len(map) * unitblue1.x), int(win_height / len(map[0]) * unitblue1.y + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
+                        if unitblue1.orient == 'right':
+                            bullets.append(Bullet(int(win_height / len(map) * unitblue1.x + unitblue1.width) + 10, int(win_height / len(map[0]) * unitblue1.y + unitblue1.width//2) + 5, unitblue1.orient, (255, 255, 0)))
+                        #sock.send('2fire/'.encode())
+                        sendata += '2fire/'
+                    if event.key == pygame.K_LEFT:
+                        #sock.send('2left'.encode())
+                        reciever()
+                        sendata += '2left/'
+                    if event.key == pygame.K_RIGHT:
+                        #sock.send('2right'.encode())
+                        reciever()
+                        sendata += '2right/'
+                    if event.key == pygame.K_UP:
+                        #sock.send('2up'.encode())
+                        reciever()
+                        sendata += '2up/'
+                    if event.key == pygame.K_DOWN:
+                        #sock.send('2down'.encode())
+                        reciever()
+                        sendata += '2down/'
         sock.send(sendata.encode())
 
     #print(rec1)

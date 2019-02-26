@@ -53,7 +53,7 @@ def init():
 
     class Bullet:
         radius = win_width//100
-        speed = win_height//50;
+        speed = win_height//25;
         def __init__(self, x, y, orient, color):
             self.x = x
             self.y = y
@@ -234,40 +234,41 @@ def init():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w or event.key == 172:
-                    unitred1.orient = 'up'
-                    conn.send('qup/'.encode())
-                if event.key == pygame.K_s or event.key == 161:
-                    unitred1.orient = 'down'
-                    conn.send('qdown/'.encode())
-                if event.key == pygame.K_a or event.key == 160:
-                    unitred1.orient = 'left'
-                    conn.send('qleft/'.encode())
-                if event.key == pygame.K_d or event.key == 162:
-                    unitred1.orient = 'right'
-                    conn.send('qright/'.encode())
-                if event.key == pygame.K_SPACE:
-                    conn.send('2fire/'.encode())
-                    if unitred1.orient == 'up':
-                        bullets.append(Bullet(int(win_height / len(map) * unitred1.x + unitred1.width//2) + 5, int(win_height / len(map[0]) * unitred1.y), unitred1.orient, (255, 255, 0)))
-                    if unitred1.orient == 'down':
-                        bullets.append(Bullet(int(win_height / len(map) * unitred1.x + unitred1.width//2) + 5, int(win_height / len(map[0]) * unitred1.y + unitred1.height + 10), unitred1.orient, (255, 255, 0)))
-                    if unitred1.orient == 'left':
-                        bullets.append(Bullet(int(win_height / len(map) * unitred1.x), int(win_height / len(map[0]) * unitred1.y + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
-                    if unitred1.orient == 'right':
-                        bullets.append(Bullet(int(win_height / len(map) * unitred1.x + unitred1.width) + 10, int(win_height / len(map[0]) * unitred1.y + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
-                if event.key == pygame.K_LEFT and unitred1.x>0:
-                    unitred1.move(unitred1.x-1,unitred1.y)
-                    conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
-                if event.key == pygame.K_RIGHT and unitred1.x<8:
-                    unitred1.move(unitred1.x+1, unitred1.y)
-                    conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
-                if event.key == pygame.K_UP and unitred1.y>0:
-                    unitred1.move(unitred1.x, unitred1.y-1)
-                    conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
-                if event.key == pygame.K_DOWN and unitred1.y<8:
-                    unitred1.move(unitred1.x, unitred1.y+1)
-                    conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                if unitred1.helth > 0 :
+                    if event.key == pygame.K_w or event.key == 172:
+                        unitred1.orient = 'up'
+                        conn.send('qup/'.encode())
+                    if event.key == pygame.K_s or event.key == 161:
+                        unitred1.orient = 'down'
+                        conn.send('qdown/'.encode())
+                    if event.key == pygame.K_a or event.key == 160:
+                        unitred1.orient = 'left'
+                        conn.send('qleft/'.encode())
+                    if event.key == pygame.K_d or event.key == 162:
+                        unitred1.orient = 'right'
+                        conn.send('qright/'.encode())
+                    if event.key == pygame.K_SPACE:
+                        conn.send('2fire/'.encode())
+                        if unitred1.orient == 'up':
+                            bullets.append(Bullet(int(win_height / len(map) * unitred1.x + unitred1.width//2) + 5, int(win_height / len(map[0]) * unitred1.y), unitred1.orient, (255, 255, 0)))
+                        if unitred1.orient == 'down':
+                            bullets.append(Bullet(int(win_height / len(map) * unitred1.x + unitred1.width//2) + 5, int(win_height / len(map[0]) * unitred1.y + unitred1.height + 10), unitred1.orient, (255, 255, 0)))
+                        if unitred1.orient == 'left':
+                            bullets.append(Bullet(int(win_height / len(map) * unitred1.x), int(win_height / len(map[0]) * unitred1.y + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
+                        if unitred1.orient == 'right':
+                            bullets.append(Bullet(int(win_height / len(map) * unitred1.x + unitred1.width) + 10, int(win_height / len(map[0]) * unitred1.y + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
+                    if event.key == pygame.K_LEFT and unitred1.x>0:
+                        unitred1.move(unitred1.x-1,unitred1.y)
+                        conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                    if event.key == pygame.K_RIGHT and unitred1.x<8:
+                        unitred1.move(unitred1.x+1, unitred1.y)
+                        conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                    if event.key == pygame.K_UP and unitred1.y>0:
+                        unitred1.move(unitred1.x, unitred1.y-1)
+                        conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                    if event.key == pygame.K_DOWN and unitred1.y<8:
+                        unitred1.move(unitred1.x, unitred1.y+1)
+                        conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
 
 
     conn.close()
