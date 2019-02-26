@@ -189,6 +189,7 @@ def init():
                         bullets.append(Bullet(int(a + unitred1.width) + 10, int(b + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
                 elif data[0] == 'q':
                     unitred1.orient = data[1::]
+                    print(data)
 
         reciever()
         for event in pygame.event.get():
