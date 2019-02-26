@@ -227,20 +227,17 @@ def init():
                     sendata += '2fire/'
                 if event.key == pygame.K_LEFT:
                     #sock.send('2left'.encode())
-                    reciever()
                     sendata += '2left/'
                 if event.key == pygame.K_RIGHT:
                     #sock.send('2right'.encode())
-                    reciever()
                     sendata += '2right/'
                 if event.key == pygame.K_UP:
                     #sock.send('2up'.encode())
-                    reciever()
                     sendata += '2up/'
                 if event.key == pygame.K_DOWN:
                     #sock.send('2down'.encode())
-                    reciever()
                     sendata += '2down/'
+                reciever()
         sock.send(sendata.encode())
 
     #print(rec1)
