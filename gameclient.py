@@ -155,7 +155,7 @@ def init():
     interface = Interface()
     bullets = []
     run = True
-    sock.connect(('176.59.9.55', 9090))
+    sock.connect(('172.20.10.13', 9090))
     while run:
         def reciever():
             data1 = sock.recv(512).decode()
