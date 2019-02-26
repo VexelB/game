@@ -157,7 +157,6 @@ def init():
     run = True
     sock.connect(('192.168.1.28', 9090))
     while run:
-        sock.send('1'.encode())
         win.fill((0,0,0))
         maindraw()
         interface.draw()
