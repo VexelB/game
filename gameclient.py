@@ -75,7 +75,7 @@ def init():
 
     bullets = []
     run = True
-    sock.connect(('localhost', 9090))
+    sock.connect(('192.168.43.174', 9090))
     while run:
         def reciever():
             data1 = sock.recv(512).decode()
