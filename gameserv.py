@@ -129,12 +129,12 @@ def init():
                     reinit()
         conn.send('1/'.encode())
 
-    def mapsender():
+    def mapsender(sendata):
         map1 = ''
         for i in engine.map:
             for j in i:
                 map1 += str(j)
-        conn.send(('map'+map1+'/').encode())
+        conn.send(('map'+map1+'/'+sendata).encode())
 
     units=[]
     unitblue1 = engine.UnitBlue()
@@ -158,7 +158,6 @@ def init():
         interface.draw(win)
         pygame.display.update()
         #pygame.time.delay(10)
-        mapsender()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -166,16 +165,20 @@ def init():
                 if unitred1.helth > 0 :
                     if event.key == pygame.K_w or event.key == 172:
                         unitred1.orient = 'up'
-                        conn.send('qup/'.encode())
+                        #conn.send('qup/'.encode())
+                        sendata += 'qup/'
                     if event.key == pygame.K_s or event.key == 161:
                         unitred1.orient = 'down'
-                        conn.send('qdown/'.encode())
+                        #conn.send('qdown/'.encode())
+                        sendata += 'qdown/'
                     if event.key == pygame.K_a or event.key == 160:
                         unitred1.orient = 'left'
-                        conn.send('qleft/'.encode())
+                        #conn.send('qleft/'.encode())
+                        sendata += 'qleft/'
                     if event.key == pygame.K_d or event.key == 162:
                         unitred1.orient = 'right'
-                        conn.send('qright/'.encode())
+                        #conn.send('qright/'.encode())
+                        sendata += 'qright/'
                     if event.key == pygame.K_SPACE:
                         conn.send('2fire/'.encode())
                         if unitred1.orient == 'up':
@@ -188,20 +191,26 @@ def init():
                             bullets.append(engine.Bullet(int(win_height / len(engine.map) * unitred1.x + unitred1.width) + 10, int(win_height / len(engine.map[0]) * unitred1.y + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
                     if event.key == pygame.K_LEFT and unitred1.x>0:
                         unitred1.move(unitred1.x-1,unitred1.y)
-                        conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                        #conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                        sendata += (str(int(unitred1.x))+str(int(unitred1.y))+'red/')
                     if event.key == pygame.K_RIGHT and unitred1.x<8:
                         unitred1.move(unitred1.x+1, unitred1.y)
-                        conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                        #conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                        sendata += (str(int(unitred1.x))+str(int(unitred1.y))+'red/')
                     if event.key == pygame.K_UP and unitred1.y>0:
                         unitred1.move(unitred1.x, unitred1.y-1)
-                        conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                        #conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                        sendata += (str(int(unitred1.x))+str(int(unitred1.y))+'red/')
                     if event.key == pygame.K_DOWN and unitred1.y<8:
                         unitred1.move(unitred1.x, unitred1.y+1)
-                        conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                        #conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
+                        sendata += (str(int(unitred1.x))+str(int(unitred1.y))+'red/')
                 if event.key == pygame.K_r or event.key == 174:
                     r += 1
                     print(r)
                     reinit()
+        print(sendata)
+        mapsender(sendata)
 
     conn.close()
     pygame.quit()
