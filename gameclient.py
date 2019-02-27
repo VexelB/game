@@ -167,7 +167,8 @@ def init():
                         sendata += '2down/'
                 if event.key == pygame.K_r or event.key == 174:
                     sendata += 'r/'
-        print('Отправка:',sendata)
+        if sendata != '':
+            print('Отправка:',sendata)
         sock.send(sendata.encode())
 
     #print(rec1)
