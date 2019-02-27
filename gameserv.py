@@ -89,6 +89,7 @@ def init():
 
     def parser():
         data1 = conn.recv(512).decode()
+        print('Прием:', data1)
         dataset = data1.split('/')
         for data in dataset:
             if len(data) != 0:
@@ -210,7 +211,7 @@ def init():
                     print(r)
                     reinit()
         if sendata != '':
-            print(sendata)
+            print('Отправка:',sendata)
         mapsender(sendata)
 
     conn.close()

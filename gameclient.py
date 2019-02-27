@@ -80,6 +80,7 @@ def init():
         def reciever():
             data1 = sock.recv(512).decode()
             #print(data)
+            print('Прием:',data1)
             dataset = data1.split('/')
             for data in dataset:
                 if len(data) != 0:
@@ -166,7 +167,7 @@ def init():
                         sendata += '2down/'
                 if event.key == pygame.K_r or event.key == 174:
                     sendata += 'r/'
-        print(sendata) 
+        print('Отправка:',sendata)
         sock.send(sendata.encode())
 
     #print(rec1)
