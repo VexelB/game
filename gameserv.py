@@ -89,7 +89,8 @@ def init():
 
     def parser():
         data1 = conn.recv(512).decode()
-        print('Прием:', data1)
+        if data1 != '':
+            print('Прием:', data1)
         dataset = data1.split('/')
         for data in dataset:
             if len(data) != 0:
