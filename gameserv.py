@@ -111,7 +111,7 @@ def init():
                         a = int(win_height / len(engine.map) * unitblue1.x)
                         b = int(win_height / len(engine.map[0]) * unitblue1.y)
                         if unitblue1.orient == 'up':
-                            bullets.append(Bullet(int(a + unitblue1.width//2) + 5, b, unitblue1.orient, (255, 255, 0)))
+                            bullets.append(engine.Bullet(int(a + unitblue1.width//2) + 5, b, unitblue1.orient, (255, 255, 0)))
                         elif unitblue1.orient == 'down':
                             bullets.append(engine.Bullet(int(a + unitblue1.width//2) + 5, int(b + unitblue1.height + 10), unitblue1.orient, (255, 255, 0)))
                             a += unitblue1.width//2 + 5
@@ -209,7 +209,8 @@ def init():
                     r += 1
                     print(r)
                     reinit()
-        print(sendata)
+        if sendata != '':
+            print(sendata)
         mapsender(sendata)
 
     conn.close()
