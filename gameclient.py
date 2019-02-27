@@ -67,6 +67,12 @@ def init():
     unitred1.init()
     units.append(unitred1)
     interface = engine.Interface()
+    def reinit():
+        unitblue1.init()
+        unitred1.init()
+        bullets = []
+        interface.draw(win)
+
     bullets = []
     run = True
     sock.connect(('localhost', 9090))
@@ -100,6 +106,8 @@ def init():
                             bullets.append(engine.Bullet(int(a + unitred1.width) + 10, int(b + unitred1.width//2) + 5, unitred1.orient, (255, 255, 0)))
                     elif data[0] == 'q':
                         unitred1.orient = data[1::]
+                    elif data == 'reinit':
+                        reinit()
 
         sock.send('1/'.encode())
         reciever()
@@ -156,6 +164,8 @@ def init():
                         #sock.send('2down'.encode())
                         reciever()
                         sendata += '2down/'
+                if event.key == pygame.K_r or event.key == 174:
+                    sendata += 'r/'
         sock.send(sendata.encode())
 
     #print(rec1)

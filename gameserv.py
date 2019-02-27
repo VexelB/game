@@ -10,6 +10,17 @@ rec4 = []
 rec5 = []
 
 def init():
+    r = 0
+    def reinit():
+        if r % 2 == 0 and r != 0:
+            engine.map = [[0 for i in range(9)] for j in range(9)]
+            gen()
+            bullets = []
+            unitblue1.init()
+            unitred1.init()
+            conn.send('reinit/'.encode())
+            print(engine.score)
+            interface.draw(win)
 
     pygame.init()
     win_height = win_width = 500
@@ -113,6 +124,9 @@ def init():
                             a += unitblue1.width + 10
                             b += unitblue1.width//2 + 5
                         #conn.send(('5'+str(int(a))+'/'+str(int(b))+'/'+unitblue1.orient).encode())
+                elif data == 'r':
+                    print(r)
+                    reinit()
         conn.send('1/'.encode())
 
     def mapsender():
@@ -184,7 +198,10 @@ def init():
                     if event.key == pygame.K_DOWN and unitred1.y<8:
                         unitred1.move(unitred1.x, unitred1.y+1)
                         conn.send((str(int(unitred1.x))+str(int(unitred1.y))+'red/').encode())
-
+                if event.key == pygame.K_r or event.key == 174:
+                    r += 1
+                    print(r)
+                    reinit()
 
     conn.close()
     pygame.quit()
