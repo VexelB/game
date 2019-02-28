@@ -8,7 +8,7 @@ rec3 = []
 rec4 = []
 rec5 = []
 
-def init(ip='192.168.1.17'):
+def init(ip='localhost'):
     sock = socket.socket()
     pygame.init()
     win_height = win_width = 500
@@ -90,6 +90,11 @@ def init(ip='192.168.1.17'):
                             for j in range(len(engine.map[0])):
                                 engine.map[i][j] = int(data[q])
                                 q += 1
+                    elif data[0] == 'd':
+                        if data[1] == 'r':
+                            engine.unitred1.destroy()
+                        if data[1] == 'b':
+                            engine.unitblue1.destroy()
                     elif 'red' in data:
                         engine.unitred1.move(int(data[0]), int(data[1]))
                     elif len(data) == 2:

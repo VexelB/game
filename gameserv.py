@@ -55,6 +55,10 @@ def init():
                 for unit in engine.units:
                     if unit.x == x and unit.y == y:
                         unit.destroy()
+                        if unit.x == engine.unitred1.x and unit.y == engine.unitred1.y:
+                            conn.send('dr/'.encode())
+                        if unit.x == engine.unitblue1.x and unit.y == engine.unitblue1.y:
+                            conn.send('db/'.encode())
                         print(unit, unit.helth)
             elif bullet.x < win_height and bullet.x > 0 and bullet.y < win_width and bullet.y > 0:
                 bullet.move(win)
