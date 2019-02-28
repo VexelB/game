@@ -107,3 +107,11 @@ class UnitRed:
             score[1] += 1
             print(score)
             del self
+
+units=[]
+unitblue1 = UnitBlue()
+unitblue1.init()
+units.append(unitblue1)
+unitred1 = UnitRed()
+unitred1.init()
+units.append(unitred1)
