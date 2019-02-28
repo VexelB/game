@@ -8,7 +8,7 @@ rec3 = []
 rec4 = []
 rec5 = []
 
-def init(ip='localhost'):
+def init(ip='192.168.1.17'):
     sock = socket.socket()
     pygame.init()
     win_height = win_width = 500
