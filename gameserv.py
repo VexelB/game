@@ -55,11 +55,11 @@ def init():
                 for unit in units:
                     if unit.x == x and unit.y == y:
                         unit.destroy()
+                        print(unit, unit.helth)
             elif bullet.x < win_height and bullet.x > 0 and bullet.y < win_width and bullet.y > 0:
                 bullet.move(win)
             else:
                 bullets.pop(bullets.index(bullet))
-
         for i in range(len(engine.map)):
             for j in range(len(engine.map[0])):
                 x = win_height / len(engine.map) * i
@@ -86,11 +86,16 @@ def init():
                         pygame.draw.rect(win, (0, 0, 250), (x+unitblue1.width+5, (y+5+unitblue1.height//2)-win_height//200, win_height//100, win_height//100))
                 if engine.map[i][j] == 3:
                     pygame.draw.rect(win, (250, 250, 250), (x+5, y+5, engine.UnitRed.width, engine.UnitRed.height))
+        for unit in units:
+            if unit.helth != 0:
+                pygame.draw.rect(win, (0, 0, 0), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 , engine.UnitRed.width, 10))
+                pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2 , engine.UnitRed.width * unit.helth // 3, 6))
+                #pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2, engine.UnitRed.width, 6))
 
     def parser():
         data1 = conn.recv(512).decode()
-        if data1 != '':
-            print('Прием:', data1)
+        #if data1 != '':
+            #print('Прием:', data1)
         dataset = data1.split('/')
         for data in dataset:
             if len(data) != 0:
@@ -211,8 +216,8 @@ def init():
                     r += 1
                     print(r)
                     reinit()
-        if sendata != '':
-            print('Отправка:',sendata)
+        #if sendata != '':
+            #print('Отправка:',sendata)
         mapsender(sendata)
 
     conn.close()

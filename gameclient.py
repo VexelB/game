@@ -58,6 +58,11 @@ def init():
                         pygame.draw.rect(win, (0, 0, 250), (x+unitblue1.width+5, (y+5+unitblue1.height//2)-win_height//200, win_height//100, win_height//100))
                 if engine.map[i][j] == 3:
                     pygame.draw.rect(win, (250, 250, 250), (x+5, y+5, engine.UnitRed.width, engine.UnitRed.height))
+                for unit in units:
+                    if unit.helth != 0:
+                        pygame.draw.rect(win, (0, 0, 0), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 , engine.UnitRed.width, 10))
+                        pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2 , engine.UnitRed.width * unit.helth // 3, 6))
+                        #pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2, engine.UnitRed.width, 6))
 
     units=[]
     unitblue1 = engine.UnitBlue()
@@ -75,12 +80,12 @@ def init():
 
     bullets = []
     run = True
-    sock.connect(('172.20.10.7', 9090))
+    sock.connect(('192.168.0.121', 9090))
     while run:
         def reciever():
             data1 = sock.recv(512).decode()
             #print(data)
-            print('Прием:',data1)
+            #print('Прием:',data1)
             dataset = data1.split('/')
             for data in dataset:
                 if len(data) != 0:
@@ -167,8 +172,8 @@ def init():
                         sendata += '2down/'
                 if event.key == pygame.K_r or event.key == 174:
                     sendata += 'r/'
-        if sendata != '':
-            print('Отправка:',sendata)
+        #if sendata != '':
+            #print('Отправка:',sendata)
         sock.send(sendata.encode())
 
     #print(rec1)
