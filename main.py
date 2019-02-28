@@ -13,7 +13,7 @@ ip2 = pygame.font.SysFont('Comic Sans MS', 22).render('этим ip со свои
 try:
     a = str(socket.gethostbyname(socket.gethostname()))
 except:
-    a = 'не получается получить ваш ip'
+    a = '!не получается получить ваш ip!'
 ipi = pygame.font.SysFont('Comic Sans MS', 25).render(a, False, (250, 250, 250))
 inp = myfont.render('Введите ип:', False, (250, 250, 250))
 q = myfont.render('0', False, (250, 250, 250))
