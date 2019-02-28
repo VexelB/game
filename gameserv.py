@@ -46,9 +46,10 @@ def init():
         win.fill((0,0,0))
         for bullet in bullets:
             x, y = int(bullet.x*len(engine.map)/win_height), int(bullet.y*len(engine.map[0])/win_width)
-            if x > 8:
+            print(x,y)
+            if x >= 9:
                 x -= 1
-            if y > 8:
+            if y >= 9:
                 y -= 1
             if engine.map[x][y] != 0:
                 bullets.pop(bullets.index(bullet))
@@ -59,7 +60,7 @@ def init():
                             conn.send('dr/'.encode())
                         if unit.x == engine.unitblue1.x and unit.y == engine.unitblue1.y:
                             conn.send('db/'.encode())
-                        print(unit, unit.helth)
+                        print(unit, unit.helth, unit.x, unit.y)
             elif bullet.x < win_height and bullet.x > 0 and bullet.y < win_width and bullet.y > 0:
                 bullet.move(win)
             else:
@@ -122,19 +123,17 @@ def init():
                         a = int(win_height / len(engine.map) * engine.unitblue1.x)
                         b = int(win_height / len(engine.map[0]) * engine.unitblue1.y)
                         if engine.unitblue1.orient == 'up':
-                            bullets.append(engine.Bullet(int(a + engine.unitblue1.width//2) + 5, b, engine.unitblue1.orient, (255, 255, 0)))
+                            if engine.unitblue1.y != 0:
+                                bullets.append(engine.Bullet(int(a + engine.unitblue1.width//2) + 5, b, engine.unitblue1.orient, (255, 255, 0)))
                         elif engine.unitblue1.orient == 'down':
-                            bullets.append(engine.Bullet(int(a + engine.unitblue1.width//2) + 5, int(b + engine.unitblue1.height + 10), engine.unitblue1.orient, (255, 255, 0)))
-                            a += engine.unitblue1.width//2 + 5
-                            b += engine.unitblue1.height + 10
+                            if engine.unitblue1.y != 8:
+                                bullets.append(engine.Bullet(int(a + engine.unitblue1.width//2) + 5, int(b + engine.unitblue1.height + 10), engine.unitblue1.orient, (255, 255, 0)))
                         elif engine.unitblue1.orient == 'left':
-                            bullets.append(engine.Bullet(a, int(b + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
-                            b += engine.unitblue1.width//2 + 5
+                            if engine.unitblue1.x != 0:
+                                bullets.append(engine.Bullet(a, int(b + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
                         elif engine.unitblue1.orient == 'right':
-                            bullets.append(engine.Bullet(int(a + engine.unitblue1.width) + 10, int(b + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
-                            a += engine.unitblue1.width + 10
-                            b += engine.unitblue1.width//2 + 5
-                        #conn.send(('5'+str(int(a))+'/'+str(int(b))+'/'+unitblue1.orient).encode())
+                            if engine.unitblue1.x != 8:
+                                bullets.append(engine.Bullet(int(a + engine.unitblue1.width) + 10, int(b + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
                 elif data == 'r':
                     #print(r)
                     reinit()
@@ -186,13 +185,17 @@ def init():
                     if event.key == pygame.K_SPACE:
                         conn.send('2fire/'.encode())
                         if engine.unitred1.orient == 'up':
-                            bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitred1.y), engine.unitred1.orient, (255, 255, 0)))
+                            if engine.unitred1.y != 0:
+                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitred1.y), engine.unitred1.orient, (255, 255, 0)))
                         if engine.unitred1.orient == 'down':
-                            bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.height + 10), engine.unitred1.orient, (255, 255, 0)))
+                            if engine.unitred1.y !=8:
+                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.height + 10), engine.unitred1.orient, (255, 255, 0)))
                         if engine.unitred1.orient == 'left':
-                            bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x), int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.width//2) + 5, engine.unitred1.orient, (255, 255, 0)))
+                            if engine.unitred1.x != 0:
+                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x), int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.width//2) + 5, engine.unitred1.orient, (255, 255, 0)))
                         if engine.unitred1.orient == 'right':
-                            bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width) + 10, int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.width//2) + 5, engine.unitred1.orient, (255, 255, 0)))
+                            if engine.unitred1.x != 8:
+                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width) + 10, int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.width//2) + 5, engine.unitred1.orient, (255, 255, 0)))
                     if event.key == pygame.K_LEFT and engine.unitred1.x>0:
                         engine.unitred1.move(engine.unitred1.x-1,engine.unitred1.y)
                         #conn.send((str(int(engine.unitred1.x))+str(int(engine.unitred1.y))+'red/').encode())

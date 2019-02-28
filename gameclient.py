@@ -8,7 +8,7 @@ rec3 = []
 rec4 = []
 rec5 = []
 
-def init(ip='192.168.1.17'):
+def init(ip='localhost'):
     sock = socket.socket()
     pygame.init()
     win_height = win_width = 500
@@ -156,19 +156,18 @@ def init(ip='192.168.1.17'):
                         sendata += '2fire/'
                     if event.key == pygame.K_LEFT:
                         #sock.send('2left'.encode())
-                        reciever()
+                        #reciever()
                         sendata += '2left/'
                     if event.key == pygame.K_RIGHT:
                         #sock.send('2right'.encode())
-                        reciever()
+                        #reciever()
                         sendata += '2right/'
                     if event.key == pygame.K_UP:
                         #sock.send('2up'.encode())
-                        reciever()
+                        #reciever()
                         sendata += '2up/'
                     if event.key == pygame.K_DOWN:
-                        #sock.send('2down'.encode())
-                        reciever()
+                        #reciever()
                         sendata += '2down/'
                 if event.key == pygame.K_r or event.key == 174:
                     sendata += 'r/'

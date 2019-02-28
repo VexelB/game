@@ -10,7 +10,11 @@ create = myfont.render('1: Создат игру', False, (250, 250, 250))
 join = myfont.render('2: Присоединица', False, (250, 250, 250))
 ip1 = pygame.font.SysFont('Comic Sans MS', 22).render('Прежде чем создать игру поделитесь', False, (250, 250, 250))
 ip2 = pygame.font.SysFont('Comic Sans MS', 22).render('этим ip со своим другом', False, (250, 250, 250))
-#ipi = pygame.font.SysFont('Comic Sans MS', 25).render(str(socket.gethostbyname(socket.gethostname())), False, (250, 250, 250))
+try:
+    a = str(socket.gethostbyname(socket.gethostname()))
+except:
+    a = 'не получается получить ваш ip'
+ipi = pygame.font.SysFont('Comic Sans MS', 25).render(a, False, (250, 250, 250))
 inp = myfont.render('Введите ип:', False, (250, 250, 250))
 q = myfont.render('0', False, (250, 250, 250))
 w = myfont.render('1', False, (250, 250, 250))
@@ -98,6 +102,6 @@ while run:
     win.blit(join,(10,150))
     win.blit(ip1, (10, 300-70))
     win.blit(ip2, (10, 300-50))
-    #win.blit(ipi, (10, 300-30))
+    win.blit(ipi, (10, 300-30))
     pygame.display.update()
 pygame.quit()
