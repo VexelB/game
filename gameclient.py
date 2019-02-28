@@ -8,7 +8,7 @@ rec3 = []
 rec4 = []
 rec5 = []
 
-def init():
+def init(ip='localhost'):
     sock = socket.socket()
     pygame.init()
     win_height = win_width = 500
@@ -80,7 +80,7 @@ def init():
 
     bullets = []
     run = True
-    sock.connect(('192.168.0.121', 9090))
+    sock.connect((ip, 9090))
     while run:
         def reciever():
             data1 = sock.recv(512).decode()

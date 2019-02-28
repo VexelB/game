@@ -216,6 +216,7 @@ def init():
                     r += 1
                     print(r)
                     reinit()
+                print(event.key)
         #if sendata != '':
             #print('Отправка:',sendata)
         mapsender(sendata)
