@@ -96,6 +96,8 @@ def init():
                 pygame.draw.rect(win, (0, 0, 0), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 , engine.UnitRed.width, 10))
                 pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2 , engine.UnitRed.width * unit.helth // 3, 6))
                 #pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2, engine.UnitRed.width, 6))
+        interface.draw(win)
+        pygame.display.update()
 
     def parser():
         data1 = conn.recv(512).decode()
@@ -158,8 +160,6 @@ def init():
         sendata = ''
         parser()
         maindraw()
-        interface.draw(win)
-        pygame.display.update()
         #pygame.time.delay(10)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

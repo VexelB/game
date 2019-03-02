@@ -64,7 +64,8 @@ def init(ip='localhost'):
                         pygame.draw.rect(win, (0, 0, 0), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 , engine.UnitRed.width, 10))
                         pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2 , engine.UnitRed.width * unit.helth // 3, 6))
                         #pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2, engine.UnitRed.width, 6))
-
+        interface.draw(win)
+        pygame.display.update()
 
     interface = engine.Interface()
     def reinit():
@@ -76,6 +77,7 @@ def init(ip='localhost'):
     bullets = []
     run = True
     sock.connect((ip, 9090))
+    sendata = ''
     while run:
         def reciever():
             data1 = sock.recv(512).decode()
@@ -115,12 +117,11 @@ def init(ip='localhost'):
                     elif data == 'reinit':
                         reinit()
 
-        sock.send('1/'.encode())
+        sendata += '1/'
+        sock.send(sendata.encode())
         reciever()
         win.fill((0,0,0))
         maindraw()
-        interface.draw(win)
-        pygame.display.update()
         sendata = ''
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -173,7 +174,6 @@ def init(ip='localhost'):
                     sendata += 'r/'
         #if sendata != '':
             #print('Отправка:',sendata)
-        sock.send(sendata.encode())
 
     #print(rec1)
     sock.close()
