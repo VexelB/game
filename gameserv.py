@@ -152,7 +152,8 @@ def init():
     gen()
     bullets = []
     run = True
-    sock = socket.socket()
+    sock = socket.socket(family = socket.AF_INET6)
+    #print()
     sock.bind(('', 9090))
     sock.listen(1)
     conn, addr = sock.accept()
