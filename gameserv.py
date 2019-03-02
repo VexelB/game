@@ -228,7 +228,7 @@ def init():
                         engine.unitred1.reload = 'yes'
                     else:
                         engine.unitred1.reload = 'no'
-                    sendata += 'r/'
+                    conn.send('r/'.encode())
                     reinit()
         mapsender(sendata)
 
