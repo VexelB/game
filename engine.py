@@ -28,10 +28,14 @@ class Interface:
         win.blit(self.rrrr, (win_height//20*19, win_height+win_height//5//2))
         win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Красных очков: {score[0]}', False, (250, 250, 250)), (win_width//50, win_height//100))
         win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Синих очков: {score[1]}', False, (250, 250, 250)), (win_width//50, (win_height//100+win_height//20)))
+        if unitblue1.reload == 'yes':
+            pygame.draw.rect(win, (0, 0, 250), (win_height//20*19, win_height+win_height//5//2-20, 15, 15))
+        if unitred1.reload == 'yes':
+            pygame.draw.rect(win, (250, 0, 0), (win_height//20*19, win_height+win_height//5//2+20, 15, 15))
 
 class Bullet:
     radius = win_width//100
-    speed = win_height//10;
+    speed = win_height//15;
     def __init__(self, x, y, orient, color):
         self.x = x
         self.y = y
@@ -51,6 +55,9 @@ class Bullet:
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
 class UnitBlue:
+    reload = 'no'
+    bullets = 5
+    bullet = ''
     helth = 3
     orient = 'down'
     y = 0
@@ -58,6 +65,9 @@ class UnitBlue:
     width = win_width/10
     height = win_height/10
     def init(self):
+        self.reload = 'no'
+        self.bullet = ''
+        self.bullets = 5
         self.helth = 3
         self.orient = 'down'
         self.move(int(len(map[0])/2), 0)
@@ -76,10 +86,12 @@ class UnitBlue:
             map[self.x][self.y] = 0
             #conn.send(('5'+str(self.x)+str(self.y)).encode())
             score[0] += 1
-            print(score)
             del self
 
 class UnitRed:
+    reload = 'no'
+    bullets = 5
+    bullet = ''
     helth = 3
     orient = 'up'
     y = len(map)-1
@@ -87,6 +99,9 @@ class UnitRed:
     width = win_width/10
     height = win_height/10
     def init(self):
+        self.reload = 'no'
+        self.bullet = ''
+        self.bullets = 5
         self.helth = 3
         self.orient = 'up'
         self.move(int(len(map[0])/2), len(map)-1)
@@ -103,7 +118,6 @@ class UnitRed:
         if self.helth == 0:
             map[self.x][self.y] = 0
             score[1] += 1
-            print(score)
             del self
 
 units=[]

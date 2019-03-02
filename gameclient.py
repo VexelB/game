@@ -16,6 +16,11 @@ def init(ip='localhost'):
     pygame.display.set_caption("StepGame")
 
     def maindraw():
+        win.fill((0,0,0))
+        pygame.draw.rect(win, (250, 250, 250), (win_width-75, 0, 5, 15))
+        pygame.draw.rect(win, (250, 250, 250), (win_width-75, 10, 75, 5))
+        for i in range(engine.unitblue1.bullets):
+            pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
         for bullet in bullets:
             x, y = int(bullet.x*len(engine.map)/win_height), int(bullet.y*len(engine.map[0])/win_width)
             if x > 8:
@@ -77,13 +82,10 @@ def init(ip='localhost'):
     bullets = []
     run = True
     sock = socket.create_connection((ip, 9090))
-    #sock.connect((ip, 9090))
     sendata = ''
     while run:
         def reciever():
             data1 = sock.recv(512).decode()
-            #print(data)
-            #print('Прием:',data1)
             dataset = data1.split('/')
             for data in dataset:
                 if len(data) != 0:
@@ -117,11 +119,15 @@ def init(ip='localhost'):
                         engine.unitred1.orient = data[1::]
                     elif data == 'reinit':
                         reinit()
+                    elif data == 'r':
+                        if engine.unitred1.reload == 'no':
+                            engine.unitred1.reload = 'yes'
+                        else:
+                            engine.unitred1.reload = 'no'
 
         sendata += '1/'
         sock.send(sendata.encode())
         reciever()
-        win.fill((0,0,0))
         maindraw()
         sendata = ''
         for event in pygame.event.get():
@@ -146,16 +152,25 @@ def init(ip='localhost'):
                         #sock.send('qright'.encode())
                         sendata += 'qright/'
                     if event.key == pygame.K_SPACE:
-                        if engine.unitblue1.orient == 'up':
-                            bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitblue1.y), engine.unitblue1.orient, (255, 255, 0)))
-                        if engine.unitblue1.orient == 'down':
-                            bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitblue1.y + engine.unitblue1.height + 10), engine.unitblue1.orient, (255, 255, 0)))
-                        if engine.unitblue1.orient == 'left':
-                            bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x), int(win_height / len(engine.map[0]) * engine.unitblue1.y + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
-                        if engine.unitblue1.orient == 'right':
-                            bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width) + 10, int(win_height / len(engine.map[0]) * engine.unitblue1.y + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
-                        #sock.send('2fire/'.encode())
-                        sendata += '2fire/'
+                        if engine.unitblue1.bullet == 'reload':
+                            if engine.unitblue1.bullets == 5:
+                                engine.unitblue1.bullet = ''
+                            else:
+                                engine.unitblue1.bullets += 1
+                        if engine.unitblue1.bullets >= 0 and engine.unitblue1.bullet != 'reload':
+                            engine.unitblue1.bullets -= 1
+                            if engine.unitblue1.orient == 'up':
+                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitblue1.y), engine.unitblue1.orient, (255, 255, 0)))
+                            elif engine.unitblue1.orient == 'down':
+                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitblue1.y + engine.unitblue1.height + 10), engine.unitblue1.orient, (255, 255, 0)))
+                            elif engine.unitblue1.orient == 'left':
+                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x), int(win_height / len(engine.map[0]) * engine.unitblue1.y + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
+                            elif engine.unitblue1.orient == 'right':
+                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width) + 10, int(win_height / len(engine.map[0]) * engine.unitblue1.y + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
+                            #sock.send('2fire/'.encode())
+                            sendata += '2fire/'
+                        if engine.unitblue1.bullets < 1:
+                            engine.unitblue1.bullet = 'reload'
                     if event.key == pygame.K_LEFT:
                         #sock.send('2left'.encode())
                         #reciever()
@@ -172,12 +187,12 @@ def init(ip='localhost'):
                         #reciever()
                         sendata += '2down/'
                 if event.key == pygame.K_r or event.key == 174:
-                    #sendata += 'rb/'
-                    pass
-        #if sendata != '':
-            #print('Отправка:',sendata)
+                    if engine.unitblue1.reload == 'no':
+                        engine.unitblue1.reload = 'yes'
+                    else:
+                        engine.unitblue1.reload = 'no'
+                    sendata += 'r/'
 
-    #print(rec1)
     sock.close()
     pygame.quit()
 if __name__ == '__main__':

@@ -12,14 +12,13 @@ rec5 = []
 def init():
     r = 0
     def reinit():
-        if r % 2 == 0 and r != 0:
+        if engine.unitblue1.reload == 'yes' and engine.unitred1.reload == 'yes':
+            conn.send('reinit/'.encode())
             engine.map = [[0 for i in range(9)] for j in range(9)]
             gen()
             bullets = []
             engine.unitblue1.init()
             engine.unitred1.init()
-            conn.send('reinit/'.encode())
-            #print(engine.score)
             interface.draw(win)
 
     pygame.init()
@@ -44,9 +43,12 @@ def init():
 
     def maindraw():
         win.fill((0,0,0))
+        pygame.draw.rect(win, (250, 250, 250), (win_width-75, 0, 5, 15))
+        pygame.draw.rect(win, (250, 250, 250), (win_width-75, 10, 75, 5))
+        for i in range(engine.unitred1.bullets):
+            pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
         for bullet in bullets:
             x, y = int(bullet.x*len(engine.map)/win_height), int(bullet.y*len(engine.map[0])/win_width)
-            print(x,y)
             if x >= 9:
                 x -= 1
             if y >= 9:
@@ -60,7 +62,6 @@ def init():
                             conn.send('dr/'.encode())
                         if unit.x == engine.unitblue1.x and unit.y == engine.unitblue1.y:
                             conn.send('db/'.encode())
-                        print(unit, unit.helth, unit.x, unit.y)
             elif bullet.x < win_height and bullet.x > 0 and bullet.y < win_width and bullet.y > 0:
                 bullet.move(win)
             else:
@@ -101,8 +102,6 @@ def init():
 
     def parser():
         data1 = conn.recv(512).decode()
-        #if data1 != '':
-            #print('Прием:', data1)
         dataset = data1.split('/')
         for data in dataset:
             if len(data) != 0:
@@ -137,7 +136,10 @@ def init():
                             if engine.unitblue1.x != 8:
                                 bullets.append(engine.Bullet(int(a + engine.unitblue1.width) + 10, int(b + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
                 elif data == 'r':
-                    #print(r)
+                    if engine.unitblue1.reload == 'no':
+                        engine.unitblue1.reload = 'yes'
+                    else:
+                        engine.unitblue1.reload = 'no'
                     reinit()
         conn.send('1/'.encode())
 
@@ -153,7 +155,6 @@ def init():
     bullets = []
     run = True
     sock = socket.socket()
-    #print()
     sock.bind(('', 9090))
     sock.listen(1)
     conn, addr = sock.accept()
@@ -184,19 +185,28 @@ def init():
                         #conn.send('qright/'.encode())
                         sendata += 'qright/'
                     if event.key == pygame.K_SPACE:
-                        conn.send('2fire/'.encode())
-                        if engine.unitred1.orient == 'up':
-                            if engine.unitred1.y != 0:
-                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitred1.y), engine.unitred1.orient, (255, 255, 0)))
-                        if engine.unitred1.orient == 'down':
-                            if engine.unitred1.y !=8:
-                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.height + 10), engine.unitred1.orient, (255, 255, 0)))
-                        if engine.unitred1.orient == 'left':
-                            if engine.unitred1.x != 0:
-                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x), int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.width//2) + 5, engine.unitred1.orient, (255, 255, 0)))
-                        if engine.unitred1.orient == 'right':
-                            if engine.unitred1.x != 8:
-                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width) + 10, int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.width//2) + 5, engine.unitred1.orient, (255, 255, 0)))
+                        if engine.unitred1.bullet == 'reload':
+                            if engine.unitred1.bullets == 5:
+                                engine.unitred1.bullet = ''
+                            else:
+                                engine.unitred1.bullets += 1
+                        if engine.unitred1.bullets >= 0 and engine.unitred1.bullet != 'reload':
+                            engine.unitred1.bullets -= 1
+                            sendata += '2fire/'
+                            if engine.unitred1.orient == 'up':
+                                if engine.unitred1.y != 0:
+                                    bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitred1.y), engine.unitred1.orient, (255, 255, 0)))
+                            elif engine.unitred1.orient == 'down':
+                                if engine.unitred1.y !=8:
+                                    bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.height + 10), engine.unitred1.orient, (255, 255, 0)))
+                            elif engine.unitred1.orient == 'left':
+                                if engine.unitred1.x != 0:
+                                    bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x), int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.width//2) + 5, engine.unitred1.orient, (255, 255, 0)))
+                            elif engine.unitred1.orient == 'right':
+                                if engine.unitred1.x != 8:
+                                    bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitred1.x + engine.unitred1.width) + 10, int(win_height / len(engine.map[0]) * engine.unitred1.y + engine.unitred1.width//2) + 5, engine.unitred1.orient, (255, 255, 0)))
+                        if engine.unitred1.bullets < 1:
+                            engine.unitred1.bullet = 'reload'
                     if event.key == pygame.K_LEFT and engine.unitred1.x>0:
                         engine.unitred1.move(engine.unitred1.x-1,engine.unitred1.y)
                         #conn.send((str(int(engine.unitred1.x))+str(int(engine.unitred1.y))+'red/').encode())
@@ -214,12 +224,12 @@ def init():
                         #conn.send((str(int(engine.unitred1.x))+str(int(engine.unitred1.y))+'red/').encode())
                         sendata += (str(int(engine.unitred1.x))+str(int(engine.unitred1.y))+'red/')
                 if event.key == pygame.K_r or event.key == 174:
-                    r += 1
-                    #print(r)
+                    if engine.unitred1.reload == 'no':
+                        engine.unitred1.reload = 'yes'
+                    else:
+                        engine.unitred1.reload = 'no'
+                    sendata += 'r/'
                     reinit()
-                #print(event.key)
-        #if sendata != '':
-            #print('Отправка:',sendata)
         mapsender(sendata)
 
     conn.close()
