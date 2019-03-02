@@ -17,10 +17,6 @@ def init(ip='localhost'):
 
     def maindraw():
         win.fill((0,0,0))
-        pygame.draw.rect(win, (250, 250, 250), (win_width-75, 0, 5, 15))
-        pygame.draw.rect(win, (250, 250, 250), (win_width-75, 10, 75, 5))
-        for i in range(engine.unitblue1.bullets):
-            pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
         for bullet in bullets:
             x, y = int(bullet.x*len(engine.map)/win_height), int(bullet.y*len(engine.map[0])/win_width)
             if x > 8:
@@ -70,6 +66,10 @@ def init(ip='localhost'):
                         pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2 , engine.UnitRed.width * unit.helth // 3, 6))
                         #pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2, engine.UnitRed.width, 6))
         interface.draw(win)
+        pygame.draw.rect(win, (250, 250, 250), (win_width-75, 0, 5, 15))
+        pygame.draw.rect(win, (250, 250, 250), (win_width-75, 10, 75, 5))
+        for i in range(engine.unitblue1.bullets):
+            pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
         pygame.display.update()
 
     interface = engine.Interface()
