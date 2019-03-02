@@ -171,7 +171,8 @@ def init(ip='localhost'):
                         #reciever()
                         sendata += '2down/'
                 if event.key == pygame.K_r or event.key == 174:
-                    sendata += 'r/'
+                    #sendata += 'rb/'
+                    pass
         #if sendata != '':
             #print('Отправка:',sendata)
 

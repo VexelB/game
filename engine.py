@@ -15,8 +15,6 @@ class Interface:
     udrl = myfont.render('ЕЗДЕТЬ: стрелочки', False, (250, 250, 250))
     spce = myfont.render('Стрилять: SPACE', False, (250, 250, 250))
     rrrr = myfont.render('R', False, (250, 250, 250))
-    score_red = myfont.render(f'Красных очков: {score[0]}', False, (250, 250, 250))
-    score_blue = myfont.render(f'Синих очков: {score[1]}', False, (250, 250, 250))
     def draw(self, win):
         pygame.draw.rect(win, (250, 250, 250), (0, win_height+5, win_width, 5))
         win.blit(self.info, (win_width//50, win_height+win_height//5//10*1))
@@ -28,8 +26,8 @@ class Interface:
         win.blit(self.wsad, (win_width//2, win_height+win_height//5//10*5))
         win.blit(self.spce, (win_width//2, win_height+win_height//5//10*7))
         win.blit(self.rrrr, (win_height//20*19, win_height+win_height//5//2))
-        win.blit(self.score_red, (win_width//50, win_height//100))
-        win.blit(self.score_blue, (win_width//50, (win_height//100+win_height//20)))
+        win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Красных очков: {score[0]}', False, (250, 250, 250)), (win_width//50, win_height//100))
+        win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Синих очков: {score[1]}', False, (250, 250, 250)), (win_width//50, (win_height//100+win_height//20)))
 
 class Bullet:
     radius = win_width//100
