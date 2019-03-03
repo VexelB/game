@@ -81,7 +81,11 @@ def init(ip='localhost'):
 
     bullets = []
     run = True
-    sock = socket.create_connection((ip, 9090))
+    try:
+        sock = socket.create_connection((ip, 9090))
+    except:
+        print('server is off')
+        run = False
     sendata = ''
     while run:
         def reciever():
