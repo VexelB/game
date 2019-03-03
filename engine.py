@@ -1,4 +1,5 @@
 import pygame
+import random
 
 pygame.init()
 win_height = win_width = 500
@@ -119,6 +120,15 @@ class UnitRed:
             map[self.x][self.y] = 0
             score[1] += 1
             del self
+def gen():
+    i = 1
+    while i != 8:
+        k = random.randint(1,3)
+        while k >0:
+            j = random.randint(1,7)
+            map[j][i] = 3
+            k -= 1
+        i += 1
 
 units=[]
 unitblue1 = UnitBlue()

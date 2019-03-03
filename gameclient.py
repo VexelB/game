@@ -93,7 +93,9 @@ def init(ip='localhost'):
             dataset = data1.split('/')
             for data in dataset:
                 if len(data) != 0:
-                    if data[0:3:] == 'map':
+                    if data == 'red':
+                        pass
+                    elif data[0:3:] == 'map':
                         q = 3
                         for i in range(len(engine.map)):
                             for j in range(len(engine.map[0])):
@@ -130,7 +132,7 @@ def init(ip='localhost'):
                             engine.unitred1.reload = 'no'
 
         sendata += '1/'
-        sock.send(sendata.encode())
+        sock.send(('blue/'+sendata).encode())
         reciever()
         maindraw()
         sendata = ''
@@ -197,7 +199,10 @@ def init(ip='localhost'):
                         engine.unitblue1.reload = 'no'
                     sendata += 'r/'
 
-    sock.close()
+    try:
+        sock.close()
+    except:
+        pass
     pygame.quit()
 if __name__ == '__main__':
     init()

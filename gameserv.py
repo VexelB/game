@@ -1,5 +1,4 @@
 import pygame
-import random
 import socket
 import engine
 
@@ -9,13 +8,12 @@ rec3 = []
 rec4 = []
 rec5 = []
 
-def init():
+def init(ip = 'localhost'):
+    engine.gen()
     r = 0
     def reinit():
         if engine.unitblue1.reload == 'yes' and engine.unitred1.reload == 'yes':
-            conn.send('reinit/'.encode())
-            engine.map = [[0 for i in range(9)] for j in range(9)]
-            gen()
+            sock.send('reinit/'.encode())
             bullets = []
             engine.unitblue1.init()
             engine.unitred1.init()
@@ -27,19 +25,6 @@ def init():
     pygame.display.set_caption("StepGame")
 
     #map = [[0 for i in range(9)] for j in range(9)]
-
-    def gen():
-        i = 1
-        while i != 8:
-            k = random.randint(1,3)
-            while k >0:
-                j = random.randint(1,7)
-                engine.map[j][i] = 3
-                k -= 1
-            i += 1
-        pass
-
-
 
     def maindraw():
         win.fill((0,0,0))
@@ -55,9 +40,9 @@ def init():
                     if unit.x == x and unit.y == y:
                         unit.destroy()
                         if unit.x == engine.unitred1.x and unit.y == engine.unitred1.y:
-                            conn.send('dr/'.encode())
+                            sock.send('dr/'.encode())
                         if unit.x == engine.unitblue1.x and unit.y == engine.unitblue1.y:
-                            conn.send('db/'.encode())
+                            sock.send('db/'.encode())
             elif bullet.x < win_height and bullet.x > 0 and bullet.y < win_width and bullet.y > 0:
                 bullet.move(win)
             else:
@@ -101,25 +86,31 @@ def init():
         pygame.display.update()
 
     def parser():
-        data1 = conn.recv(512).decode()
+        data1 = sock.recv(512).decode()
         dataset = data1.split('/')
         for data in dataset:
             if len(data) != 0:
                 if data[0] == 'q':
                     engine.unitblue1.orient = data[1::]
+                elif data[0:3:] == 'map':
+                    q = 3
+                    for i in range(len(engine.map)):
+                        for j in range(len(engine.map[0])):
+                            engine.map[i][j] = int(data[q])
+                            q += 1
                 elif data[0] == '2':
                     if data[1::] == 'left' and engine.unitblue1.x>0:
                         engine.unitblue1.move(engine.unitblue1.x-1,engine.unitblue1.y)
-                        conn.send((str(engine.unitblue1.x)+str(engine.unitblue1.y)+'/').encode())
+                        sock.send((str(engine.unitblue1.x)+str(engine.unitblue1.y)+'/').encode())
                     elif data[1::] == 'right' and engine.unitblue1.x<8:
                         engine.unitblue1.move(engine.unitblue1.x+1, engine.unitblue1.y)
-                        conn.send((str(engine.unitblue1.x)+str(engine.unitblue1.y)+'/').encode())
+                        sock.send((str(engine.unitblue1.x)+str(engine.unitblue1.y)+'/').encode())
                     elif data[1::] == 'up' and engine.unitblue1.y>0:
                         engine.unitblue1.move(engine.unitblue1.x, engine.unitblue1.y-1)
-                        conn.send((str(engine.unitblue1.x)+str(engine.unitblue1.y)+'/').encode())
+                        sock.send((str(engine.unitblue1.x)+str(engine.unitblue1.y)+'/').encode())
                     elif data[1::] == 'down' and engine.unitblue1.y<8:
                         engine.unitblue1.move(engine.unitblue1.x,engine.unitblue1.y+1)
-                        conn.send((str(engine.unitblue1.x)+str(engine.unitblue1.y)+'/').encode())
+                        sock.send((str(engine.unitblue1.x)+str(engine.unitblue1.y)+'/').encode())
                     elif data[1::] == 'fire':
                         a = int(win_height / len(engine.map) * engine.unitblue1.x)
                         b = int(win_height / len(engine.map[0]) * engine.unitblue1.y)
@@ -141,27 +132,34 @@ def init():
                     else:
                         engine.unitblue1.reload = 'no'
                     reinit()
-        conn.send('1/'.encode())
+        sock.send('1/'.encode())
 
-    def mapsender(sendata):
+    def sender(sendata):
         map1 = ''
         for i in engine.map:
             for j in i:
                 map1 += str(j)
-        conn.send(('map'+map1+'/'+sendata).encode())
+        sock.send(('red/'+'map'+map1+'/'+sendata).encode())
 
     interface = engine.Interface()
-    gen()
     bullets = []
     run = True
-    sock = socket.socket()
-    sock.bind(('', 9090))
-    sock.listen(1)
-    conn, addr = sock.accept()
+    #sock = socket.socket()
+    #sock.bind(('', 9090))
+    #sock.listen(1)
+    #conn, addr = sock.accept()
+    sock = socket.create_connection((ip, 9090))
+    win.fill((0,0,0))
+    win.blit(pygame.font.SysFont('Comic Sans MS', 22).render('Поделитесь этим ip со своим другом', False, (250, 250, 250)), (10, win_height//2 - 10))
+    try:
+        a = str(socket.gethostbyname(socket.gethostname()))
+    except:
+        a = '!не получается получить ваш ip!'
+    win.blit(pygame.font.SysFont('Comic Sans MS', 25).render(a, False, (250, 250, 250)), (10, win_height//2 + 10))
+    pygame.display.update()
     while run:
         sendata = ''
         parser()
-        maindraw()
         #pygame.time.delay(10)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -228,11 +226,12 @@ def init():
                         engine.unitred1.reload = 'yes'
                     else:
                         engine.unitred1.reload = 'no'
-                    conn.send('r/'.encode())
+                    sock.send('r/'.encode())
                     reinit()
-        mapsender(sendata)
+        sender(sendata)
+        maindraw()
 
-    conn.close()
+    sock.close()
     pygame.quit()
 if __name__ == '__main__':
     init()
