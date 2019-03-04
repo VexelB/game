@@ -85,6 +85,8 @@ def init(ip = 'localhost', local = False, sock = None):
         pygame.draw.rect(win, (250, 250, 250), (win_width-75, 10, 75, 5))
         for i in range(engine.unitred1.bullets):
             pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
+            if engine.unitred1.bullet == 'reload':
+                pygame.draw.rect(win, (0, 250, 0), ((win_height-10)-15*i, 0, win_width//25, win_height//50))
         pygame.display.update()
 
     def parser():
