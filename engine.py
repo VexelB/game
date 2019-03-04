@@ -69,7 +69,7 @@ class UnitBlue:
         self.reload = 'no'
         self.bullet = ''
         self.bullets = 5
-        self.helth = 3
+        self.helth = 5
         self.orient = 'down'
         self.move(int(len(map[0])/2), 0)
     def draw(self):
@@ -103,7 +103,7 @@ class UnitRed:
         self.reload = 'no'
         self.bullet = ''
         self.bullets = 5
-        self.helth = 3
+        self.helth = 5
         self.orient = 'up'
         self.move(int(len(map[0])/2), len(map)-1)
     def draw(self):
