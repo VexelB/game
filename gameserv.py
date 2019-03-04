@@ -152,8 +152,6 @@ def init(ip = 'localhost', local = False, sock = None):
         sock1.bind(('', 9090))
         sock1.listen(1)
         sock, addr = sock1.accept()
-    else:
-        sock = socket.create_connection((ip, 9090))
     while run:
         sendata = ''
         parser()

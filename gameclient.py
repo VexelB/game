@@ -1,6 +1,7 @@
 import pygame
 import socket
 import engine
+import gameserv
 
 rec1 = []
 rec2 = []
@@ -8,14 +9,14 @@ rec3 = []
 rec4 = []
 rec5 = []
 
-def init(ip = 'localhost'):
+def init(ip = '192.168.1.17'):
     sock = socket.create_connection((ip, 9090))
     data = sock.recv(512).decode()
     print(data)
     if data == '1':
         gameserv.init(sock = sock)
     elif data == '2':
-        gameclientinit(sock)
+        gameclientinit(sock = sock)
 
 def gameclientinit(sock = None, local = False, ip = 'localhost'):
     #sock = socket.socket()
@@ -222,6 +223,8 @@ def gameservinit(sock):
     r = 0
     def reinit():
         if engine.unitblue1.reload == 'yes' and engine.unitred1.reload == 'yes':
+            engine.map = [[0 for i in range(9)] for j in range(9)]
+            engine.gen()
             sock.send('reinit/'.encode())
             bullets = []
             engine.unitblue1.init()
