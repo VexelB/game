@@ -9,7 +9,7 @@ rec3 = []
 rec4 = []
 rec5 = []
 
-def init(ip = '192.168.1.17'):
+def init(ip = '192.168.0.122'):
     sock = socket.create_connection((ip, 9090))
     data = sock.recv(512).decode()
     print(data)
