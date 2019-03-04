@@ -78,7 +78,7 @@ def ipinput():
                     blits.pop()
                     ip = ip[:len(ip)-1:]
                 if event.key == pygame.K_RETURN:
-                    gameclient.init(ip)
+                    gameclient.gameclientinit(ip = ip, local = True)
 
 def k2():
     while True:
