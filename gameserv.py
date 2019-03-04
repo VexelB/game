@@ -13,6 +13,8 @@ def init(ip = 'localhost', local = False, sock = None):
     r = 0
     def reinit():
         if engine.unitblue1.reload == 'yes' and engine.unitred1.reload == 'yes':
+            engine.map = [[0 for i in range(9)] for j in range(9)]
+            engine.gen()
             sock.send('reinit/'.encode())
             bullets = []
             engine.unitblue1.init()
