@@ -8,7 +8,7 @@ rec3 = []
 rec4 = []
 rec5 = []
 
-def init(ip = 'localhost'):
+def init(ip = 'localhost', local = False, sock = None):
     engine.gen()
     r = 0
     def reinit():
@@ -144,19 +144,14 @@ def init(ip = 'localhost'):
     interface = engine.Interface()
     bullets = []
     run = True
-    #sock = socket.socket()
-    #sock.bind(('', 9090))
-    #sock.listen(1)
-    #conn, addr = sock.accept()
-    sock = socket.create_connection((ip, 9090))
     win.fill((0,0,0))
-    win.blit(pygame.font.SysFont('Comic Sans MS', 22).render('Поделитесь этим ip со своим другом', False, (250, 250, 250)), (10, win_height//2 - 10))
-    try:
-        a = str(socket.gethostbyname(socket.gethostname()))
-    except:
-        a = '!не получается получить ваш ip!'
-    win.blit(pygame.font.SysFont('Comic Sans MS', 25).render(a, False, (250, 250, 250)), (10, win_height//2 + 10))
-    pygame.display.update()
+    if local:
+        sock1 = socket.socket()
+        sock1.bind(('', 9090))
+        sock1.listen(1)
+        sock, addr = sock1.accept()
+    else:
+        sock = socket.create_connection((ip, 9090))
     while run:
         sendata = ''
         parser()
@@ -234,4 +229,4 @@ def init(ip = 'localhost'):
     sock.close()
     pygame.quit()
 if __name__ == '__main__':
-    init()
+    init(local = True)

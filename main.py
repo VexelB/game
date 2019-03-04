@@ -2,12 +2,13 @@ import socket
 import pygame
 import gameserv
 import gameclient
+win_width = win_height = 300
 ip = ''
 pygame.init()
 pygame.font.init()
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
-create = myfont.render('1: Создат комнату', False, (250, 250, 250))
-join = myfont.render('2: Присоединица', False, (250, 250, 250))
+create = myfont.render('1: Играц', False, (250, 250, 250))
+join = myfont.render('2: Играть по локалке', False, (250, 250, 250))
 inp = myfont.render('Введите ип:', False, (250, 250, 250))
 q = myfont.render('0', False, (250, 250, 250))
 w = myfont.render('1', False, (250, 250, 250))
@@ -20,7 +21,7 @@ i = myfont.render('7', False, (250, 250, 250))
 o = myfont.render('8', False, (250, 250, 250))
 p = myfont.render('9', False, (250, 250, 250))
 a = myfont.render('.', False, (250, 250, 250))
-win = pygame.display.set_mode((300, 300))
+win = pygame.display.set_mode((win_width, win_height))
 pygame.display.set_caption("StepGame")
 init = False
 def ipinput():
@@ -79,6 +80,27 @@ def ipinput():
                 if event.key == pygame.K_RETURN:
                     gameclient.init(ip)
 
+def k2():
+    while True:
+        win.fill((0,0,0))
+        win.blit(myfont.render('1. Хостить:', False, (250, 250, 250)),(10,120))
+        win.blit(myfont.render('2. ПРисоединица:', False, (250, 250, 250)),(10,150))
+        win.blit(pygame.font.SysFont('Comic Sans MS', 22).render('Поделитесь этим ip со своим другом', False, (250, 250, 250)), (10, win_height - 50))
+        try:
+            a = str(socket.gethostbyname(socket.gethostname()))
+        except:
+            a = '!не получается получить ваш ip!'
+        win.blit(pygame.font.SysFont('Comic Sans MS', 25).render(a, False, (250, 250, 250)), (10, win_height - 30))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    gameserv.init(local = True)
+                if event.key == pygame.K_2:
+                    ipinput()
+
 run = True
 while run:
     pygame.time.delay(10)
@@ -87,9 +109,11 @@ while run:
             run = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
-                gameserv.init()
+                #sock = socket.create_connection(('localhost', 9090))
+                #data = sock.recv(512).decode()
+                gameclient.init()
             if event.key == pygame.K_2:
-                ipinput()
+                k2()
     win.fill((0,0,0))
     win.blit(create,(10,120))
     win.blit(join,(10,150))
