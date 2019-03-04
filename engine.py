@@ -36,7 +36,7 @@ class Interface:
 
 class Bullet:
     radius = win_width//100
-    speed = win_height//25;
+    speed = win_height//10;
     def __init__(self, x, y, orient, color):
         self.x = x
         self.y = y
