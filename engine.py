@@ -59,7 +59,7 @@ class UnitBlue:
     reload = 'no'
     bullets = 5
     bullet = ''
-    helth = 3
+    helth = 5
     orient = 'down'
     y = 0
     x = int(len(map[0])/2)
@@ -93,7 +93,7 @@ class UnitRed:
     reload = 'no'
     bullets = 5
     bullet = ''
-    helth = 3
+    helth = 5
     orient = 'up'
     y = len(map)-1
     x = int(len(map[0])/2)
