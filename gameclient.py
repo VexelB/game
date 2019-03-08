@@ -31,7 +31,7 @@ class Interface:
         win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Красных очков: {score[0]}', False, (250, 250, 250)), (win_width//50, win_height//100))
         win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Синих очков: {score[1]}', False, (250, 250, 250)), (win_width//50, (win_height//100+win_height//20)))
 
-def init(local = False, ip = 'localhost', host = 'no', name = 'Jendos'):
+def init(ip = '192.168.0.94', name = 'Jendos'):
 
     def parser():
         global score
@@ -77,7 +77,10 @@ def init(local = False, ip = 'localhost', host = 'no', name = 'Jendos'):
                     int(data1[1])
                 except:
                     print(data)
-                score[0], score[1] = int(data1[0]), int(data1[1])
+                try:
+                    score[0], score[1] = int(data1[0]), int(data1[1])
+                except:
+                    pass
             elif 're' in data:
                 if 'red' in data:
                     data1 = data.split(',')
@@ -90,7 +93,7 @@ def init(local = False, ip = 'localhost', host = 'no', name = 'Jendos'):
             if 'bul1' in data:
                 pygame.draw.rect(win, (250, 250, 250), (win_width-75, 0, 5, 15))
                 pygame.draw.rect(win, (250, 250, 250), (win_width-75, 10, 75, 5))
-                if num == '1' and 'red' in data:
+                if num == '0' and 'red' in data:
                     data1 = data.split(',')
                     try:
                         int(data1[0])
@@ -100,7 +103,7 @@ def init(local = False, ip = 'localhost', host = 'no', name = 'Jendos'):
                         pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
                         if data1[1] == 'reload':
                             pygame.draw.rect(win, (0, 250, 0), ((win_height-10)-15*i, 0, win_width//25, win_height//50))
-                elif num == '2' and 'blue' in data:
+                elif num == '1' and 'blue' in data:
                     data1 = data.split(',')
                     try:
                         int(data1[0])
@@ -140,9 +143,9 @@ def init(local = False, ip = 'localhost', host = 'no', name = 'Jendos'):
         draw()
         parser()
         pygame.display.update()
-        if num == '1':
+        if num == '0':
             sendata = 'red/'
-        if num == '2':
+        if num == '1':
             sendata = 'blue/'
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

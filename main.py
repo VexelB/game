@@ -2,7 +2,7 @@ import pygame
 import socket
 import gameclient
 win_width = win_height = 300
-ip = ''
+ip = 'localhost'
 name = ''
 pygame.init()
 pygame.font.init()
@@ -52,7 +52,7 @@ win = pygame.display.set_mode((win_width, win_height))
 pygame.display.set_caption("StepGame")
 init = False
 
-def nameinput():
+def nameinput(ip = ip):
     run = True
     blits = []
     while run:
@@ -151,7 +151,7 @@ def nameinput():
                     blits.pop()
                     name = name[:len(name)-1:]
                 if event.key == pygame.K_RETURN:
-                    gameclient.init(name = name)
+                    gameclient.init(name = name, ip = ip)
 
 def ipinput():
     run = True
@@ -159,6 +159,7 @@ def ipinput():
     while run:
         z = 1
         global ip
+        ip = ''
         win.fill((0,0,0))
         win.blit(inp, (10, 140))
         for b in blits:
@@ -206,7 +207,7 @@ def ipinput():
                     blits.pop()
                     ip = ip[:len(ip)-1:]
                 if event.key == pygame.K_RETURN:
-                    gameclient.init(ip = ip, local = True)
+                    nameinput(ip)
 
 def k2():
     while True:
@@ -225,7 +226,7 @@ def k2():
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
-                    gameserv.init(local = True, host = 'yes')
+                    gameserv.init()
                 if event.key == pygame.K_2:
                     ipinput()
 

@@ -2,7 +2,7 @@ import pygame
 import socket
 import engine
 
-def init(local = False, ip = 'localhost', sock = None):
+def init():
 
     def pasrer():
         data1 = sock.recv(512).decode()

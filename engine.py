@@ -3,7 +3,7 @@ import random
 
 win_height = win_width = 500
 map = [[0 for i in range(9)] for j in range(9)]
-score = [0, 0]
+score = []
 
 class Bullet:
     radius = win_width//100
@@ -36,28 +36,26 @@ class UnitBlue:
     x = int(len(map[0])/2)
     width = win_width/10
     height = win_height/10
-    def init(self):
+    def __init__(self, q):
         self.reload = 'no'
         self.bullet = 'no'
         self.bullets = 5
         self.helth = 5
         self.orient = 'down'
-        self.move(int(len(map[0])/2), 0)
-    def draw(self):
-        map[self.x][self.y] = 2
-    def move(self, a, b):
-        if map[a][b] == 0 or map[a][b] == 2:
-            map[self.x][self.y] = 0
+        self.move(int(len(map[0])/2), 0, q)
+    def draw(self, q):
+        maps[q//2][self.x][self.y] = 2
+    def move(self, a, b, q):
+        if maps[q//2][a][b] == 0 or maps[q//2][a][b] == 2:
+            maps[q//2][self.x][self.y] = 0
             self.x = a
             self.y = b
-            self.draw()
-    def destroy(self):
+            self.draw(q)
+    def destroy(self, j):
         self.helth -= 1
-        #conn.send('4'.encode())
         if self.helth == 0:
-            map[self.x][self.y] = 0
-            #conn.send(('5'+str(self.x)+str(self.y)).encode())
-            score[0] += 1
+            maps[j//2][self.x][self.y] = 0
+            score[j//2][0] += 1
             del self
 
 class UnitRed:
@@ -70,26 +68,26 @@ class UnitRed:
     x = int(len(map[0])/2)
     width = win_width/10
     height = win_height/10
-    def init(self):
+    def __init__(self, q):
         self.reload = 'no'
         self.bullet = ''
         self.bullets = 5
         self.helth = 5
         self.orient = 'up'
-        self.move(int(len(map[0])/2), len(map)-1)
-    def draw(self):
-        map[self.x][self.y] = 1
-    def move(self, a, b):
-        if map[a][b] == 0 or map[a][b] == 1:
-            map[self.x][self.y] = 0
+        self.move(int(len(map[0])/2), len(map)-1, q)
+    def draw(self, q):
+        maps[q//2][self.x][self.y] = 1
+    def move(self, a, b, q):
+        if maps[q//2][a][b] == 0 or maps[q//2][a][b] == 1:
+            maps[q//2][self.x][self.y] = 0
             self.x = a
             self.y = b
-            self.draw()
-    def destroy(self):
+            self.draw(q)
+    def destroy(self, j):
         self.helth -= 1
         if self.helth == 0:
-            map[self.x][self.y] = 0
-            score[1] += 1
+            maps[j//2][self.x][self.y] = 0
+            score[j//2][1] += 1
             del self
 def gen():
     i = 1
@@ -100,11 +98,7 @@ def gen():
             map[j][i] = 3
             k -= 1
         i += 1
-
+    map[int(len(map[0])/2)][len(map)-1] = 1
+    map[int(len(map[0])/2)][0] = 2
+maps = []
 units=[]
-unitblue1 = UnitBlue()
-unitblue1.init()
-units.append(unitblue1)
-unitred1 = UnitRed()
-unitred1.init()
-units.append(unitred1)
