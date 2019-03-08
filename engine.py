@@ -1,48 +1,19 @@
-import pygame
+#import pygame
 import random
 
-pygame.init()
 win_height = win_width = 500
 map = [[0 for i in range(9)] for j in range(9)]
 score = [0, 0]
-class Interface:
-    myfont = pygame.font.SysFont('Comic Sans MS', win_height//19,5)
-    info = myfont.render('Переключение:', False, (250, 250, 250))
-    atck = myfont.render('1: Атаковать (СПАСЕ)', False, (250, 250, 250))
-    heal = myfont.render('2: Хилить (СПАСЕ)', False, (250, 250, 250))
-    deff = myfont.render('3: Поддержка (КОНСТ)', False, (250, 250, 250))
-    opts = myfont.render('Управление:', False, (250, 250, 250))
-    wsad = myfont.render('Целиться: WSAD', False, (250, 250, 250))
-    udrl = myfont.render('ЕЗДЕТЬ: стрелочки', False, (250, 250, 250))
-    spce = myfont.render('Стрилять: SPACE', False, (250, 250, 250))
-    rrrr = myfont.render('R', False, (250, 250, 250))
-    def draw(self, win):
-        pygame.draw.rect(win, (250, 250, 250), (0, win_height+5, win_width, 5))
-        win.blit(self.info, (win_width//50, win_height+win_height//5//10*1))
-        win.blit(self.atck, (win_width//50, win_height+win_height//5//10*3))
-        win.blit(self.heal, (win_width//50, win_height+win_height//5//10*5))
-        win.blit(self.deff, (win_width//50, win_height+win_height//5//10*7))
-        win.blit(self.opts, (win_width//2, win_height+win_height//5//10*1))
-        win.blit(self.udrl, (win_width//2, win_height+win_height//5//10*3))
-        win.blit(self.wsad, (win_width//2, win_height+win_height//5//10*5))
-        win.blit(self.spce, (win_width//2, win_height+win_height//5//10*7))
-        win.blit(self.rrrr, (win_height//20*19, win_height+win_height//5//2))
-        win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Красных очков: {score[0]}', False, (250, 250, 250)), (win_width//50, win_height//100))
-        win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Синих очков: {score[1]}', False, (250, 250, 250)), (win_width//50, (win_height//100+win_height//20)))
-        if unitblue1.reload == 'yes':
-            pygame.draw.rect(win, (0, 0, 250), (win_height//20*19, win_height+win_height//5//2-20, 15, 15))
-        if unitred1.reload == 'yes':
-            pygame.draw.rect(win, (250, 0, 0), (win_height//20*19, win_height+win_height//5//2+20, 15, 15))
 
 class Bullet:
     radius = win_width//100
-    speed = win_height//10;
+    speed = win_height//30;
     def __init__(self, x, y, orient, color):
         self.x = x
         self.y = y
         self.orient = orient
         self.color = color
-    def move(self, win):
+    def move(self):
         if self.orient == 'up':
             self.y -= self.speed
         if self.orient == 'down':
@@ -51,14 +22,14 @@ class Bullet:
             self.x -= self.speed
         if self.orient == 'right':
             self.x += self.speed
-        self.draw(win)
-    def draw(self, win):
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+        #self.draw(win)
+    #def draw(self, win):
+    #    pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
 class UnitBlue:
     reload = 'no'
     bullets = 5
-    bullet = ''
+    bullet = 'no'
     helth = 5
     orient = 'down'
     y = 0
@@ -67,7 +38,7 @@ class UnitBlue:
     height = win_height/10
     def init(self):
         self.reload = 'no'
-        self.bullet = ''
+        self.bullet = 'no'
         self.bullets = 5
         self.helth = 5
         self.orient = 'down'
@@ -92,7 +63,7 @@ class UnitBlue:
 class UnitRed:
     reload = 'no'
     bullets = 5
-    bullet = ''
+    bullet = 'no'
     helth = 5
     orient = 'up'
     y = len(map)-1

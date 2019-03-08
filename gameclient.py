@@ -1,222 +1,174 @@
 import pygame
 import socket
 import engine
-import gameserv
 
-rec1 = []
-rec2 = []
-rec3 = []
-rec4 = []
-rec5 = []
+pygame.init()
+win_height = win_width = 500
+score = [0, 0]
 
-def init(ip = '192.168.0.122'):
+class Interface:
+    myfont = pygame.font.SysFont('Comic Sans MS', win_height//24)
+    info = myfont.render('Переключение:', False, (250, 250, 250))
+    atck = myfont.render('1: Атаковать (СПАСЕ)', False, (250, 250, 250))
+    heal = myfont.render('2: Хилить (СПАСЕ)', False, (250, 250, 250))
+    deff = myfont.render('3: Поддержка (КОНСТ)', False, (250, 250, 250))
+    opts = myfont.render('Управление:', False, (250, 250, 250))
+    wsad = myfont.render('Целиться: WSAD', False, (250, 250, 250))
+    udrl = myfont.render('ЕЗДЕТЬ: стрелочки', False, (250, 250, 250))
+    spce = myfont.render('Стрилять: SPACE', False, (250, 250, 250))
+    rrrr = myfont.render('R', False, (250, 250, 250))
+    def draw(self, win):
+        pygame.draw.rect(win, (250, 250, 250), (0, win_height+5, win_width, 5))
+        win.blit(self.info, (win_width//50, win_height+win_height//5//10*1))
+        win.blit(self.atck, (win_width//50, win_height+win_height//5//10*3))
+        win.blit(self.heal, (win_width//50, win_height+win_height//5//10*5))
+        win.blit(self.deff, (win_width//50, win_height+win_height//5//10*7))
+        win.blit(self.opts, (win_width//2, win_height+win_height//5//10*1))
+        win.blit(self.udrl, (win_width//2, win_height+win_height//5//10*3))
+        win.blit(self.wsad, (win_width//2, win_height+win_height//5//10*5))
+        win.blit(self.spce, (win_width//2, win_height+win_height//5//10*7))
+        win.blit(self.rrrr, (win_height//20*19, win_height+win_height//5//2))
+        win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Красных очков: {score[0]}', False, (250, 250, 250)), (win_width//50, win_height//100))
+        win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Синих очков: {score[1]}', False, (250, 250, 250)), (win_width//50, (win_height//100+win_height//20)))
+
+def init(local = False, ip = 'localhost', host = 'no', name = 'Jendos'):
+
+    def parser():
+        global score
+        data1 = sock.recv(512).decode()
+        dataset = data1.split('/')
+        for data in dataset:
+            if 'map' in data:
+                q = 3
+                for i in range(len(map)):
+                    for j in range(len(map[0])):
+                        map[i][j] = int(data[q])
+                        q += 1
+            elif 'hp' in data:
+                data1 = data.split(',')
+                try:
+                    pygame.draw.rect(win, (0, 0, 0), (int(float(data1[0])), int(float(data1[1])), int(float(data1[2])), int(float(data1[3]))))
+                except:
+                    data1[0] = 5
+                try:
+                    pygame.draw.rect(win, (250, 250, 250), (int(float(data1[4])), int(float(data1[5])), int(float(data1[6])), int(float(data1[7]))))
+                except:
+                    #pygame.draw.rect(win, (250, 250, 250), (5, int(float(data1[4])), int(float(data1[5])), int(float(data1[6]))))
+                    pass
+                try:
+                    win.blit(pygame.font.SysFont('Comic Sans MS', win_height//23).render(data1[8], False, (250, 250, 250)), (int(float(data1[4])), int(float(data1[5])-win_height//10//2+3)))
+                except:
+                    pass
+            elif 'orient' in data:
+                if 'red' in data:
+                    data1 = data.split(',')
+                    pygame.draw.rect(win, (250, 0, 0), (int(float(data1[0])), int(float(data1[1])), win_height//100, win_height//100))
+                elif 'blue' in data:
+                    data1 = data.split(',')
+                    if len(data1) > 1:
+                        pygame.draw.rect(win, (0, 0, 250), (int(float(data1[0])), int(float(data1[1])), win_height//100, win_height//100))
+            elif 'bullet' in data:
+                data1 = data.split(',')
+                pygame.draw.circle(win, (250, 250, 0), (int(data1[0]), int(data1[1])), win_width//100)
+            elif 'score' in data:
+                data1 = data.split(',')
+                try:
+                    int(data1[0])
+                    int(data1[1])
+                except:
+                    print(data)
+                score[0], score[1] = int(data1[0]), int(data1[1])
+            elif 're' in data:
+                if 'red' in data:
+                    data1 = data.split(',')
+                    if data1[0] == 'yes':
+                        pygame.draw.rect(win, (250, 0, 0), (win_height//20*19, win_height+win_height//5//2+20, 15, 15))
+                if 'blue' in data:
+                    data1 = data.split(',')
+                    if data1[0] == 'yes':
+                        pygame.draw.rect(win, (0, 0, 250), (win_height//20*19, win_height+win_height//5//2-20, 15, 15))
+            if 'bul1' in data:
+                pygame.draw.rect(win, (250, 250, 250), (win_width-75, 0, 5, 15))
+                pygame.draw.rect(win, (250, 250, 250), (win_width-75, 10, 75, 5))
+                if num == '1' and 'red' in data:
+                    data1 = data.split(',')
+                    try:
+                        int(data1[0])
+                    except:
+                        print(data)
+                    for i in range(int(data1[0])):
+                        pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
+                        if data1[1] == 'reload':
+                            pygame.draw.rect(win, (0, 250, 0), ((win_height-10)-15*i, 0, win_width//25, win_height//50))
+                elif num == '2' and 'blue' in data:
+                    data1 = data.split(',')
+                    try:
+                        int(data1[0])
+                    except:
+                        print(data)
+                    for i in range(int(data1[0])):
+                        pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
+                        if data1[1] == 'reload':
+                            pygame.draw.rect(win, (0, 250, 0), ((win_height-10)-15*i, 0, win_width//25, win_height//50))
+
+    def draw():
+        for i in range(len(map)):
+            for j in range(len(map[0])):
+                x = win_height / 9 * i
+                y = win_width / 9 * j
+                if map[i][j] == 1:
+                    pygame.draw.rect(win, (250, 0, 0), (x+5, y+5, win_height/10, win_height/10))
+                if map[i][j] == 2:
+                    pygame.draw.rect(win, (0, 0, 250), (x+5, y+5, win_height/10, win_height/10))
+                if map[i][j] == 3:
+                    pygame.draw.rect(win, (250, 250, 250), (x+5, y+5, win_height/10, win_height/10))
+        interface.draw(win)
+
+    global score
+    interface = Interface()
     sock = socket.create_connection((ip, 9090))
-    data = sock.recv(512).decode()
-    print(data)
-    if data == '1':
-        gameserv.init(sock = sock)
-    elif data == '2':
-        gameclientinit(sock = sock)
-
-def gameclientinit(sock = None, local = False, ip = 'localhost'):
-    #sock = socket.socket()
-    print('client')
-    pygame.init()
-    win_height = win_width = 500
+    sock.send(name.encode())
+    num = sock.recv(512).decode()
+    map = [[0 for i in range(9)] for j in range(9)]
     win = pygame.display.set_mode((win_width,win_height+win_height//5),0)
-    pygame.display.set_caption("StepGame")
-
-    def maindraw():
-        win.fill((0,0,0))
-        for bullet in bullets:
-            x, y = int(bullet.x*len(engine.map)/win_height), int(bullet.y*len(engine.map[0])/win_width)
-            if x > 8:
-                x -= 1
-            if y > 8:
-                y -= 1
-            if engine.map[x][y] != 0:
-                bullets.pop(bullets.index(bullet))
-                for unit in engine.units:
-                    if unit.x == x and unit.y == y:
-                        #unit.destroy()
-                        pass
-            elif bullet.x < win_height and bullet.x > 0 and bullet.y < win_width and bullet.y > 0:
-                bullet.move(win)
-            else:
-                bullets.pop(bullets.index(bullet))
-
-        for i in range(len(engine.map)):
-            for j in range(len(engine.map[0])):
-                x = win_height / len(engine.map) * i
-                y = win_width / len(engine.map[0]) * j
-                if engine.map[i][j] == 1:
-                    pygame.draw.rect(win, (250, 0, 0), (x+5, y+5, engine.UnitRed.width, engine.UnitRed.height))
-                    if engine.unitred1.orient == 'up':
-                        pygame.draw.rect(win, (250, 0, 0), ((x+5+engine.unitred1.width//2)-win_height//200, y+5-win_height//100, win_height//100, win_height//100))
-                    if engine.unitred1.orient == 'down':
-                        pygame.draw.rect(win, (250, 0, 0), ((x+5+engine.unitred1.width//2)-win_height//200, y+5+engine.unitred1.height, win_height//100, win_height//100))
-                    if engine.unitred1.orient == 'left':
-                        pygame.draw.rect(win, (250, 0, 0), (x+5-win_height//100, (y+5+engine.unitred1.height//2)-win_height//200, win_height//100, win_height//100))
-                    if engine.unitred1.orient == 'right':
-                        pygame.draw.rect(win, (250, 0, 0), (x+engine.unitred1.width+5, (y+5+engine.unitred1.height//2)-win_height//200, win_height//100, win_height//100))
-                if engine.map[i][j] == 2:
-                    pygame.draw.rect(win, (0, 0, 250), (x+5, y+5, engine.UnitBlue.width, engine.UnitBlue.height))
-                    if engine.unitblue1.orient == 'up':
-                        pygame.draw.rect(win, (0, 0, 250), ((x+5+engine.unitblue1.width//2)-win_height//200, y+5-win_height//100, win_height//100, win_height//100))
-                    if engine.unitblue1.orient == 'down':
-                        pygame.draw.rect(win, (0, 0, 250), ((x+5+engine.unitblue1.width//2)-win_height//200, y+5+engine.unitblue1.height, win_height//100, win_height//100))
-                    if engine.unitblue1.orient == 'left':
-                        pygame.draw.rect(win, (0, 0, 250), (x+5-win_height//100, (y+5+engine.unitblue1.height//2)-win_height//200, win_height//100, win_height//100))
-                    if engine.unitblue1.orient == 'right':
-                        pygame.draw.rect(win, (0, 0, 250), (x+engine.unitblue1.width+5, (y+5+engine.unitblue1.height//2)-win_height//200, win_height//100, win_height//100))
-                if engine.map[i][j] == 3:
-                    pygame.draw.rect(win, (250, 250, 250), (x+5, y+5, engine.UnitRed.width, engine.UnitRed.height))
-                for unit in engine.units:
-                    if unit.helth != 0:
-                        pygame.draw.rect(win, (0, 0, 0), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 , engine.UnitRed.width, 10))
-                        pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2 , engine.UnitRed.width * unit.helth // 5, 6))
-                        #pygame.draw.rect(win, (250, 250, 250), ((int(win_height / len(engine.map) * unit.x)+5), int(win_height / len(engine.map[0]) * unit.y) + unit.height // 2 + 2, engine.UnitRed.width, 6))
-        interface.draw(win)
-        pygame.draw.rect(win, (250, 250, 250), (win_width-75, 0, 5, 15))
-        pygame.draw.rect(win, (250, 250, 250), (win_width-75, 10, 75, 5))
-        for i in range(engine.unitblue1.bullets):
-            pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
-            if engine.unitblue1.bullet == 'reload':
-                pygame.draw.rect(win, (0, 250, 0), ((win_height-10)-15*i, 0, win_width//25, win_height//50))
+    pygame.display.set_caption("Танчики")
+    while True:
+        sock.send('1/'.encode())
+        win.fill((0, 0, 0))
+        win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Красных очков: {score[0]}', False, (250, 250, 250)), (win_width//50, win_height//100))
+        win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Синих очков: {score[1]}', False, (250, 250, 250)), (win_width//50, (win_height//100+win_height//20)))
+        draw()
+        parser()
         pygame.display.update()
-
-    interface = engine.Interface()
-    def reinit():
-        engine.unitblue1.init()
-        engine.unitred1.init()
-        bullets = []
-        interface.draw(win)
-
-    bullets = []
-    run = True
-    if local:
-        try:
-            sock = socket.create_connection((ip, 9090))
-        except:
-            print('server is off')
-            run = False
-    sendata = ''
-    while run:
-        def reciever():
-            data1 = sock.recv(512).decode()
-            dataset = data1.split('/')
-            for data in dataset:
-                if len(data) != 0:
-                    if data == 'red':
-                        pass
-                    elif data[0:3:] == 'map':
-                        q = 3
-                        for i in range(len(engine.map)):
-                            for j in range(len(engine.map[0])):
-                                engine.map[i][j] = int(data[q])
-                                q += 1
-                    elif data[0] == 'd':
-                        if data[1] == 'r':
-                            engine.unitred1.destroy()
-                        if data[1] == 'b':
-                            engine.unitblue1.destroy()
-                    elif 'red' in data:
-                        engine.unitred1.move(int(data[0]), int(data[1]))
-                    elif len(data) == 2:
-                        engine.unitblue1.move(int(data[0]), int(data[1]))
-                    elif data[1::] == 'fire':
-                        a = int(win_height / len(engine.map) * engine.unitred1.x)
-                        b = int(win_height / len(engine.map[0]) * engine.unitred1.y)
-                        if engine.unitred1.orient == 'up':
-                            bullets.append(engine.Bullet(int(a + engine.unitred1.width//2) + 5, b, engine.unitred1.orient, (255, 255, 0)))
-                        elif engine.unitred1.orient == 'down':
-                            bullets.append(engine.Bullet(int(a + engine.unitred1.width//2) + 5, int(b + engine.unitred1.height + 10), engine.unitred1.orient, (255, 255, 0)))
-                        elif engine.unitred1.orient == 'left':
-                            bullets.append(engine.Bullet(a, int(b + engine.unitred1.width//2) + 5, engine.unitred1.orient, (255, 255, 0)))
-                        elif engine.unitred1.orient == 'right':
-                            bullets.append(engine.Bullet(int(a + engine.unitred1.width) + 10, int(b + engine.unitred1.width//2) + 5, engine.unitred1.orient, (255, 255, 0)))
-                    elif data[0] == 'q':
-                        engine.unitred1.orient = data[1::]
-                    elif data == 'reinit':
-                        reinit()
-                    elif data == 'r':
-                        if engine.unitred1.reload == 'no':
-                            engine.unitred1.reload = 'yes'
-                        else:
-                            engine.unitred1.reload = 'no'
-
-        sendata += '1/'
-        sock.send(('blue/'+sendata).encode())
-        reciever()
-        maindraw()
-        sendata = ''
+        if num == '1':
+            sendata = 'red/'
+        if num == '2':
+            sendata = 'blue/'
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                pygame.quit()
             if event.type == pygame.KEYDOWN:
-                if engine.unitblue1.helth > 0:
-                    if event.key == pygame.K_w or event.key == 172:
-                        engine.unitblue1.orient = 'up'
-                        #sock.send('qup'.encode())
-                        sendata += 'qup/'
-                    if event.key == pygame.K_s or event.key == 161:
-                        engine.unitblue1.orient = 'down'
-                        #sock.send('qdown'.encode())
-                        sendata += 'qdown/'
-                    if event.key == pygame.K_a or event.key == 160:
-                        engine.unitblue1.orient = 'left'
-                        #sock.send('qleft'.encode())
-                        sendata += 'qleft/'
-                    if event.key == pygame.K_d or event.key == 162:
-                        engine.unitblue1.orient = 'right'
-                        #sock.send('qright'.encode())
-                        sendata += 'qright/'
-                    if event.key == pygame.K_SPACE:
-                        if engine.unitblue1.bullet == 'reload':
-                            if engine.unitblue1.bullets == 5:
-                                engine.unitblue1.bullet = ''
-                            else:
-                                engine.unitblue1.bullets += 1
-                        if engine.unitblue1.bullets >= 0 and engine.unitblue1.bullet != 'reload':
-                            engine.unitblue1.bullets -= 1
-                            if engine.unitblue1.orient == 'up':
-                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitblue1.y), engine.unitblue1.orient, (255, 255, 0)))
-                            elif engine.unitblue1.orient == 'down':
-                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width//2) + 5, int(win_height / len(engine.map[0]) * engine.unitblue1.y + engine.unitblue1.height + 10), engine.unitblue1.orient, (255, 255, 0)))
-                            elif engine.unitblue1.orient == 'left':
-                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x), int(win_height / len(engine.map[0]) * engine.unitblue1.y + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
-                            elif engine.unitblue1.orient == 'right':
-                                bullets.append(engine.Bullet(int(win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width) + 10, int(win_height / len(engine.map[0]) * engine.unitblue1.y + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
-                            #sock.send('2fire/'.encode())
-                            sendata += '2fire/'
-                        if engine.unitblue1.bullets < 1:
-                            engine.unitblue1.bullet = 'reload'
-                    if event.key == pygame.K_LEFT:
-                        #sock.send('2left'.encode())
-                        #reciever()
-                        sendata += '2left/'
-                    if event.key == pygame.K_RIGHT:
-                        #sock.send('2right'.encode())
-                        #reciever()
-                        sendata += '2right/'
-                    if event.key == pygame.K_UP:
-                        #sock.send('2up'.encode())
-                        #reciever()
-                        sendata += '2up/'
-                    if event.key == pygame.K_DOWN:
-                        #reciever()
-                        sendata += '2down/'
+                if event.key == pygame.K_w or event.key == 172:
+                    sendata += 'w/'
+                if event.key == pygame.K_s or event.key == 161:
+                    sendata += 's/'
+                if event.key == pygame.K_a or event.key == 160:
+                    sendata += 'a/'
+                if event.key == pygame.K_d or event.key == 162:
+                    sendata += 'd/'
+                if event.key == pygame.K_SPACE:
+                    sendata += 'space/'
+                if event.key == pygame.K_LEFT:
+                    sendata += 'left/'
+                if event.key == pygame.K_RIGHT:
+                    sendata += 'right/'
+                if event.key == pygame.K_UP:
+                    sendata += 'up/'
+                if event.key == pygame.K_DOWN:
+                    sendata += 'down/'
                 if event.key == pygame.K_r or event.key == 174:
-                    if engine.unitblue1.reload == 'no':
-                        engine.unitblue1.reload = 'yes'
-                    else:
-                        engine.unitblue1.reload = 'no'
                     sendata += 'r/'
-
-    try:
-        sock.close()
-    except:
-        pass
-    pygame.quit()
+        if sendata != 'blue/' and sendata != 'red/':
+            sock.send((sendata).encode())
 if __name__ == '__main__':
-    gameclientinit(local = True)
+    init()
