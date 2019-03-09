@@ -2,7 +2,7 @@ import pygame
 import socket
 import gameclient
 win_width = win_height = 300
-ip = 'localhost'
+ip = '94.103.84.146'
 name = ''
 pygame.init()
 pygame.font.init()

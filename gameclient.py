@@ -1,6 +1,5 @@
 import pygame
 import socket
-import engine
 
 pygame.init()
 win_height = win_width = 500
@@ -31,7 +30,7 @@ class Interface:
         win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Красных очков: {score[0]}', False, (250, 250, 250)), (win_width//50, win_height//100))
         win.blit(pygame.font.SysFont('Comic Sans MS', win_height//19,5).render(f'Синих очков: {score[1]}', False, (250, 250, 250)), (win_width//50, (win_height//100+win_height//20)))
 
-def init(ip = '192.168.0.94', name = 'Jendos'):
+def init(ip = '94.103.84.146', name = 'Jendos'):
 
     def parser():
         global score

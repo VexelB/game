@@ -2,22 +2,15 @@ import socket
 import engine
 
 def reinit(j):
-    if j%2 == 0:
-        if engine.units[j].reload == 'yes' and engine.units[j+1].reload == 'yes':
-                engine.map = [[0 for i in range(9)] for j in range(9)]
-                engine.gen()
-                engine.maps[(j)//2] = engine.map
-                bullets[(j)//2] = []
-                engine.units[j].__init__(j//2)
-                engine.units[j+1].__init__(j//2)
-    else:
-        if engine.units[j].reload == 'yes' and engine.units[j-1].reload == 'yes':
-                engine.map = [[0 for i in range(9)] for j in range(9)]
-                engine.gen()
-                engine.maps[(j)//2] = engine.map
-                bullets[(j)//2] = []
-                engine.units[j].__init__(j//2)
-                engine.units[j-1].__init__(j//2)
+    j = j//2
+    j = j*2
+    if engine.units[j].reload == 'yes' and engine.units[j+1].reload == 'yes':
+            engine.map = [[0 for i in range(9)] for j in range(9)]
+            engine.gen()
+            engine.maps[(j)//2] = engine.map
+            bullets[(j)//2] = []
+            engine.units[j].__init__(j//2)
+            engine.units[j+1].__init__(j//2)
 
 def parser(data1, j):
     dataset = data1.split('/')
@@ -67,52 +60,6 @@ def parser(data1, j):
             else:
                 engine.units[j].reload = 'no'
             reinit(j)
-        #elif dataset[0] == 'blue':
-        #    if engine.unitblue1.helth != 0:
-        #        if data == 'up' and engine.unitblue1.y > 0:
-        #            engine.unitblue1.move(engine.unitblue1.x, engine.unitblue1.y-1)
-        #        elif data == 'down' and engine.unitblue1.y < 8:
-        #            engine.unitblue1.move(engine.unitblue1.x, engine.unitblue1.y+1)
-        #        elif data == 'left' and engine.unitblue1.x > 0:
-        #            engine.unitblue1.move(engine.unitblue1.x-1, engine.unitblue1.y)
-        #        elif data == 'right' and engine.unitblue1.x < 8:
-        #            engine.unitblue1.move(engine.unitblue1.x+1, engine.unitblue1.y)
-        #        elif data == 'w':
-        #            engine.unitblue1.orient = 'up'
-        #        elif data == 's':
-        #            engine.unitblue1.orient = 'down'
-        #        elif data == 'a':
-        #            engine.unitblue1.orient = 'left'
-        #        elif data == 'd':
-        #            engine.unitblue1.orient = 'right'
-        #        elif data == 'space':
-        #            if engine.unitblue1.bullet == 'reload':
-        #                if engine.unitblue1.bullets == 5:
-        #                    engine.unitblue1.bullet = 'no'
-        #                else:
-        #                    engine.unitblue1.bullets += 1
-        #            if engine.unitblue1.bullets >= 0 and engine.unitblue1.bullet != 'reload':
-        #                engine.unitblue1.bullets -= 1
-        #                if engine.unitblue1.orient == 'up':
-        #                    if engine.unitblue1.y != 0:
-        #                        bullets.append(engine.Bullet(int(engine.win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width//2) + 5, int(engine.win_height / len(engine.maps[0]) * engine.unitblue1.y), engine.unitblue1.orient, (255, 255, 0)))
-        #                elif engine.unitblue1.orient == 'down':
-        #                    if engine.unitblue1.y !=8:
-        #                        bullets.append(engine.Bullet(int(engine.win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width//2) + 5, int(engine.win_height / len(engine.maps[0]) * engine.unitblue1.y + engine.unitblue1.height + 10), engine.unitblue1.orient, (255, 255, 0)))
-        #                elif engine.unitblue1.orient == 'left':
-        #                    if engine.unitblue1.x != 0:
-        #                        bullets.append(engine.Bullet(int(engine.win_height / len(engine.map) * engine.unitblue1.x), int(engine.win_height / len(engine.maps[0]) * engine.unitblue1.y + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
-        #                elif engine.unitblue1.orient == 'right':
-        #                    if engine.unitblue1.x != 8:
-        #                        bullets.append(engine.Bullet(int(engine.win_height / len(engine.map) * engine.unitblue1.x + engine.unitblue1.width) + 10, int(engine.win_height / len(engine.maps[0]) * engine.unitblue1.y + engine.unitblue1.width//2) + 5, engine.unitblue1.orient, (255, 255, 0)))
-        #                if engine.unitblue1.bullets < 1:
-        #                    engine.unitblue1.bullet = 'reload'
-        #    if data == 'r':
-        #        if engine.unitblue1.reload == 'no':
-        #            engine.unitblue1.reload = 'yes'
-        #        else:
-        #            engine.unitblue1.reload = 'no'
-        #        reinit(m)
 
 def sender(conn, conn1, q):
     ab = int(engine.win_height / len(engine.maps[q//2]) * engine.units[q+1].x)
@@ -176,7 +123,6 @@ def sender(conn, conn1, q):
     sendata += str(engine.units[q].bullets) + ',' + engine.units[q].bullet + ',' + 'red bul1/'
     sendata += str(engine.units[q].helth) + ',' + 'red helth/'
     sendata += str(engine.units[q+1].helth) + ',' + 'blue helth/'
-    #for unit in engine.units:
     if engine.units[q].helth != 0:
         a, b, c, d = int(engine.win_height / len(engine.maps[q//2]) * engine.units[q].x)+5, int(engine.win_height / len(engine.maps[q//2][0]) * engine.units[q].y) + engine.units[q].height // 2, engine.units[q].width, 10
         a1, b1, c1, d1 = int(engine.win_height / len(engine.maps[q//2]) * engine.units[q].x)+5, int(engine.win_height / len(engine.maps[q//2][0]) * engine.units[q].y) + engine.units[q].height // 2 + 2, engine.UnitRed.width * engine.units[q].helth // 5, 6
@@ -224,7 +170,6 @@ while True:
             try:
                 parser(conns[j+1].recv(512).decode(), j+1)
                 parser(conns[j].recv(512).decode(), j)
-                #sender(conns[j+1], j+1)
                 sender(conns[j], conns[j+1], j)
             except Exception as e:
                 conns[j].close()
