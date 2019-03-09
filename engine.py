@@ -41,10 +41,10 @@ class UnitBlue:
         self.orient = 'down'
         self.move(int(len(map[0])/2), 0, q)
     def draw(self, q):
-        maps[q//2][self.x][self.y] = 2
+        maps[q][self.x][self.y] = 2
     def move(self, a, b, q):
-        if maps[q//2][a][b] == 0 or maps[q//2][a][b] == 2:
-            maps[q//2][self.x][self.y] = 0
+        if maps[q][a][b] == 0 or maps[q][a][b] == 2:
+            maps[q][self.x][self.y] = 0
             self.x = a
             self.y = b
             self.draw(q)
@@ -73,18 +73,18 @@ class UnitRed:
         self.orient = 'up'
         self.move(int(len(map[0])/2), len(map)-1, q)
     def draw(self, q):
-        maps[q//2][self.x][self.y] = 1
+        maps[q][self.x][self.y] = 1
     def move(self, a, b, q):
-        if maps[q//2][a][b] == 0 or maps[q//2][a][b] == 1:
-            maps[q//2][self.x][self.y] = 0
+        if maps[q][a][b] == 0 or maps[q][a][b] == 1:
+            maps[q][self.x][self.y] = 0
             self.x = a
             self.y = b
             self.draw(q)
     def destroy(self, j):
         self.helth -= 1
         if self.helth == 0:
-            maps[j//2][self.x][self.y] = 0
-            score[j//2][1] += 1
+            maps[j][self.x][self.y] = 0
+            score[j][1] += 1
             del self
 def gen():
     i = 1
@@ -95,7 +95,7 @@ def gen():
             map[j][i] = 3
             k -= 1
         i += 1
-    map[int(len(map[0])/2)][len(map)-1] = 1
-    map[int(len(map[0])/2)][0] = 2
+    #map[int(len(map[0])/2)][len(map)-1] = 1
+    #map[int(len(map[0])/2)][0] = 2
 maps = []
 units=[]

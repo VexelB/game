@@ -7,8 +7,10 @@ def reinit(j):
     if engine.units[j].reload == 'yes' and engine.units[j+1].reload == 'yes':
             engine.map = [[0 for i in range(9)] for j in range(9)]
             engine.gen()
-            engine.maps[(j)//2] = engine.map
-            bullets[(j)//2] = []
+            engine.maps[j//2] = engine.map
+            engine.maps[j//2][int(len(engine.map[0])/2)][len(engine.map)-1] = 1
+            engine.maps[j//2][int(len(engine.map[0])/2)][0] = 2
+            bullets[j//2] = []
             engine.units[j].__init__(j//2)
             engine.units[j+1].__init__(j//2)
 
@@ -17,13 +19,13 @@ def parser(data1, j):
     for data in dataset:
         if engine.units[j].helth != 0:
             if data == 'up' and engine.units[j].y > 0:
-                engine.units[j].move(engine.units[j].x, engine.units[j].y-1, j)
+                engine.units[j].move(engine.units[j].x, engine.units[j].y-1, j//2)
             elif data == 'down' and engine.units[j].y < 8:
-                engine.units[j].move(engine.units[j].x, engine.units[j].y+1, j)
+                engine.units[j].move(engine.units[j].x, engine.units[j].y+1, j//2)
             elif data == 'left' and engine.units[j].x > 0:
-                engine.units[j].move(engine.units[j].x-1, engine.units[j].y, j)
+                engine.units[j].move(engine.units[j].x-1, engine.units[j].y, j//2)
             elif data == 'right' and engine.units[j].x < 8:
-                engine.units[j].move(engine.units[j].x+1, engine.units[j].y, j)
+                engine.units[j].move(engine.units[j].x+1, engine.units[j].y, j//2)
             elif data == 'w':
                 engine.units[j].orient = 'up'
             elif data == 's':
@@ -107,9 +109,9 @@ def sender(conn, conn1, q):
         if engine.maps[q//2][x][y] != 0:
             bullets[q//2].pop(bullets[q//2].index(bullet))
             if engine.units[q].x == x and engine.units[q].y == y:
-                engine.units[q].destroy(q)
+                engine.units[q].destroy(q//2)
             if engine.units[q+1].x == x and engine.units[q+1].y ==y:
-                engine.units[q+1].destroy(q)
+                engine.units[q+1].destroy(q//2)
         elif bullet.x < engine.win_height and bullet.x > 0 and bullet.y < engine.win_width and bullet.y > 0:
             bullet.move()
         else:
@@ -172,6 +174,7 @@ while True:
                 parser(conns[j].recv(512).decode(), j)
                 sender(conns[j], conns[j+1], j)
             except Exception as e:
+                #print(e)
                 conns[j].close()
                 conns.pop(j)
                 conns[j].close()
