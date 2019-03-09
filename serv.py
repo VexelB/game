@@ -173,7 +173,7 @@ def sender(conn, conn1, q):
     sendata += engine.units[q+1].reload + ',blue re/'
     sendata += str(engine.score[q//2][0]) + ',' + str(engine.score[q//2][1]) + ',' + 'score/'
     sendata += str(engine.units[q+1].bullets) + ',' + engine.units[q+1].bullet + ',' + 'blue bul1/'
-    sendata += str(engine.units[q].bullets) + ',' + engine.units[q+1].bullet + ',' + 'red bul1/'
+    sendata += str(engine.units[q].bullets) + ',' + engine.units[q].bullet + ',' + 'red bul1/'
     sendata += str(engine.units[q].helth) + ',' + 'red helth/'
     sendata += str(engine.units[q+1].helth) + ',' + 'blue helth/'
     #for unit in engine.units:

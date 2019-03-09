@@ -38,7 +38,30 @@ def init(ip = '192.168.0.94', name = 'Jendos'):
         data1 = sock.recv(512).decode()
         dataset = data1.split('/')
         for data in dataset:
-            if 'map' in data:
+            if 'bul1' in data:
+                pygame.draw.rect(win, (250, 250, 250), (win_width-75, 0, 5, 15))
+                pygame.draw.rect(win, (250, 250, 250), (win_width-75, 10, 75, 5))
+                if num == '0' and 'red' in data:
+                    data1 = data.split(',')
+                    try:
+                        int(data1[0])
+                    except:
+                        print(data)
+                    for i in range(int(data1[0])):
+                        pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
+                        if data1[1] == 'reload':
+                            pygame.draw.rect(win, (0, 250, 0), ((win_height-10)-15*i, 0, win_width//25, win_height//50))
+                elif num == '1' and 'blue' in data:
+                    data1 = data.split(',')
+                    try:
+                        int(data1[0])
+                    except:
+                        print(data)
+                    for i in range(int(data1[0])):
+                        pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
+                        if data1[1] == 'reload':
+                            pygame.draw.rect(win, (0, 250, 0), ((win_height-10)-15*i, 0, win_width//25, win_height//50))
+            elif 'map' in data:
                 q = 3
                 for i in range(len(map)):
                     for j in range(len(map[0])):
@@ -90,29 +113,6 @@ def init(ip = '192.168.0.94', name = 'Jendos'):
                     data1 = data.split(',')
                     if data1[0] == 'yes':
                         pygame.draw.rect(win, (0, 0, 250), (win_height//20*19, win_height+win_height//5//2-20, 15, 15))
-            if 'bul1' in data:
-                pygame.draw.rect(win, (250, 250, 250), (win_width-75, 0, 5, 15))
-                pygame.draw.rect(win, (250, 250, 250), (win_width-75, 10, 75, 5))
-                if num == '0' and 'red' in data:
-                    data1 = data.split(',')
-                    try:
-                        int(data1[0])
-                    except:
-                        print(data)
-                    for i in range(int(data1[0])):
-                        pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
-                        if data1[1] == 'reload':
-                            pygame.draw.rect(win, (0, 250, 0), ((win_height-10)-15*i, 0, win_width//25, win_height//50))
-                elif num == '1' and 'blue' in data:
-                    data1 = data.split(',')
-                    try:
-                        int(data1[0])
-                    except:
-                        print(data)
-                    for i in range(int(data1[0])):
-                        pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
-                        if data1[1] == 'reload':
-                            pygame.draw.rect(win, (0, 250, 0), ((win_height-10)-15*i, 0, win_width//25, win_height//50))
 
     def draw():
         for i in range(len(map)):
