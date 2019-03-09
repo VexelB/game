@@ -6,7 +6,7 @@ win_height = win_width = 500
 score = [0, 0]
 
 class Interface:
-    myfont = pygame.font.SysFont('Comic Sans MS', win_height//24)
+    myfont = pygame.font.SysFont('Comic Sans MS', win_height//23)
     info = myfont.render('Переключение:', False, (250, 250, 250))
     atck = myfont.render('1: Атаковать (СПАСЕ)', False, (250, 250, 250))
     heal = myfont.render('2: Хилить (СПАСЕ)', False, (250, 250, 250))
@@ -45,7 +45,7 @@ def init(ip = 'localhost', name = 'Jendos'):
                     try:
                         int(data1[0])
                     except:
-                        print(data)
+                        data1[0] = 0
                     for i in range(int(data1[0])):
                         pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
                         if data1[1] == 'reload':
@@ -71,7 +71,7 @@ def init(ip = 'localhost', name = 'Jendos'):
                 try:
                     pygame.draw.rect(win, (0, 0, 0), (int(float(data1[0])), int(float(data1[1])), int(float(data1[2])), int(float(data1[3]))))
                 except:
-                    data1[0] = 5
+                    pass
                 try:
                     pygame.draw.rect(win, (250, 250, 250), (int(float(data1[4])), int(float(data1[5])), int(float(data1[6])), int(float(data1[7]))))
                 except:
@@ -112,8 +112,10 @@ def init(ip = 'localhost', name = 'Jendos'):
                     data1 = data.split(',')
                     if data1[0] == 'yes':
                         pygame.draw.rect(win, (0, 0, 250), (win_height//20*19, win_height+win_height//5//2-20, 15, 15))
+        pygame.display.update()
 
     def draw():
+        win.fill((0, 0, 0))
         for i in range(len(map)):
             for j in range(len(map[0])):
                 x = win_height / 9 * i
@@ -136,10 +138,8 @@ def init(ip = 'localhost', name = 'Jendos'):
     pygame.display.set_caption("Танчики")
     while True:
         sock.send('1/'.encode())
-        win.fill((0, 0, 0))
         draw()
         parser()
-        pygame.display.update()
         if num == '0':
             sendata = 'red/'
         if num == '1':

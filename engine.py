@@ -7,7 +7,7 @@ score = []
 
 class Bullet:
     radius = win_width//100
-    speed = win_height//30;
+    speed = win_height//15;
     def __init__(self, x, y, orient, color):
         self.x = x
         self.y = y
@@ -22,9 +22,6 @@ class Bullet:
             self.x -= self.speed
         if self.orient == 'right':
             self.x += self.speed
-        #self.draw(win)
-    #def draw(self, win):
-    #    pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
 class UnitBlue:
     reload = 'no'
