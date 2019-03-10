@@ -129,23 +129,53 @@ def init(ip = 'localhost', name = 'Jendos'):
 
     global score
     interface = Interface()
-    sock = socket.create_connection((ip, 9090))
+    loop = True
+    i = 0
+    while loop:
+        try:
+            sock = socket.create_connection((ip, 9090))
+            loop = False
+        except ConnectionRefusedError:
+            if i == 0:
+                print('-------------------------------------------------------------------')
+                print('server is off, you can wait or CTRL+C and find out what is going on')
+                print('-------------------------------------------------------------------')
+                i += 1
+        except Exception as e:
+            print(e)
     sock.send(name.encode())
     num = sock.recv(512).decode()
     map = [[0 for i in range(9)] for j in range(9)]
     win = pygame.display.set_mode((win_width,win_height+win_height//5),0)
     pygame.display.set_caption("Танчики")
-    while True:
-        sock.send('1/'.encode())
+    run = True
+    while run:
+        try:
+            sock.send('1/'.encode())
+        except BrokenPipeError:
+            print('----------------------------')
+            print('Your opponent leave the game')
+            print('----------------------------')
+            run = False
+        except Exception as e:
+            print(e)
         draw()
-        parser()
+        try:
+            parser()
+        except ConnectionResetError:
+            print('----------------------------')
+            print('Your opponent leave the game')
+            print('----------------------------')
+            run = False
+        except Exception as e:
+            print(e)
         if num == '0':
             sendata = 'red/'
         if num == '1':
             sendata = 'blue/'
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
+                run = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w or event.key == 172:
                     sendata += 'w/'
@@ -168,6 +198,14 @@ def init(ip = 'localhost', name = 'Jendos'):
                 if event.key == pygame.K_r or event.key == 174:
                     sendata += 'r/'
         if sendata != 'blue/' and sendata != 'red/':
-            sock.send((sendata).encode())
+            try:
+                sock.send((sendata).encode())
+            except BrokenPipeError:
+                print('----------------------------')
+                print('Your opponent leave the game')
+                print('----------------------------')
+                run = False
+            except Exception as e:
+                print(e)
 if __name__ == '__main__':
     init()
