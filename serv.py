@@ -158,7 +158,8 @@ while True:
         elif i%2 == 1:
             engine.units.append(engine.UnitBlue(i//2))
             engine.units[i].name = conn.recv(512).decode()
-        conn.send(str(i%2).encode())
+            conns[i].send(str(i%2).encode())
+            conns[i-1].send(str((i-1)%2).encode())
         i += 1
     except Exception as e:
         if type(e) != socket.timeout:
@@ -172,7 +173,6 @@ while True:
                 parser(conns[j].recv(512).decode(), j)
                 sender(conns[j], conns[j+1], j)
             except Exception as e:
-                #print(e)
                 conns[j].close()
                 conns.pop(j)
                 conns[j].close()

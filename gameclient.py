@@ -30,7 +30,7 @@ class Interface:
         win.blit(self.myfont.render(f'Красных очков: {score[0]}', False, (250, 250, 250)), (win_width//50, win_height//100))
         win.blit(self.myfont.render(f'Синих очков: {score[1]}', False, (250, 250, 250)), (win_width//50, (win_height//100+win_height//20)))
 
-def init(ip = 'localhost', name = 'Jendos'):
+def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
 
     def parser():
         global score
@@ -128,27 +128,29 @@ def init(ip = 'localhost', name = 'Jendos'):
         interface.draw(win)
 
     global score
-    interface = Interface()
-    loop = True
-    i = 0
-    while loop:
-        try:
-            sock = socket.create_connection((ip, 9090))
-            loop = False
-        except ConnectionRefusedError:
-            if i == 0:
-                print('-------------------------------------------------------------------')
-                print('server is off, you can wait or CTRL+C and find out what is going on')
-                print('-------------------------------------------------------------------')
-                i += 1
-        except Exception as e:
-            print(e)
-    sock.send(name.encode())
-    num = sock.recv(512).decode()
     map = [[0 for i in range(9)] for j in range(9)]
-    win = pygame.display.set_mode((win_width,win_height+win_height//5),0)
+    interface = Interface()
     pygame.display.set_caption("Танчики")
+    win = pygame.display.set_mode((win_width,win_height+win_height//5),0)
+    if sock == None:
+        loop = True
+        i = 0
+        while loop:
+            try:
+                sock = socket.create_connection((ip, 9090))
+                loop = False
+                sock.send(name.encode())
+                num = sock.recv(512).decode()
+            except ConnectionRefusedError:
+                if i == 0:
+                    print('-------------------------------------------------------------------')
+                    print("server is off, you can wait or CTRL+C and find out what's going on")
+                    print('-------------------------------------------------------------------')
+                    i += 1
+            except Exception as e:
+                print(e)
     run = True
+    i = 0
     while run:
         try:
             sock.send('1/'.encode())
