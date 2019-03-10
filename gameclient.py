@@ -1,5 +1,6 @@
 import pygame
 import socket
+#import main
 
 pygame.init()
 win_height = win_width = 500
@@ -153,20 +154,24 @@ def init(ip = 'localhost', name = 'Jendos'):
         try:
             sock.send('1/'.encode())
         except BrokenPipeError:
-            print('----------------------------')
-            print('Your opponent leave the game')
-            print('----------------------------')
-            run = False
+            if i == 0:
+                print('----------------------------')
+                print('Your opponent leave the game')
+                print('----------------------------')
+                run = False
+                i += 1
         except Exception as e:
             print(e)
         draw()
         try:
             parser()
         except ConnectionResetError:
-            print('----------------------------')
-            print('Your opponent leave the game')
-            print('----------------------------')
-            run = False
+            if i == 0:
+                print('----------------------------')
+                print('Your opponent leave the game')
+                print('----------------------------')
+                run = False
+                i += 1
         except Exception as e:
             print(e)
         if num == '0':
@@ -201,11 +206,14 @@ def init(ip = 'localhost', name = 'Jendos'):
             try:
                 sock.send((sendata).encode())
             except BrokenPipeError:
-                print('----------------------------')
-                print('Your opponent leave the game')
-                print('----------------------------')
-                run = False
+                if i == 0:
+                    print('----------------------------')
+                    print('Your opponent leave the game')
+                    print('----------------------------')
+                    run = False
+                    i += 1
             except Exception as e:
                 print(e)
+    pygame.quit()
 if __name__ == '__main__':
     init()

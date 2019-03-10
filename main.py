@@ -62,9 +62,9 @@ def nameinput(ip = ip, host = False):
         if host:
             win.blit(pygame.font.SysFont('Comic Sans MS', 22).render('Поделитесь этим ip со своим другом', False, (250, 250, 250)), (10, win_height - 50))
             try:
-                a = str(socket.gethostbyname(socket.gethostname()))
+                aa = str(socket.gethostbyname(socket.gethostname()))
             except:
-                a = '!не получается получить ваш ip!'
+                aa = '!не получается получить ваш ip!'
             win.blit(pygame.font.SysFont('Comic Sans MS', 25).render(a, False, (250, 250, 250)), (10, win_height - 30))
         win.blit(np, (10, 140))
         for bb in blits:
