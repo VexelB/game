@@ -1,4 +1,3 @@
-#import pygame
 import random
 
 win_height = win_width = 500
@@ -95,7 +94,7 @@ def gen():
             map[j][i] = 3
             k -= 1
         i += 1
-    #map[int(len(map[0])/2)][len(map)-1] = 1
-    #map[int(len(map[0])/2)][0] = 2
+    map[int(len(map[0])/2)][len(map)-1] = 1
+    map[int(len(map[0])/2)][0] = 2
 maps = []
 units=[]

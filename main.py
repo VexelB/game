@@ -52,13 +52,20 @@ win = pygame.display.set_mode((win_width, win_height))
 pygame.display.set_caption("StepGame")
 init = False
 
-def nameinput(ip = ip):
+def nameinput(ip = ip, host = False):
     run = True
     blits = []
     while run:
         zz = 1
         global name
         win.fill((0,0,0))
+        if host:
+            win.blit(pygame.font.SysFont('Comic Sans MS', 22).render('Поделитесь этим ip со своим другом', False, (250, 250, 250)), (10, win_height - 50))
+            try:
+                a = str(socket.gethostbyname(socket.gethostname()))
+            except:
+                a = '!не получается получить ваш ip!'
+            win.blit(pygame.font.SysFont('Comic Sans MS', 25).render(a, False, (250, 250, 250)), (10, win_height - 30))
         win.blit(np, (10, 140))
         for bb in blits:
             win.blit(bb, (12*zz, 160))
@@ -68,6 +75,8 @@ def nameinput(ip = ip):
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    run = False
                 if len(blits) < 6:
                     if event.key == pygame.K_q or event.key == 171:
                         name += 'q'
@@ -151,7 +160,11 @@ def nameinput(ip = ip):
                     blits.pop()
                     name = name[:len(name)-1:]
                 if event.key == pygame.K_RETURN:
-                    gameclient.init(name = name, ip = ip)
+                    if host:
+                        #gameserv.init(name = name)
+                        print('mda')
+                    else:
+                        gameclient.init(name = name, ip = ip)
 
 def ipinput():
     run = True
@@ -170,6 +183,8 @@ def ipinput():
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    run = False
                 if event.key == pygame.K_0:
                     ip += '0'
                     blits.append(qq)
@@ -207,10 +222,12 @@ def ipinput():
                     blits.pop()
                     ip = ip[:len(ip)-1:]
                 if event.key == pygame.K_RETURN:
-                    nameinput(ip)
+                    #nameinput(ip)
+                    print('mda')
 
 def k2():
-    while True:
+    run = True
+    while run:
         win.fill((0,0,0))
         win.blit(myfont.render('1. Хостить:', False, (250, 250, 250)),(10,120))
         win.blit(myfont.render('2. ПРисоединица:', False, (250, 250, 250)),(10,150))
@@ -225,8 +242,10 @@ def k2():
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    run = False
                 if event.key == pygame.K_1:
-                    gameserv.init()
+                    nameinput(host = True)
                 if event.key == pygame.K_2:
                     ipinput()
 

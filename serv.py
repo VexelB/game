@@ -8,8 +8,6 @@ def reinit(j):
             engine.map = [[0 for i in range(9)] for j in range(9)]
             engine.gen()
             engine.maps[j//2] = engine.map
-            engine.maps[j//2][int(len(engine.map[0])/2)][len(engine.map)-1] = 1
-            engine.maps[j//2][int(len(engine.map[0])/2)][0] = 2
             bullets[j//2] = []
             engine.units[j].__init__(j//2)
             engine.units[j+1].__init__(j//2)
@@ -142,7 +140,7 @@ addrs = []
 bullets = []
 sock = socket.socket()
 sock.bind(('', 9090))
-sock.settimeout(0.001)
+sock.settimeout(0.0001)
 sock.listen(2)
 while True:
     try:
