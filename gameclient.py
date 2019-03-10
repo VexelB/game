@@ -1,6 +1,5 @@
 import pygame
 import socket
-#import main
 
 pygame.init()
 win_height = win_width = 500
