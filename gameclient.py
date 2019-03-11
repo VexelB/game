@@ -201,8 +201,6 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                     sendata += 'down/'
                 if event.key == pygame.K_r or event.key == 174:
                     sendata += 'r/'
-                if event.key == pygame.K_LSHIFT:
-                    sendata += 'shift/'
         if sendata != 'blue/' and sendata != 'red/':
             try:
                 sock.send((sendata).encode())

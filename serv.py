@@ -32,11 +32,13 @@ def parser(data1, j):
                 engine.units[j].orient = 'left'
             elif data == 'd':
                 engine.units[j].orient = 'right'
-            elif data == 'shift':
-                if engine.units[j].bullets < 5:
-                    engine.units[j].bullets += 1
             elif data == 'space':
-                if engine.units[j].bullets >= 1:
+                if engine.units[j].bullet == 'reload':
+                    if engine.units[j].bullets == 5:
+                        engine.units[j].bullet = 'no'
+                    else:
+                        engine.units[j].bullets += 1
+                if engine.units[j].bullets >= 0 and engine.units[j].bullet != 'reload':
                     engine.units[j].bullets -= 1
                     if engine.units[j].orient == 'up':
                         if engine.units[j].y != 0:
@@ -50,6 +52,8 @@ def parser(data1, j):
                     elif engine.units[j].orient == 'right':
                         if engine.units[j].x != 8:
                             bullets[j//2].append(engine.Bullet(int(engine.win_height / len(engine.maps[(j)//2]) * engine.units[j].x + engine.units[j].width) + 10, int(engine.win_height / len(engine.maps[(j)//2][0]) * engine.units[j].y + engine.units[j].width//2) + 5, engine.units[j].orient, (255, 255, 0)))
+                    if engine.units[j].bullets < 1:
+                        engine.units[j].bullet = 'reload'
         if data == 'r':
             if engine.units[j].reload == 'no':
                 engine.units[j].reload = 'yes'
