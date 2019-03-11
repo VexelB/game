@@ -1,5 +1,6 @@
 import socket
 import engine
+import time
 
 def reinit(j):
     j = j//2
@@ -142,6 +143,7 @@ sock = socket.socket()
 sock.bind(('', 9090))
 sock.settimeout(0.0001)
 sock.listen(2)
+log = open("log.txt", "a")
 while True:
     try:
         conn, addr = sock.accept()
@@ -160,10 +162,15 @@ while True:
             engine.units[i].name = conn.recv(512).decode()
             conns[i].send(str(i%2).encode())
             conns[i-1].send(str((i-1)%2).encode())
+            log.write(time.ctime(time.time())+" Conns:"+'\n')
+            j = 0
+            while j < len(conns) - 1:
+                log.write("                              "+str(j//2)+': '+str(addrs[j])+engine.units[j].name+' '+str(addrs[j+1])+' '+engine.units[j+1].name+'\n')
+                j += 2
         i += 1
     except Exception as e:
         if type(e) != socket.timeout:
-            print(type(e), e)
+            log.write(time.ctime(time.time())+" There is an error: " + str(e)+'\n')
     if len(conns) > 1:
         j = 0
         m = 0
@@ -173,6 +180,9 @@ while True:
                 parser(conns[j].recv(512).decode(), j)
                 sender(conns[j], conns[j+1], j)
             except Exception as e:
+                log.write(time.ctime(time.time())+" Closed Conn: "+str(e)+'\n')
+                log.write("                              "+str(j//2)+': '+str(addrs[j])+' '+engine.units[j].name+' '+str(addrs[j+1])+' '+engine.units[j+1].name+'\n')
+                log.write("                          score: "+str(engine.score[j//2])+'\n')
                 conns[j].close()
                 conns.pop(j)
                 conns[j].close()

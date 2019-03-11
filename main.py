@@ -29,7 +29,7 @@ r = myfont.render('r', False, (250, 250, 250))
 t = myfont.render('t', False, (250, 250, 250))
 y = myfont.render('y', False, (250, 250, 250))
 u = myfont.render('u', False, (250, 250, 250))
-i = myfont.render('i', False, (250, 250, 250))
+iq = myfont.render('i', False, (250, 250, 250))
 o = myfont.render('o', False, (250, 250, 250))
 p = myfont.render('p', False, (250, 250, 250))
 a = myfont.render('a', False, (250, 250, 250))
@@ -100,7 +100,7 @@ def nameinput(ip = ip, host = False):
                         blits.append(u)
                     elif event.key == pygame.K_i or event.key == 181:
                         name += 'i'
-                        blits.append(i)
+                        blits.append(iq)
                     elif event.key == pygame.K_o or event.key == 178:
                         name += 'o'
                         blits.append(o)
@@ -180,6 +180,7 @@ def nameinput(ip = ip, host = False):
                         sock.send(name.encode())
                         num = sock.recv(512).decode()
                         gameclient.init(name = name, ip = ip, sock = sock, num = num)
+                        run = False
         pygame.display.update()
 
 def ipinput():

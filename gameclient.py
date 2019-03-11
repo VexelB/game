@@ -141,9 +141,9 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                 num = sock.recv(512).decode()
             except ConnectionRefusedError:
                 if i == 0:
-                    print('-------------------------------------------------------------------')
-                    print("server is off, you can wait or CTRL+C and find out what's going on")
-                    print('-------------------------------------------------------------------')
+                    print('--------------------------------------------------------------------------')
+                    print("server is anavailable, you can wait or CTRL+C and find out what's going on")
+                    print('--------------------------------------------------------------------------')
                     i += 1
             except Exception as e:
                 print(e)
