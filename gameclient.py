@@ -66,6 +66,15 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                     for j in range(len(map[0])):
                         map[i][j] = int(data[q])
                         q += 1
+                        x = win_height / 9 * i
+                        y = win_width / 9 * j
+                        if map[i][j] == 1:
+                            pygame.draw.rect(win, (250, 0, 0), (x+5, y+5, win_height/10, win_height/10))
+                        if map[i][j] == 2:
+                            pygame.draw.rect(win, (0, 0, 250), (x+5, y+5, win_height/10, win_height/10))
+                        if map[i][j] == 3:
+                            pygame.draw.rect(win, (250, 250, 250), (x+5, y+5, win_height/10, win_height/10))                    
+                interface.draw(win)
             elif 'hp' in data:
                 data1 = data.split(',')
                 try:
@@ -115,17 +124,6 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
 
     def draw():
         win.fill((0, 0, 0))
-        for i in range(len(map)):
-            for j in range(len(map[0])):
-                x = win_height / 9 * i
-                y = win_width / 9 * j
-                if map[i][j] == 1:
-                    pygame.draw.rect(win, (250, 0, 0), (x+5, y+5, win_height/10, win_height/10))
-                if map[i][j] == 2:
-                    pygame.draw.rect(win, (0, 0, 250), (x+5, y+5, win_height/10, win_height/10))
-                if map[i][j] == 3:
-                    pygame.draw.rect(win, (250, 250, 250), (x+5, y+5, win_height/10, win_height/10))
-        interface.draw(win)
 
     global score
     map = [[0 for i in range(9)] for j in range(9)]
@@ -163,8 +161,8 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                 i += 1
         except Exception as e:
             print(e)
-        draw()
         try:
+            draw()
             parser()
         except ConnectionResetError:
             if i == 0:

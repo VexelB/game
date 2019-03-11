@@ -125,11 +125,11 @@ def sender(conn, conn1, q):
     sendata += str(engine.units[q+1].helth) + ',' + 'blue helth/'
     if engine.units[q].helth != 0:
         a, b, c, d = int(engine.win_height / len(engine.maps[q//2]) * engine.units[q].x)+5, int(engine.win_height / len(engine.maps[q//2][0]) * engine.units[q].y) + engine.units[q].height // 2, engine.units[q].width, 10
-        a1, b1, c1, d1 = int(engine.win_height / len(engine.maps[q//2]) * engine.units[q].x)+5, int(engine.win_height / len(engine.maps[q//2][0]) * engine.units[q].y) + engine.units[q].height // 2 + 2, engine.UnitRed.width * engine.units[q].helth // 5, 6
+        a1, b1, c1, d1 = int(engine.win_height / len(engine.maps[q//2]) * engine.units[q].x)+5, int(engine.win_height / len(engine.maps[q//2][0]) * engine.units[q].y) + engine.units[q].height // 2 + 2, engine.UnitRed.width * engine.units[q].helth // 3, 6
         sendata += str(a) + ',' + str(b) + ',' + str(c) + ',' + str(d) + ',' + str(a1) + ',' + str(b1) + ',' + str(c1) + ',' + str(d1) + ',' + engine.units[q].name + ',hp/'
     if engine.units[q+1].helth != 0:
         a, b, c, d = int(engine.win_height / len(engine.maps[q//2]) * engine.units[q+1].x)+5, int(engine.win_height / len(engine.maps[q//2][0]) * engine.units[q+1].y) + engine.units[q+1].height // 2, engine.units[q+1].width, 10
-        a1, b1, c1, d1 = int(engine.win_height / len(engine.maps[q//2]) * engine.units[q+1].x)+5, int(engine.win_height / len(engine.maps[q//2][0]) * engine.units[q+1].y) + engine.units[q+1].height // 2 + 2, engine.UnitBlue.width * engine.units[q+1].helth // 5, 6
+        a1, b1, c1, d1 = int(engine.win_height / len(engine.maps[q//2]) * engine.units[q+1].x)+5, int(engine.win_height / len(engine.maps[q//2][0]) * engine.units[q+1].y) + engine.units[q+1].height // 2 + 2, engine.UnitBlue.width * engine.units[q+1].helth // 3, 6
         sendata += str(a) + ',' + str(b) + ',' + str(c) + ',' + str(d) + ',' + str(a1) + ',' + str(b1) + ',' + str(c1) + ',' + str(d1) + ',' + engine.units[q+1].name + ',hp/'
     conn.send(sendata.encode())
     conn1.send(sendata.encode())
