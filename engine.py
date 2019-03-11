@@ -26,7 +26,7 @@ class UnitBlue:
     reload = 'no'
     bullets = 5
     bullet = 'no'
-    helth = 3
+    helth = 5
     orient = 'down'
     y = 0
     x = int(len(map[0])/2)
@@ -36,7 +36,7 @@ class UnitBlue:
         self.reload = 'no'
         self.bullet = 'no'
         self.bullets = 5
-        self.helth = 3
+        self.helth = 5
         self.orient = 'down'
         self.move(int(len(map[0])/2), 0, q)
     def draw(self, q):
@@ -58,7 +58,7 @@ class UnitRed:
     reload = 'no'
     bullets = 5
     bullet = 'no'
-    helth = 3
+    helth = 5
     orient = 'up'
     y = len(map)-1
     x = int(len(map[0])/2)
@@ -68,7 +68,7 @@ class UnitRed:
         self.reload = 'no'
         self.bullet = ''
         self.bullets = 5
-        self.helth = 3
+        self.helth = 5
         self.orient = 'up'
         self.move(int(len(map[0])/2), len(map)-1, q)
     def draw(self, q):

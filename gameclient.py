@@ -73,7 +73,7 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                         if map[i][j] == 2:
                             pygame.draw.rect(win, (0, 0, 250), (x+5, y+5, win_height/10, win_height/10))
                         if map[i][j] == 3:
-                            pygame.draw.rect(win, (250, 250, 250), (x+5, y+5, win_height/10, win_height/10))                    
+                            pygame.draw.rect(win, (250, 250, 250), (x+5, y+5, win_height/10, win_height/10))
                 interface.draw(win)
             elif 'hp' in data:
                 data1 = data.split(',')
@@ -201,6 +201,8 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                     sendata += 'down/'
                 if event.key == pygame.K_r or event.key == 174:
                     sendata += 'r/'
+                if event.key == pygame.K_LSHIFT:
+                    sendata += 'shift/'
         if sendata != 'blue/' and sendata != 'red/':
             try:
                 sock.send((sendata).encode())
