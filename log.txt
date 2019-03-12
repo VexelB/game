@@ -3,3 +3,13 @@ Tue Mar 12 10:13:48 2019 Conns:
 Tue Mar 12 10:13:53 2019 Closed Conn: [Errno 54] Connection reset by peer
                               0: ('127.0.0.1', 54205) Jendos ('127.0.0.1', 54207) Jendos
                           score: [1, 0]
+Tue Mar 12 10:16:01 2019 Conns:
+                              0: ('127.0.0.1', 57763)Jendos ('127.0.0.1', 57774) Jendos
+Tue Mar 12 10:16:01 2019 Closed Conn: [Errno 54] Connection reset by peer
+                              0: ('127.0.0.1', 57763) Jendos ('127.0.0.1', 57774) Jendos
+                          score: [0, 0]
+Tue Mar 12 10:16:07 2019 Conns:
+                              0: ('127.0.0.1', 57763)Jendos ('127.0.0.1', 57774) Jendos
+Tue Mar 12 10:16:13 2019 Closed Conn: [Errno 54] Connection reset by peer
+                              0: ('127.0.0.1', 57763) Jendos ('127.0.0.1', 57774) Jendos
+                          score: [1, 0]

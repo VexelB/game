@@ -143,8 +143,8 @@ sock = socket.socket()
 sock.bind(('', 9090))
 sock.settimeout(0.0001)
 sock.listen(2)
-log = open("log.txt", "a")
 while True:
+    log = open("log.txt", "a")
     try:
         conn, addr = sock.accept()
         conns.append(conn)
@@ -170,7 +170,7 @@ while True:
         i += 1
     except Exception as e:
         if type(e) != socket.timeout:
-            log.write(time.ctime(time.time())+" There is an error: " + str(e)+'\n')
+            log.write(time.ctime(time.time())+" There is an error with conectiong: " + str(e)+'\n')
     if len(conns) > 1:
         j = 0
         m = 0
@@ -193,3 +193,4 @@ while True:
                 engine.score.pop(j//2)
                 i -= 2
             j += 2
+    log.close()
