@@ -147,8 +147,6 @@ while True:
     log = open("log.txt", "a")
     try:
         conn, addr = sock.accept()
-        conns.append(conn)
-        addrs.append(addr)
         if i%2 == 0:
             bullets.append([])
             engine.score.append([0, 0])
@@ -156,10 +154,17 @@ while True:
             engine.gen()
             engine.maps.append(engine.map)
             engine.units.append(engine.UnitRed(i//2))
-            engine.units[i].name = conn.recv(512).decode()
+            try:
+                engine.units[i].name = conn.recv(512).decode()
+            except:
+                conn.close()
+            conns.append(conn)
+            addrs.append(addr)
         elif i%2 == 1:
             engine.units.append(engine.UnitBlue(i//2))
             engine.units[i].name = conn.recv(512).decode()
+            conns.append(conn)
+            addrs.append(addr)
             conns[i].send(str(i%2).encode())
             conns[i-1].send(str((i-1)%2).encode())
             log.write(time.ctime(time.time())+" Conns:"+'\n')
