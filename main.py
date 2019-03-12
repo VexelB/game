@@ -22,32 +22,14 @@ ii = myfont.render('7', False, (250, 250, 250))
 oo = myfont.render('8', False, (250, 250, 250))
 pp = myfont.render('9', False, (250, 250, 250))
 aa = myfont.render('.', False, (250, 250, 250))
-q = myfont.render('q', False, (250, 250, 250))
-w = myfont.render('w', False, (250, 250, 250))
-e = myfont.render('e', False, (250, 250, 250))
-r = myfont.render('r', False, (250, 250, 250))
-t = myfont.render('t', False, (250, 250, 250))
-y = myfont.render('y', False, (250, 250, 250))
-u = myfont.render('u', False, (250, 250, 250))
-iq = myfont.render('i', False, (250, 250, 250))
-o = myfont.render('o', False, (250, 250, 250))
-p = myfont.render('p', False, (250, 250, 250))
-a = myfont.render('a', False, (250, 250, 250))
-s = myfont.render('s', False, (250, 250, 250))
-d = myfont.render('d', False, (250, 250, 250))
-f = myfont.render('f', False, (250, 250, 250))
-g = myfont.render('g', False, (250, 250, 250))
-h = myfont.render('h', False, (250, 250, 250))
-j = myfont.render('j', False, (250, 250, 250))
-k = myfont.render('k', False, (250, 250, 250))
-l = myfont.render('l', False, (250, 250, 250))
-z = myfont.render('z', False, (250, 250, 250))
-x = myfont.render('x', False, (250, 250, 250))
-c = myfont.render('c', False, (250, 250, 250))
-v = myfont.render('v', False, (250, 250, 250))
-b = myfont.render('b', False, (250, 250, 250))
-n = myfont.render('n', False, (250, 250, 250))
-m = myfont.render('m', False, (250, 250, 250))
+
+keys = []
+chars = list('qwertyuiopasdfghjklzxcvbnm1234567890.')
+for i in chars:
+    keys.append([i])
+for i in keys:
+    i.append(myfont.render(i[0], False, (250, 250, 250)))
+keys = dict(keys)
 win = pygame.display.set_mode((win_width, win_height))
 pygame.display.set_caption("Танчики")
 init = False
@@ -70,6 +52,7 @@ def nameinput(ip = ip, host = False):
             except:
                 aa = '!не получается получить ваш ip!'
             win.blit(pygame.font.SysFont('Comic Sans MS', 25).render(aa, False, (250, 250, 250)), (10, win_height - 30))
+        pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -79,82 +62,82 @@ def nameinput(ip = ip, host = False):
                 if len(blits) < 6:
                     if event.key == pygame.K_q or event.key == 171:
                         name += 'q'
-                        blits.append(q)
+                        blits.append(keys['q'])
                     elif event.key == pygame.K_w or event.key == 172:
                         name += 'w'
-                        blits.append(w)
+                        blits.append(keys['w'])
                     elif event.key == pygame.K_e or event.key == 173:
                         name += 'e'
-                        blits.append(e)
+                        blits.append(keys['e'])
                     elif event.key == pygame.K_r or event.key == 174:
                         name += 'r'
-                        blits.append(r)
+                        blits.append(keys['r'])
                     elif event.key == pygame.K_t or event.key == 176:
                         name += 't'
-                        blits.append(t)
+                        blits.append(keys['t'])
                     elif event.key == pygame.K_y or event.key == 175:
                         name += 'y'
-                        blits.append(y)
+                        blits.append(keys['y'])
                     elif event.key == pygame.K_u or event.key == 179:
                         name += 'u'
-                        blits.append(u)
+                        blits.append(keys['u'])
                     elif event.key == pygame.K_i or event.key == 181:
                         name += 'i'
-                        blits.append(iq)
+                        blits.append(keys['i'])
                     elif event.key == pygame.K_o or event.key == 178:
                         name += 'o'
-                        blits.append(o)
+                        blits.append(keys['o'])
                     elif event.key == pygame.K_p or event.key == 182:
                         name += 'p'
-                        blits.append(p)
+                        blits.append(keys['p'])
                     elif event.key == pygame.K_a or event.key == 160:
                         name += 'a'
-                        blits.append(a)
+                        blits.append(keys['a'])
                     elif event.key == pygame.K_s or event.key == 161:
                         name += 's'
-                        blits.append(s)
+                        blits.append(keys['s'])
                     elif event.key == pygame.K_d or event.key == 162:
                         name += 'd'
-                        blits.append(d)
+                        blits.append(keys['d'])
                     elif event.key == pygame.K_f or event.key == 163:
                         name += 'f'
-                        blits.append(f)
+                        blits.append(keys['f'])
                     elif event.key == pygame.K_g or event.key == 165:
                         name += 'g'
-                        blits.append(g)
+                        blits.append(keys['g'])
                     elif event.key == pygame.K_h or event.key == 164:
                         name += 'h'
-                        blits.append(h)
+                        blits.append(keys['h'])
                     elif event.key == pygame.K_j or event.key == 184:
                         name += 'j'
-                        blits.append(j)
+                        blits.append(keys['j'])
                     elif event.key == pygame.K_k or event.key == 186:
                         name += 'k'
-                        blits.append(k)
+                        blits.append(keys['k'])
                     elif event.key == pygame.K_l or event.key == 183:
                         name += 'l'
-                        blits.append(l)
+                        blits.append(keys['l'])
                     elif event.key == pygame.K_z or event.key == 166:
                         name += 'z'
-                        blits.append(z)
+                        blits.append(keys['z'])
                     elif event.key == pygame.K_x or event.key == 167:
                         name += 'x'
-                        blits.append(x)
+                        blits.append(keys['x'])
                     elif event.key == pygame.K_c or event.key == 168:
                         name += 'c'
-                        blits.append(c)
+                        blits.append(keys['c'])
                     elif event.key == pygame.K_v or event.key == 169:
                         name += 'v'
-                        blits.append(v)
+                        blits.append(keys['v'])
                     elif event.key == pygame.K_b or event.key == 170:
                         name += 'b'
-                        blits.append(b)
+                        blits.append(keys['b'])
                     elif event.key == pygame.K_n or event.key == 190:
                         name += 'n'
-                        blits.append(n)
+                        blits.append(keys['n'])
                     elif event.key == pygame.K_m or event.key == 191:
                         name += 'm'
-                        blits.append(m)
+                        blits.append(keys['m'])
                 if event.key == pygame.K_BACKSPACE and len(blits) != 0:
                     blits.pop()
                     name = name[:len(name)-1:]
@@ -181,7 +164,6 @@ def nameinput(ip = ip, host = False):
                         num = sock.recv(512).decode()
                         gameclient.init(name = name, ip = ip, sock = sock, num = num)
                         run = False
-        pygame.display.update()
 
 def ipinput():
     run = True
@@ -204,43 +186,44 @@ def ipinput():
                     run = False
                 if event.key == pygame.K_0:
                     ip += '0'
-                    blits.append(qq)
+                    blits.append(keys['0'])
                 if event.key == pygame.K_1:
                     ip += '1'
-                    blits.append(ww)
+                    blits.append(keys['1'])
                 if event.key == pygame.K_2:
                     ip += '2'
-                    blits.append(ee)
+                    blits.append(keys['2'])
                 if event.key == pygame.K_3:
                     ip += '3'
-                    blits.append(rr)
+                    blits.append(keys['3'])
                 if event.key == pygame.K_4:
                     ip += '4'
-                    blits.append(tt)
+                    blits.append(keys['4'])
                 if event.key == pygame.K_5:
                     ip += '5'
-                    blits.append(yy)
+                    blits.append(keys['5'])
                 if event.key == pygame.K_6:
                     ip += '6'
-                    blits.append(uu)
+                    blits.append(keys['6'])
                 if event.key == pygame.K_7:
                     ip += '7'
-                    blits.append(ii)
+                    blits.append(keys['7'])
                 if event.key == pygame.K_8:
                     ip += '8'
-                    blits.append(oo)
+                    blits.append(keys['8'])
                 if event.key == pygame.K_9:
                     ip += '9'
-                    blits.append(pp)
+                    blits.append(keys['9'])
                 if event.key == 46 or event.key == 192:
                     ip += '.'
-                    blits.append(aa)
+                    blits.append(keys['.'])
                 if event.key == pygame.K_BACKSPACE:
                     blits.pop()
                     ip = ip[:len(ip)-1:]
                 if event.key == pygame.K_RETURN:
                     #nameinput(ip)
                     print('mda')
+                    run = False
 
 def k2():
     run = True
@@ -268,17 +251,19 @@ def k2():
 
 run = True
 while run:
-    pygame.time.delay(10)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1:
-                nameinput()
-            if event.key == pygame.K_2:
-                k2()
-    win.fill((0,0,0))
-    win.blit(create,(10,120))
-    win.blit(join,(10,150))
-    pygame.display.update()
+    try:
+        win.fill((0,0,0))
+        win.blit(create,(10,120))
+        win.blit(join,(10,150))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    nameinput()
+                if event.key == pygame.K_2:
+                    k2()a
+    except:
+        run = False
 pygame.quit()
