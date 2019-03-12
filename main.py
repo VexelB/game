@@ -263,7 +263,7 @@ while run:
                 if event.key == pygame.K_1:
                     nameinput()
                 if event.key == pygame.K_2:
-                    k2()a
+                    k2()
     except:
         run = False
 pygame.quit()

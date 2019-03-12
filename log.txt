@@ -1,0 +1,5 @@
+Tue Mar 12 10:13:48 2019 Conns:
+                              0: ('127.0.0.1', 54205)Jendos ('127.0.0.1', 54207) Jendos
+Tue Mar 12 10:13:53 2019 Closed Conn: [Errno 54] Connection reset by peer
+                              0: ('127.0.0.1', 54205) Jendos ('127.0.0.1', 54207) Jendos
+                          score: [1, 0]
