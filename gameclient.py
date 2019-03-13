@@ -64,8 +64,13 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                 q = 3
                 for i in range(len(map)):
                     for j in range(len(map[0])):
-                        map[i][j] = int(data[q])
+                        if num == '0':
+                            map[i][j] = int(data[q])
+                        elif num == '1':
+                            map[len(map)-1-i][len(map[0])-1-j] = int(data[q])
                         q += 1
+                for i in range(len(map)):
+                    for j in range(len(map[0])):
                         x = win_height / 9 * i
                         y = win_width / 9 * j
                         if map[i][j] == 1:
@@ -77,30 +82,57 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                 interface.draw(win)
             elif 'hp' in data:
                 data1 = data.split(',')
-                try:
-                    pygame.draw.rect(win, (0, 0, 0), (int(float(data1[0])), int(float(data1[1])), int(float(data1[2])), int(float(data1[3]))))
-                except Exception as e:
-                    print(e)
-                try:
-                    pygame.draw.rect(win, (250, 250, 250), (int(float(data1[4])), int(float(data1[5])), int(float(data1[6])), int(float(data1[7]))))
-                except Exception as e:
-                    print(e)
-                try:
-                    if data1[8] != '|bot':
-                        win.blit(pygame.font.SysFont('Comic Sans MS', win_height//23).render(data1[8], False, (250, 250, 250)), (int(float(data1[4])), int(float(data1[5])-win_height//10//2+3)))
-                except Exception as e:
-                    print(e)
+                if num == '0':
+                    try:
+                        pygame.draw.rect(win, (0, 0, 0), (int(float(data1[0])), int(float(data1[1])), int(float(data1[2])), int(float(data1[3]))))
+                    except Exception as e:
+                        print(e)
+                    try:
+                        pygame.draw.rect(win, (250, 250, 250), (int(float(data1[4])), int(float(data1[5])), int(float(data1[6])), int(float(data1[7]))))
+                    except Exception as e:
+                        print(e)
+                    try:
+                        if data1[8] != '|bot':
+                            win.blit(pygame.font.SysFont('Comic Sans MS', win_height//23).render(data1[8], False, (250, 250, 250)), (int(float(data1[4])), int(float(data1[5])-win_height//10//2+3)))
+                    except Exception as e:
+                        print(e)
+                elif num == '1':
+                    try:
+                        pygame.draw.rect(win, (0, 0, 0), (int(win_width - float(data1[0]) - win_width//10+4), int(win_height - float(data1[1])), int(float(data1[2])), int(float(data1[3]))))
+                    except Exception as e:
+                        print(e)
+                    try:
+                        pygame.draw.rect(win, (250, 250, 250), (int(win_width - float(data1[4]) - win_width//10+4), int(win_height - float(data1[5])+3), int(float(data1[6])), int(float(data1[7]))))
+                    except Exception as e:
+                        print(e)
+                    try:
+                        if data1[8] != '|bot':
+                            win.blit(pygame.font.SysFont('Comic Sans MS', win_height//23).render(data1[8], False, (250, 250, 250)), (int(win_width - float(data1[4]) - win_width//10+5), int( win_height - float(data1[5])-win_height//10//2+3)))
+                    except Exception as e:
+                        print(e)
             elif 'orient' in data:
-                if 'red' in data:
-                    data1 = data.split(',')
-                    pygame.draw.rect(win, (250, 0, 0), (int(float(data1[0])), int(float(data1[1])), win_height//100, win_height//100))
-                elif 'blue' in data:
-                    data1 = data.split(',')
-                    if len(data1) > 1:
-                        pygame.draw.rect(win, (0, 0, 250), (int(float(data1[0])), int(float(data1[1])), win_height//100, win_height//100))
+                if num == '0':
+                    if 'red' in data:
+                        data1 = data.split(',')
+                        pygame.draw.rect(win, (250, 0, 0), (int(float(data1[0])), int(float(data1[1])), win_height//100, win_height//100))
+                    elif 'blue' in data:
+                        data1 = data.split(',')
+                        if len(data1) > 1:
+                            pygame.draw.rect(win, (0, 0, 250), (int(float(data1[0])), int(float(data1[1])), win_height//100, win_height//100))
+                elif num == '1':
+                    if 'red' in data:
+                        data1 = data.split(',')
+                        pygame.draw.rect(win, (250, 0, 0), (int(win_width - float(data1[0])), int(win_height - float(data1[1])), win_height//100, win_height//100))
+                    elif 'blue' in data:
+                        data1 = data.split(',')
+                        if len(data1) > 1:
+                            pygame.draw.rect(win, (0, 0, 250), (int(win_width - float(data1[0])), int(win_height - float(data1[1])), win_height//100, win_height//100))
             elif 'bullet' in data:
                 data1 = data.split(',')
-                pygame.draw.circle(win, (250, 250, 0), (int(data1[0]), int(data1[1])), win_width//100)
+                if num == '0':
+                    pygame.draw.circle(win, (250, 250, 0), (int(data1[0]), int(data1[1])), win_width//100)
+                elif num == '1':
+                    pygame.draw.circle(win, (250, 250, 0), (win_width - int(data1[0]), win_height - int(data1[1])), win_width//100)
             elif 'score' in data:
                 data1 = data.split(',')
                 try:
@@ -182,24 +214,42 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w or event.key == 172:
-                    sendata += 'w/'
-                if event.key == pygame.K_s or event.key == 161:
-                    sendata += 's/'
-                if event.key == pygame.K_a or event.key == 160:
-                    sendata += 'a/'
-                if event.key == pygame.K_d or event.key == 162:
-                    sendata += 'd/'
+                if num == '1':
+                    if event.key == pygame.K_w or event.key == 172:
+                        sendata += 's/'
+                    if event.key == pygame.K_s or event.key == 161:
+                        sendata += 'w/'
+                    if event.key == pygame.K_a or event.key == 160:
+                        sendata += 'd/'
+                    if event.key == pygame.K_d or event.key == 162:
+                        sendata += 'a/'
+                    if event.key == pygame.K_LEFT:
+                        sendata += 'right/'
+                    if event.key == pygame.K_RIGHT:
+                        sendata += 'left/'
+                    if event.key == pygame.K_UP:
+                        sendata += 'down/'
+                    if event.key == pygame.K_DOWN:
+                        sendata += 'up/'
+                elif num == '0':
+                    if event.key == pygame.K_w or event.key == 172:
+                        sendata += 'w/'
+                    if event.key == pygame.K_s or event.key == 161:
+                        sendata += 's/'
+                    if event.key == pygame.K_a or event.key == 160:
+                        sendata += 'a/'
+                    if event.key == pygame.K_d or event.key == 162:
+                        sendata += 'd/'
+                    if event.key == pygame.K_LEFT:
+                        sendata += 'left/'
+                    if event.key == pygame.K_RIGHT:
+                        sendata += 'right/'
+                    if event.key == pygame.K_UP:
+                        sendata += 'up/'
+                    if event.key == pygame.K_DOWN:
+                        sendata += 'down/'
                 if event.key == pygame.K_SPACE:
                     sendata += 'space/'
-                if event.key == pygame.K_LEFT:
-                    sendata += 'left/'
-                if event.key == pygame.K_RIGHT:
-                    sendata += 'right/'
-                if event.key == pygame.K_UP:
-                    sendata += 'up/'
-                if event.key == pygame.K_DOWN:
-                    sendata += 'down/'
                 if event.key == pygame.K_r or event.key == 174:
                     sendata += 'r/'
         if sendata != 'blue/' and sendata != 'red/':
