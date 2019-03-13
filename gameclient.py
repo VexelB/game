@@ -79,16 +79,17 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                 data1 = data.split(',')
                 try:
                     pygame.draw.rect(win, (0, 0, 0), (int(float(data1[0])), int(float(data1[1])), int(float(data1[2])), int(float(data1[3]))))
-                except:
-                    pass
+                except Exception as e:
+                    print(e)
                 try:
                     pygame.draw.rect(win, (250, 250, 250), (int(float(data1[4])), int(float(data1[5])), int(float(data1[6])), int(float(data1[7]))))
-                except:
-                    pass
+                except Exception as e:
+                    print(e)
                 try:
-                    win.blit(pygame.font.SysFont('Comic Sans MS', win_height//23).render(data1[8], False, (250, 250, 250)), (int(float(data1[4])), int(float(data1[5])-win_height//10//2+3)))
-                except:
-                    pass
+                    if data1[8] != '|bot':
+                        win.blit(pygame.font.SysFont('Comic Sans MS', win_height//23).render(data1[8], False, (250, 250, 250)), (int(float(data1[4])), int(float(data1[5])-win_height//10//2+3)))
+                except Exception as e:
+                    print(e)
             elif 'orient' in data:
                 if 'red' in data:
                     data1 = data.split(',')

@@ -158,6 +158,13 @@ while True:
                 engine.units[i].name = conn.recv(512).decode()
             except:
                 conn.close()
+            if engine.units[i].name == '|bot':
+                conns.append(conn)
+                addrs.append(addr)
+                i += 1
+                engine.units.append(engine.UnitBlue(i//2))
+                engine.units[i].name = '|bot'
+                log.write(time.ctime(time.time())+ " Bot Conn:"+conns[i]+'\n')
             conns.append(conn)
             addrs.append(addr)
         elif i%2 == 1:
@@ -170,7 +177,7 @@ while True:
             log.write(time.ctime(time.time())+" Conns:"+'\n')
             j = 0
             while j < len(conns) - 1:
-                log.write("                              "+str(j//2)+': '+str(addrs[j])+engine.units[j].name+' '+str(addrs[j+1])+' '+engine.units[j+1].name+'\n')
+                log.write(f"                              {j//2}: {addrs[j]} name = '{engine.units[j].name}' {addrs[j+1]} name = '{engine.units[j+1].name}'\n")
                 j += 2
         i += 1
     except Exception as e:
@@ -181,7 +188,8 @@ while True:
         m = 0
         while j < len(conns) - 1:
             try:
-                parser(conns[j+1].recv(512).decode(), j+1)
+                if addrs[j] != addrs[j+1]:
+                    parser(conns[j+1].recv(512).decode(), j+1)
                 parser(conns[j].recv(512).decode(), j)
                 sender(conns[j], conns[j+1], j)
             except Exception as e:
