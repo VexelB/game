@@ -206,6 +206,7 @@ while True:
                 engine.units.pop(j)
                 engine.units.pop(j)
                 engine.score.pop(j//2)
+                bullets.pop(j//2)
                 i -= 2
             j += 2
     log.close()

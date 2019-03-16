@@ -158,3 +158,14 @@ Sat Mar 16 12:02:50 2019 Conns:
 Sat Mar 16 12:02:53 2019 Closed Conn: [Errno 54] Connection reset by peer
                               0: ('127.0.0.1', 56984) <engine.UnitRed object at 0x105bf7b00> name = 'Jendos'  ('127.0.0.1', 56987) <engine.UnitBlue object at 0x105bf7ba8> name = 'Jendos'
                           score: [0, 1] 
+Sat Mar 16 12:30:24 2019 Conns:
+                              0: ('127.0.0.1', 62677) <engine.UnitRed object at 0x10db0b390> name = 'Jendos'  ('127.0.0.1', 62679) <engine.UnitBlue object at 0x10db510b8> name = 'Jendos'
+Sat Mar 16 12:30:44 2019 Conns:
+                              0: ('127.0.0.1', 62677) <engine.UnitRed object at 0x10db0b390> name = 'Jendos'  ('127.0.0.1', 62679) <engine.UnitBlue object at 0x10db510b8> name = 'Jendos'
+                              1: ('127.0.0.1', 62684) <engine.UnitRed object at 0x10db51160> name = 'Jendos'  ('127.0.0.1', 62686) <engine.UnitBlue object at 0x10db51ef0> name = 'Jendos'
+Sat Mar 16 12:30:57 2019 Closed Conn: [Errno 54] Connection reset by peer
+                              0: ('127.0.0.1', 62677) <engine.UnitRed object at 0x10db0b390> name = 'Jendos'  ('127.0.0.1', 62679) <engine.UnitBlue object at 0x10db510b8> name = 'Jendos'
+                          score: [0, 0] 
+Sat Mar 16 12:31:03 2019 Closed Conn: [Errno 54] Connection reset by peer
+                              0: ('127.0.0.1', 62684) <engine.UnitRed object at 0x10db51160> name = 'Jendos'  ('127.0.0.1', 62686) <engine.UnitBlue object at 0x10db51ef0> name = 'Jendos'
+                          score: [1, 0] 
