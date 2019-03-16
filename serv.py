@@ -141,7 +141,7 @@ addrs = []
 bullets = []
 sock = socket.socket()
 sock.bind(('', 9090))
-sock.settimeout(0.0001)
+sock.settimeout(0.0000001)
 sock.listen(2)
 while True:
     log = open("log.txt", "a")
@@ -177,7 +177,7 @@ while True:
             log.write(time.ctime(time.time())+" Conns:"+'\n')
             j = 0
             while j < len(conns) - 1:
-                log.write(f"                              {j//2}: {addrs[j]} name = '{engine.units[j].name}' {addrs[j+1]} name = '{engine.units[j+1].name}'\n")
+                log.write(f"                              {j//2}: {addrs[j]} {engine.units[j]} name = '{engine.units[j].name}'  {addrs[j+1]} {engine.units[j+1]} name = '{engine.units[j+1].name}'\n")
                 j += 2
         i += 1
     except Exception as e:
@@ -194,8 +194,8 @@ while True:
                 sender(conns[j], conns[j+1], j)
             except Exception as e:
                 log.write(time.ctime(time.time())+" Closed Conn: "+str(e)+'\n')
-                log.write("                              "+str(j//2)+': '+str(addrs[j])+' '+engine.units[j].name+' '+str(addrs[j+1])+' '+engine.units[j+1].name+'\n')
-                log.write("                          score: "+str(engine.score[j//2])+'\n')
+                log.write(f"                              {j//2}: {addrs[j]} {engine.units[j]} name = '{engine.units[j].name}'  {addrs[j+1]} {engine.units[j+1]} name = '{engine.units[j+1].name}'\n")
+                log.write(f"                          score: {engine.score[j//2]} \n")
                 conns[j].close()
                 conns.pop(j)
                 conns[j].close()
