@@ -50,8 +50,8 @@ class UnitBlue:
     def destroy(self, j):
         self.helth -= 1
         if self.helth == 0:
-            maps[j//2][self.x][self.y] = 0
-            score[j//2][0] += 1
+            maps[j][self.x][self.y] = 0
+            score[j][0] += 1
             del self
 
 class UnitRed:

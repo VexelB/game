@@ -200,6 +200,8 @@ while True:
                 conns.pop(j)
                 conns[j].close()
                 conns.pop(j)
+                addrs.pop(j)
+                addrs.pop(j)
                 engine.maps.pop(j//2)
                 engine.units.pop(j)
                 engine.units.pop(j)
