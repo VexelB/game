@@ -8,9 +8,9 @@ score = [0, 0]
 class Interface:
     myfont = pygame.font.SysFont('Comic Sans MS', win_height//23)
     info = myfont.render('Переключение:', False, (250, 250, 250))
-    atck = myfont.render('1: Атаковать (СПАСЕ)', False, (250, 250, 250))
-    heal = myfont.render('2: Хилить (СПАСЕ)', False, (250, 250, 250))
-    deff = myfont.render('3: Поддержка (КОНСТ)', False, (250, 250, 250))
+    atck = myfont.render('1нету: Атаковать (СПАСЕ)', False, (250, 250, 250))
+    heal = myfont.render('2еще: Хилить (СПАСЕ)', False, (250, 250, 250))
+    deff = myfont.render('3нету: Поддержка (КОНСТ)', False, (250, 250, 250))
     opts = myfont.render('Управление:', False, (250, 250, 250))
     wsad = myfont.render('Целиться: WSAD', False, (250, 250, 250))
     udrl = myfont.render('ЕЗДЕТЬ: стрелочки', False, (250, 250, 250))

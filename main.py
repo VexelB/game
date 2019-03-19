@@ -267,25 +267,26 @@ while run:
                     nameinput()
                 if event.key == pygame.K_2:
                     k2()
-                if event.key == pygame.k_3:
-                    loop = True
-                    i = 0
-                    while loop:
-                        try:
-                            sock = socket.create_connection((ip, 9090))
-                            loop = False
-                        except ConnectionRefusedError:
-                            if i == 0:
-                                print('-------------------------------------------------------------------')
-                                print("server is off, you can wait or CTRL+C and find out what's going on")
-                                print('-------------------------------------------------------------------')
-                                i += 1
-                        except Exception as eq:
-                            print(eq)
-                    sock.send('|bot'.encode())
-                    num = sock.recv(512).decode()
-                    gameclient.init(name = name, ip = ip, sock = sock, num = num)
-                    run = False
+                #if event.key == pygame.K_3:
+                #    loop = True
+                #    i = 0
+                #    while loop:
+                #        try:
+                #            sock = socket.create_connection((ip, 9090))
+                #            loop = False
+                #        except ConnectionRefusedError:
+                #            if i == 0:
+                #                print('-------------------------------------------------------------------')
+                #                print("server is off, you can wait or CTRL+C and find out what's going on")
+                #                print('-------------------------------------------------------------------')
+                #                i += 1
+                #        except Exception as eq:
+                #            print(eq)
+                #    sock.send('|bot'.encode())
+                #    num = sock.recv(512).decode()
+                #    print(num)
+                #    gameclient.init(name = name, ip = ip, sock = sock, num = num)
+                #    run = False
     except:
         run = False
 pygame.quit()

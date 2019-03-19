@@ -156,8 +156,20 @@ while True:
             engine.units.append(engine.UnitRed(i//2))
             try:
                 engine.units[i].name = conn.recv(512).decode()
+                if len(engine.units[i].name) > 6:
+                    conn.close()
+                    engine.maps.pop(i//2)
+                    engine.units.pop(i)
+                    engine.score.pop(j//2)
+                    bullets.pop(j//2)
+                    i -= 1
             except:
                 conn.close()
+                engine.maps.pop(i//2)
+                engine.units.pop(i)
+                engine.score.pop(j//2)
+                bullets.pop(j//2)
+                i -= 1
             if engine.units[i].name == '|bot':
                 conns.append(conn)
                 addrs.append(addr)
@@ -174,15 +186,15 @@ while True:
             addrs.append(addr)
             conns[i].send(str(i%2).encode())
             conns[i-1].send(str((i-1)%2).encode())
-            log.write(time.ctime(time.time())+" Conns:"+'\n')
+            log.write(f"{time.ctime(time.time())} Conns: i = {i} units = {len(engine.units)}\n")
             j = 0
             while j < len(conns) - 1:
-                log.write(f"                              {j//2}: {addrs[j]} {engine.units[j]} name = '{engine.units[j].name}'  {addrs[j+1]} {engine.units[j+1]} name = '{engine.units[j+1].name}'\n")
+                log.write(f"                              {j//2}: {addrs[j]} {str(engine.units[j])[8:13:]} |{j}| name = '{engine.units[j].name}'  {addrs[j+1]} {str(engine.units[j+1])[8:13:]} |{j+1}| name = '{engine.units[j+1].name}'\n")
                 j += 2
         i += 1
     except Exception as e:
         if type(e) != socket.timeout:
-            log.write(time.ctime(time.time())+" There is an error with conectiong: " + str(e)+'\n')
+            log.write(f"{time.ctime(time.time())} There is an error with conectiong: {str(e)} \n")
     if len(conns) > 1:
         j = 0
         m = 0
@@ -192,10 +204,14 @@ while True:
                     parser(conns[j+1].recv(512).decode(), j+1)
                 parser(conns[j].recv(512).decode(), j)
                 sender(conns[j], conns[j+1], j)
+                if addrs[j] != addrs[j+1]:
+                    parser(conns[j+1].recv(512).decode(), j+1)
+                parser(conns[j].recv(512).decode(), j)
+                sender(conns[j], conns[j+1], j)
             except Exception as e:
-                log.write(time.ctime(time.time())+" Closed Conn: "+str(e)+'\n')
-                log.write(f"                              {j//2}: {addrs[j]} {engine.units[j]} name = '{engine.units[j].name}'  {addrs[j+1]} {engine.units[j+1]} name = '{engine.units[j+1].name}'\n")
-                log.write(f"                          score: {engine.score[j//2]} \n")
+                log.write(f"{time.ctime(time.time())} Closed Conn: {str(e)}\n")
+                log.write(f"                              {j//2}: score: {engine.score[j//2]}\n")
+                log.write(f"                              users: {engine.units[j].name} {addrs[j]} {engine.units[j+1].name} {addrs[j+1]} \n")
                 conns[j].close()
                 conns.pop(j)
                 conns[j].close()
