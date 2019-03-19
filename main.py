@@ -160,12 +160,13 @@ def nameinput(ip = ip, host = False):
                                     i += 1
                             except Exception as eq:
                                 print(eq)
-                        sock.send(name.encode())
-                        num = sock.recv(512).decode()
-                        gameclient.init(name = name, ip = ip, sock = sock, num = num)
-                        pygame.display.set_mode((win_width, win_height))
-                        name = ''
-                        run = False
+                        if name != '':
+                            sock.send(name.encode())
+                            num = sock.recv(512).decode()
+                            gameclient.init(name = name, ip = ip, sock = sock, num = num)
+                            pygame.display.set_mode((win_width, win_height))
+                            name = ''
+                            run = False
 
 def ipinput():
     run = True
