@@ -204,10 +204,6 @@ while True:
                     parser(conns[j+1].recv(512).decode(), j+1)
                 parser(conns[j].recv(512).decode(), j)
                 sender(conns[j], conns[j+1], j)
-                if addrs[j] != addrs[j+1]:
-                    parser(conns[j+1].recv(512).decode(), j+1)
-                parser(conns[j].recv(512).decode(), j)
-                sender(conns[j], conns[j+1], j)
             except Exception as e:
                 log.write(f"{time.ctime(time.time())} Closed Conn: {str(e)}\n")
                 log.write(f"                              {j//2}: score: {engine.score[j//2]}\n")

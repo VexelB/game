@@ -32,9 +32,9 @@ class Interface:
 
 def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
 
-    def parser():
+    def parser(data1):
+        win.fill((0, 0, 0))
         global score
-        data1 = sock.recv(512).decode()
         dataset = data1.split('/')
         for data in dataset:
             if 'bul1' in data:
@@ -155,9 +155,6 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                         pygame.draw.rect(win, (0, 0, 250), (win_height//20*19, win_height+win_height//5//2-20, 15, 15))
         pygame.display.update()
 
-    def draw():
-        win.fill((0, 0, 0))
-
     global score
     map = [[0 for i in range(9)] for j in range(9)]
     interface = Interface()
@@ -182,6 +179,8 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                 print(e)
     run = True
     i = 0
+    data = ''
+    sock.settimeout(0.0000001)
     while run:
         try:
             sock.send('1/'.encode())
@@ -195,8 +194,7 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
         except Exception as e:
             print(e)
         try:
-            draw()
-            parser()
+            data = sock.recv(512).decode()
         except ConnectionResetError:
             if i == 0:
                 print('----------------------------')
@@ -205,7 +203,9 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                 run = False
                 i += 1
         except Exception as e:
-            print(e)
+            if type(e) != socket.timeout:
+                print(e)
+        parser(data)
         if num == '0':
             sendata = 'red/'
         if num == '1':
