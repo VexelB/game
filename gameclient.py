@@ -264,6 +264,6 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                     i += 1
             except Exception as e:
                 print(e)
-    pygame.quit()
+    #pygame.quit()
 if __name__ == '__main__':
     init()

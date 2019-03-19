@@ -2,6 +2,24 @@ import socket
 import engine
 import time
 
+def buletmove(q):
+    for bullet in bullets[q//2]:
+        x, y = int(bullet.x*len(engine.maps[q//2])/engine.win_height), int(bullet.y*len(engine.maps[q//2][0])/engine.win_width)
+        if x >= 9:
+            x -= 1
+        if y >= 9:
+            y -= 1
+        if engine.maps[q//2][x][y] != 0:
+            bullets[q//2].pop(bullets[q//2].index(bullet))
+            if engine.units[q].x == x and engine.units[q].y == y:
+                engine.units[q].destroy(q//2)
+            if engine.units[q+1].x == x and engine.units[q+1].y ==y:
+                engine.units[q+1].destroy(q//2)
+        elif bullet.x < engine.win_height and bullet.x > 0 and bullet.y < engine.win_width and bullet.y > 0:
+            bullet.move()
+        else:
+            bullets[q//2].pop(bullets[q//2].index(bullet))
+
 def reinit(j):
     j = j//2
     j = j*2
@@ -100,22 +118,6 @@ def sender(conn, conn1, q):
             sendata += str(ab + engine.units[q+1].width + 5)+',' + str(bb + engine.units[q+1].width//2 + 3)+','
             sendata += 'orient blue/'
     for bullet in bullets[q//2]:
-        x, y = int(bullet.x*len(engine.maps[q//2])/engine.win_height), int(bullet.y*len(engine.maps[q//2][0])/engine.win_width)
-        if x >= 9:
-            x -= 1
-        if y >= 9:
-            y -= 1
-        if engine.maps[q//2][x][y] != 0:
-            bullets[q//2].pop(bullets[q//2].index(bullet))
-            if engine.units[q].x == x and engine.units[q].y == y:
-                engine.units[q].destroy(q//2)
-            if engine.units[q+1].x == x and engine.units[q+1].y ==y:
-                engine.units[q+1].destroy(q//2)
-        elif bullet.x < engine.win_height and bullet.x > 0 and bullet.y < engine.win_width and bullet.y > 0:
-            bullet.move()
-        else:
-            bullets[q//2].pop(bullets[q//2].index(bullet))
-    for bullet in bullets[q//2]:
         sendata += str(bullet.x) + ',' + str(bullet.y) + ',' + 'bullet/'
     sendata += engine.units[q].reload + ',red re/'
     sendata += engine.units[q+1].reload + ',blue re/'
@@ -203,10 +205,13 @@ while True:
                 if addrs[j] != addrs[j+1]:
                     parser(conns[j+1].recv(512).decode(), j+1)
                 parser(conns[j].recv(512).decode(), j)
+                buletmove(j)
                 if addrs[j] != addrs[j+1]:
                     parser(conns[j+1].recv(512).decode(), j+1)
                 parser(conns[j].recv(512).decode(), j)
+                buletmove(j)
                 sender(conns[j], conns[j+1], j)
+                buletmove(j)
             except Exception as e:
                 log.write(f"{time.ctime(time.time())} Closed Conn: {str(e)}\n")
                 log.write(f"                              {j//2}: score: {engine.score[j//2]}\n")

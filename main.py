@@ -163,6 +163,8 @@ def nameinput(ip = ip, host = False):
                         sock.send(name.encode())
                         num = sock.recv(512).decode()
                         gameclient.init(name = name, ip = ip, sock = sock, num = num)
+                        pygame.display.set_mode((win_width, win_height))
+                        name = ''
                         run = False
 
 def ipinput():
