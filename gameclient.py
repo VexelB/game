@@ -1,5 +1,6 @@
 import pygame
 import socket
+import time
 
 pygame.init()
 win_height = win_width = 500
@@ -182,6 +183,7 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
     data = ''
     sock.settimeout(0.0000001)
     while run:
+        start_time=time.time()
         try:
             sock.send('1/'.encode())
         except BrokenPipeError:
@@ -264,6 +266,9 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                     i += 1
             except Exception as e:
                 print(e)
+        delay = time.time() - start_time
+        if delay > 0.1:
+            print(f"dellay is {delay}")
     #pygame.quit()
 if __name__ == '__main__':
     init()

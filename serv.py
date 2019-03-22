@@ -32,6 +32,10 @@ def reinit(j):
             engine.units[j+1].__init__(j//2)
 
 def parser(data1, j):
+    try:
+        buletmove(j)
+    except:
+        pass
     dataset = data1.split('/')
     for data in dataset:
         if engine.units[j].helth != 0:
@@ -159,12 +163,15 @@ while True:
             try:
                 engine.units[i].name = conn.recv(512).decode()
                 if len(engine.units[i].name) > 6:
-                    conn.close()
-                    engine.maps.pop(i//2)
-                    engine.units.pop(i)
-                    engine.score.pop(j//2)
-                    bullets.pop(j//2)
-                    i -= 1
+                    try:
+                        conn.close()
+                        engine.maps.pop(i//2)
+                        engine.units.pop(i)
+                        engine.score.pop(j//2)
+                        bullets.pop(j//2)
+                        i -= 1
+                    except:
+                        pass
             except:
                 conn.close()
                 engine.maps.pop(i//2)
@@ -196,22 +203,20 @@ while True:
         i += 1
     except Exception as e:
         if type(e) != socket.timeout:
-            log.write(f"{time.ctime(time.time())} There is an error with conectiong: {str(e)} \n")
+            log.write(f"{time.ctime(time.time())} There is an error with conectiong: i={i} {str(e)} \n")
     if len(conns) > 1:
         j = 0
         m = 0
         while j < len(conns) - 1:
+            start_time=time.time()
             try:
                 if addrs[j] != addrs[j+1]:
                     parser(conns[j+1].recv(512).decode(), j+1)
                 parser(conns[j].recv(512).decode(), j)
-                buletmove(j)
                 if addrs[j] != addrs[j+1]:
                     parser(conns[j+1].recv(512).decode(), j+1)
                 parser(conns[j].recv(512).decode(), j)
-                buletmove(j)
                 sender(conns[j], conns[j+1], j)
-                buletmove(j)
             except Exception as e:
                 log.write(f"{time.ctime(time.time())} Closed Conn: {str(e)}\n")
                 log.write(f"                              {j//2}: score: {engine.score[j//2]}\n")
@@ -228,5 +233,8 @@ while True:
                 engine.score.pop(j//2)
                 bullets.pop(j//2)
                 i -= 2
+            delay = time.time() - start_time
+            if delay > 0.1:
+                log.write(f"Dellay is {delay} \n")
             j += 2
     log.close()
