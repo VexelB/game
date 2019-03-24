@@ -34,6 +34,7 @@ def reinit(j):
 def parser(data1, j):
     try:
         buletmove(j)
+        buletmove(j)
     except:
         pass
     dataset = data1.split('/')
@@ -138,6 +139,7 @@ def sender(conn, conn1, q):
         a, b, c, d = int(engine.win_height / len(engine.maps[q//2]) * engine.units[q+1].x)+5, int(engine.win_height / len(engine.maps[q//2][0]) * engine.units[q+1].y) + engine.units[q+1].height // 2, engine.units[q+1].width, 10
         a1, b1, c1, d1 = int(engine.win_height / len(engine.maps[q//2]) * engine.units[q+1].x)+5, int(engine.win_height / len(engine.maps[q//2][0]) * engine.units[q+1].y) + engine.units[q+1].height // 2 + 2, engine.UnitBlue.width * engine.units[q+1].helth // 5, 6
         sendata += str(a) + ',' + str(b) + ',' + str(c) + ',' + str(d) + ',' + str(a1) + ',' + str(b1) + ',' + str(c1) + ',' + str(d1) + ',' + engine.units[q+1].name + ',hp/'
+    sendata += f"{time.time()},delay/"
     conn.send(sendata.encode())
     conn1.send(sendata.encode())
 
@@ -147,9 +149,9 @@ addrs = []
 bullets = []
 sock = socket.socket()
 sock.bind(('', 9090))
-sock.settimeout(0.0000001)
 sock.listen(2)
 while True:
+    sock.settimeout(0.0000001)
     log = open("log.txt", "a")
     try:
         conn, addr = sock.accept()
@@ -208,7 +210,8 @@ while True:
         j = 0
         m = 0
         while j < len(conns) - 1:
-            start_time=time.time()
+            sock.settimeout(0)
+            #start_time=time.time()
             try:
                 if addrs[j] != addrs[j+1]:
                     parser(conns[j+1].recv(512).decode(), j+1)
@@ -233,8 +236,8 @@ while True:
                 engine.score.pop(j//2)
                 bullets.pop(j//2)
                 i -= 2
-            delay = time.time() - start_time
-            if delay > 0.1:
-                log.write(f"Dellay is {delay} \n")
-            j += 2
+            #delay = time.time() - start_time
+            #if delay > 0.3:
+            #    log.write(f"Dellay is {delay} \n")
+            #j += 2
     log.close()

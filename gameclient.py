@@ -27,7 +27,7 @@ class Interface:
         win.blit(self.udrl, (win_width//2, win_height+win_height//5//10*3))
         win.blit(self.wsad, (win_width//2, win_height+win_height//5//10*5))
         win.blit(self.spce, (win_width//2, win_height+win_height//5//10*7))
-        win.blit(self.rrrr, (win_height//20*19, win_height+win_height//5//2))
+        win.blit(self.rrrr, (win_height//20*19, win_height+win_height//5//2-15))
         win.blit(self.myfont.render(f'Красных очков: {score[0]}', False, (250, 250, 250)), (win_width//50, win_height//100))
         win.blit(self.myfont.render(f'Синих очков: {score[1]}', False, (250, 250, 250)), (win_width//50, (win_height//100+win_height//20)))
 
@@ -61,6 +61,16 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                         pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
                         if data1[1] == 'reload':
                             pygame.draw.rect(win, (0, 250, 0), ((win_height-10)-15*i, 0, win_width//25, win_height//50))
+            elif 'delay' in data:
+                data1 = data.split(',')
+                delay = time.time()-float(data1[0])
+                if delay < 0.2:
+                    color = (0, 255, 0)
+                elif delay > 0.2:
+                    color = (255, 255, 0)
+                    if delay > 1:
+                        color = (255, 0, 0)
+                win.blit(interface.myfont.render("delay", False, color), (win_height//20*18, win_height+win_height//5//2+25))
             elif 'map' in data:
                 q = 3
                 for i in range(len(map)):
@@ -149,11 +159,11 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                 if 'red' in data:
                     data1 = data.split(',')
                     if data1[0] == 'yes':
-                        pygame.draw.rect(win, (250, 0, 0), (win_height//20*19, win_height+win_height//5//2+20, 15, 15))
+                        pygame.draw.rect(win, (250, 0, 0), (win_height//20*19, win_height+win_height//5//2+5, 15, 15))
                 if 'blue' in data:
                     data1 = data.split(',')
                     if data1[0] == 'yes':
-                        pygame.draw.rect(win, (0, 0, 250), (win_height//20*19, win_height+win_height//5//2-20, 15, 15))
+                        pygame.draw.rect(win, (0, 0, 250), (win_height//20*19, win_height+win_height//5//2-35, 15, 15))
         pygame.display.update()
 
     global score
@@ -183,7 +193,7 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
     data = ''
     sock.settimeout(0.0000001)
     while run:
-        start_time=time.time()
+        #start_time=time.time()
         try:
             sock.send('1/'.encode())
         except BrokenPipeError:
@@ -266,9 +276,9 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                     i += 1
             except Exception as e:
                 print(e)
-        delay = time.time() - start_time
-        if delay > 0.1:
-            print(f"dellay is {delay}")
+        #delay = time.time() - start_time
+        #if delay > 0.1:
+        #    print(f"dellay is {delay}")
     #pygame.quit()
 if __name__ == '__main__':
     init()
