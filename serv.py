@@ -169,8 +169,8 @@ while True:
                         conn.close()
                         engine.maps.pop(i//2)
                         engine.units.pop(i)
-                        engine.score.pop(j//2)
-                        bullets.pop(j//2)
+                        engine.score.pop(i//2)
+                        bullets.pop(i//2)
                         i -= 1
                     except:
                         pass
@@ -178,8 +178,8 @@ while True:
                 conn.close()
                 engine.maps.pop(i//2)
                 engine.units.pop(i)
-                engine.score.pop(j//2)
-                bullets.pop(j//2)
+                engine.score.pop(i//2)
+                bullets.pop(i//2)
                 i -= 1
             if engine.units[i].name == '|bot':
                 conns.append(conn)
