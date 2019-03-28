@@ -61,16 +61,6 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                         pygame.draw.circle(win, (250, 250, 0), ((win_height-5)-15*i, 5), win_width//100)
                         if data1[1] == 'reload':
                             pygame.draw.rect(win, (0, 250, 0), ((win_height-10)-15*i, 0, win_width//25, win_height//50))
-            elif 'delay' in data:
-                data1 = data.split(',')
-                delay = time.time()-float(data1[0])
-                if delay < 0.2:
-                    color = (0, 255, 0)
-                elif delay > 0.2:
-                    color = (255, 255, 0)
-                    if delay > 1:
-                        color = (255, 0, 0)
-                win.blit(interface.myfont.render("delay", False, color), (win_height//20*18, win_height+win_height//5//2+25))
             elif 'map' in data:
                 q = 3
                 for i in range(len(map)):
@@ -164,7 +154,6 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                     data1 = data.split(',')
                     if data1[0] == 'yes':
                         pygame.draw.rect(win, (0, 0, 250), (win_height//20*19, win_height+win_height//5//2-35, 15, 15))
-        pygame.display.update()
 
     global score
     map = [[0 for i in range(9)] for j in range(9)]
@@ -192,6 +181,7 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
     i = 0
     data = ''
     sock.settimeout(0.0000001)
+    delay = time.time()
     while run:
         #start_time=time.time()
         try:
@@ -218,6 +208,18 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
             if type(e) != socket.timeout:
                 print(e)
         parser(data)
+        try:
+            delay = time.time()-delay
+            if delay < 0.2:
+                color = (0, 255, 0)
+            elif delay > 0.2:
+                color = (255, 255, 0)
+                if delay > 1:
+                    color = (255, 0, 0)
+            win.blit(interface.myfont.render("delay", False, color), (win_height//20*18, win_height+win_height//5//2+25))
+        except:
+            pass
+        pygame.display.update()
         if num == '0':
             sendata = 'red/'
         if num == '1':
@@ -264,21 +266,17 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                     sendata += 'space/'
                 if event.key == pygame.K_r or event.key == 174:
                     sendata += 'r/'
-        if sendata != 'blue/' and sendata != 'red/':
-            try:
-                sock.send((sendata).encode())
-            except BrokenPipeError:
-                if i == 0:
-                    print('----------------------------')
-                    print('Your opponent leave the game')
-                    print('----------------------------')
-                    run = False
-                    i += 1
-            except Exception as e:
-                print(e)
-        #delay = time.time() - start_time
-        #if delay > 0.1:
-        #    print(f"dellay is {delay}")
-    #pygame.quit()
+        try:
+            sock.send((sendata).encode())
+            delay = time.time()
+        except BrokenPipeError:
+            if i == 0:
+                print('----------------------------')
+                print('Your opponent leave the game')
+                print('----------------------------')
+                run = False
+                i += 1
+        except Exception as e:
+            print(e)
 if __name__ == '__main__':
     init()

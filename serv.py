@@ -10,12 +10,13 @@ def buletmove(q):
         if y >= 9:
             y -= 1
         if engine.maps[q//2][x][y] != 0:
-            bullets[q//2].pop(bullets[q//2].index(bullet))
             if engine.units[q].x == x and engine.units[q].y == y:
+                bullets[q//2].pop(bullets[q//2].index(bullet))
                 engine.units[q].destroy(q//2)
             if engine.units[q+1].x == x and engine.units[q+1].y ==y:
                 engine.units[q+1].destroy(q//2)
-        elif bullet.x < engine.win_height and bullet.x > 0 and bullet.y < engine.win_width and bullet.y > 0:
+            bullets[q//2].pop(bullets[q//2].index(bullet))
+        if bullet.x < engine.win_height and bullet.x > 0 and bullet.y < engine.win_width and bullet.y > 0:
             bullet.move()
         else:
             bullets[q//2].pop(bullets[q//2].index(bullet))

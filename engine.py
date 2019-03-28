@@ -6,7 +6,7 @@ score = []
 
 class Bullet:
     radius = win_width//100
-    speed = win_height//60;
+    speed = win_height//70;
     def __init__(self, x, y, orient, color):
         self.x = x
         self.y = y
@@ -48,6 +48,7 @@ class UnitBlue:
             self.y = b
             self.draw(q)
     def destroy(self, j):
+        pass
         self.helth -= 1
         if self.helth == 0:
             maps[j][self.x][self.y] = 0
@@ -80,6 +81,7 @@ class UnitRed:
             self.y = b
             self.draw(q)
     def destroy(self, j):
+        pass
         self.helth -= 1
         if self.helth == 0:
             maps[j][self.x][self.y] = 0
