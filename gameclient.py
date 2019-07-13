@@ -133,7 +133,7 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                 if num == '0':
                     pygame.draw.circle(win, (250, 250, 0), (int(data1[0]), int(data1[1])), win_width//100)
                 elif num == '1':
-                    pygame.draw.circle(win, (250, 250, 0), (win_width - int(data1[0]), win_height - int(data1[1])), win_width//100)
+                    pygame.draw.circle(win, (250, 250, 0), (win_width - int(data1[0]) + win_width//100, win_height - int(data1[1]) + win_width//100), win_width//100)
             elif 'score' in data:
                 data1 = data.split(',')
                 try:
@@ -266,6 +266,8 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                     sendata += 'space/'
                 if event.key == pygame.K_r or event.key == 174:
                     sendata += 'r/'
+                if event.key == pygame.K_ESCAPE:
+                    run = False
         try:
             sock.send((sendata).encode())
             delay = time.time()
@@ -278,5 +280,6 @@ def init(ip = 'localhost', name = 'Jendos', sock = None, num = 0):
                 i += 1
         except Exception as e:
             print(e)
+    sock.close()
 if __name__ == '__main__':
     init()

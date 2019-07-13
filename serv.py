@@ -13,9 +13,13 @@ def buletmove(q):
             if engine.units[q].x == x and engine.units[q].y == y:
                 bullets[q//2].pop(bullets[q//2].index(bullet))
                 engine.units[q].destroy(q//2)
-            if engine.units[q+1].x == x and engine.units[q+1].y ==y:
+            if engine.units[q+1].x == x and engine.units[q+1].y == y:
                 engine.units[q+1].destroy(q//2)
             bullets[q//2].pop(bullets[q//2].index(bullet))
+            for wall in engine.walls[q//2]:
+                if wall.x == x and wall.y == y:
+                    wall.destroy(q//2)
+                    bullets[q//2].pop(bullets[q//2].index(bullet))
         if bullet.x < engine.win_height and bullet.x > 0 and bullet.y < engine.win_width and bullet.y > 0:
             bullet.move()
         else:
@@ -33,11 +37,6 @@ def reinit(j):
             engine.units[j+1].__init__(j//2)
 
 def parser(data1, j):
-    try:
-        buletmove(j)
-        buletmove(j)
-    except:
-        pass
     dataset = data1.split('/')
     for data in dataset:
         if engine.units[j].helth != 0:
@@ -151,46 +150,60 @@ bullets = []
 sock = socket.socket()
 sock.bind(('', 9090))
 sock.listen(2)
+lcon = time.time()
+lcon1 = time.time()
 while True:
     sock.settimeout(0.0000001)
     log = open("log.txt", "a")
     try:
+        #if (lcon - lcon1) >= 300:
+        #    conns[i].close()
+        #    conns.pop(i)
+        #    addrs.pop(i)
+        #    engine.maps.pop(i//2)
+        #    engine.units.pop(i)
+        #    engine.score.pop(i//2)
+        #    bullets.pop(i//2)
+        #    i -= 1
         conn, addr = sock.accept()
         if i%2 == 0:
             bullets.append([])
             engine.score.append([0, 0])
             engine.map = [[0 for i in range(9)] for j in range(9)]
-            engine.gen()
+            engine.walls.append([])
+            engine.gen(i//2)
             engine.maps.append(engine.map)
             engine.units.append(engine.UnitRed(i//2))
-            try:
-                engine.units[i].name = conn.recv(512).decode()
-                if len(engine.units[i].name) > 6:
-                    try:
-                        conn.close()
-                        engine.maps.pop(i//2)
-                        engine.units.pop(i)
-                        engine.score.pop(i//2)
-                        bullets.pop(i//2)
-                        i -= 1
-                    except:
-                        pass
-            except:
-                conn.close()
-                engine.maps.pop(i//2)
-                engine.units.pop(i)
-                engine.score.pop(i//2)
-                bullets.pop(i//2)
-                i -= 1
-            if engine.units[i].name == '|bot':
-                conns.append(conn)
-                addrs.append(addr)
-                i += 1
-                engine.units.append(engine.UnitBlue(i//2))
-                engine.units[i].name = '|bot'
-                log.write(time.ctime(time.time())+ " Bot Conn:"+conns[i]+'\n')
+            #try:
+            engine.units[i].name = conn.recv(512).decode()
+                #if len(engine.units[i].name) > 6:
+                #    try:
+                #        conn.close()
+                #        engine.maps.pop(i//2)
+                #        engine.units.pop(i)
+                #        engine.score.pop(i//2)
+                #        bullets.pop(i//2)
+                #        i -= 1
+                #    except:
+                #        pass
+            #except:
+            #    conn.close()
+            #    engine.maps.pop(i//2)
+            #    engine.units.pop(i)
+            #    engine.score.pop(i//2)
+            #    bullets.pop(i//2)
+            #    i -= 1
+            #if engine.units[i].name == '|bot':
+            #    conns.append(conn)
+            #    addrs.append(addr)
+            #    i += 1
+            #    engine.units.append(engine.UnitBlue(i//2))
+            #    engine.units[i].name = '|bot'
+            #    log.write(time.ctime(time.time())+ " Bot Conn:"+conns[i]+'\n')
             conns.append(conn)
             addrs.append(addr)
+            log.write(f"{time.ctime(time.time())} New Conn: i = {i} units = {len(engine.units)}\n {addrs[i]} name = {engine.units[i].name} \n")
+            lcon = time.time()
         elif i%2 == 1:
             engine.units.append(engine.UnitBlue(i//2))
             engine.units[i].name = conn.recv(512).decode()
@@ -203,6 +216,7 @@ while True:
             while j < len(conns) - 1:
                 log.write(f"                              {j//2}: {addrs[j]} {str(engine.units[j])[8:13:]} |{j}| name = '{engine.units[j].name}'  {addrs[j+1]} {str(engine.units[j+1])[8:13:]} |{j+1}| name = '{engine.units[j+1].name}'\n")
                 j += 2
+            lcon1 = time.time()
         i += 1
     except Exception as e:
         if type(e) != socket.timeout:
@@ -212,6 +226,10 @@ while True:
         m = 0
         while j < len(conns) - 1:
             sock.settimeout(0)
+            try:
+                buletmove(j)
+            except:
+                pass
             #start_time=time.time()
             try:
                 if addrs[j] != addrs[j+1]:

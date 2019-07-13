@@ -2,7 +2,7 @@ import pygame
 import socket
 import gameclient
 win_width = win_height = 300
-ip = '94.103.84.146'
+ip = '94.103.88.200'
 name = ''
 pas = ''
 pygame.init()
@@ -546,6 +546,7 @@ def reg_pas(log = False):
                             sock.send(f'reg:{name}:{pas}:0:0'.encode())
                         data = sock.recv(512).decode()
                         if data == 'sucksess/':
+                            sock.close()
                             menu()
                             run = False
                         else:

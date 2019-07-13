@@ -4,9 +4,22 @@ win_height = win_width = 500
 map = [[0 for i in range(9)] for j in range(9)]
 score = []
 
+class Wall:
+    health = 3
+    def __init__(self, x, y):
+        self.health = 3
+        self.x = x
+        self.y = y
+    def destroy(self, j):
+        self.health -= 1
+        print(self.health == 0)
+        if self.health == 0:
+            maps[j][self.x][self.y] = 0
+            del self
+
 class Bullet:
     radius = win_width//100
-    speed = win_height//70;
+    speed = win_height//10;
     def __init__(self, x, y, orient, color):
         self.x = x
         self.y = y
@@ -87,7 +100,7 @@ class UnitRed:
             maps[j][self.x][self.y] = 0
             score[j][1] += 1
             del self
-def gen():
+def gen(q):
     i = 1
     while i != 8:
         k = random.randint(1,3)
@@ -98,5 +111,10 @@ def gen():
         i += 1
     map[int(len(map[0])/2)][len(map)-1] = 1
     map[int(len(map[0])/2)][0] = 2
+    for i in range(len(map)):
+        for j in range(len(map[0])):
+            if map[i][j] == 3:
+                walls[q].append(Wall(i,j))
 maps = []
-units=[]
+units = []
+walls = []
