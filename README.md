@@ -1,4 +1,4 @@
-# game
+# Tanchiki
 
 Duel game with random generated maps in which you're a tank.
 
