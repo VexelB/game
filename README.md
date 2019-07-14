@@ -1,5 +1,7 @@
 # Tanchiki
 
+``` python3 main.py ```
+
 Duel game with random generated maps in which you're a tank.
 
 To play you need an opponent. Game ties two last connections together.
