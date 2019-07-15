@@ -6,7 +6,7 @@ Duel game with random generated maps in which you're a tank.
 
 ## Installing:
 
-Just download gameclient.py and main.py then do ``` python3 main.py ``` in comandline in game folder
+Just download gameclient.py and main.py then perform ``` python3 main.py ``` in comandline in game folder
 
 !The game requires installed PyGame!
 
