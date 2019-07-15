@@ -26,4 +26,4 @@ To play:
 
 In game controls: WASD - change orientation of your tank, arrow keys - move your tank, SPACE - shoot, R - starts new map with the same opponent (both of opponents need to press R, you can check if it pressed in right bottom of screen), ESC - exit game.
 
-ENJOY!
+# ENJOY!
