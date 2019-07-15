@@ -1,12 +1,22 @@
 # Tanchiki
 
-``` python3 main.py ```
-
 Duel game with random generated maps in which you're a tank.
+
+![вдохновение](/pic.png)
+
+## Installing:
+
+Just download gameclient.py and main.py then do ``` python3 main.py ``` in comandline in game folder
+
+!The game requires installed PyGame!
+
+## Plaing:
 
 To play you need an opponent. Game ties two last connections together.
 
 Menu controls: 1,2 to chose options, letter keys to write, ESC - back.
+
+To play:
 
 1. Reg in game
 
