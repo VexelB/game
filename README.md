@@ -18,7 +18,7 @@ Menu controls: 1,2 to chose options, letter keys to write, ESC - back.
 
 To play:
 
-1. Reg in game
+1. Reg in game (or use test as login and password)
 
 2. Log in
 
